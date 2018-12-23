@@ -1,4 +1,4 @@
-## mysql中sql语句，保留两位小数，求平均数，计算
+## mysql中sql语句，保留两位小数，求平均数
 
 ```
 String sql = "select "
