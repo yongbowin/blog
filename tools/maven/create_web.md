@@ -4,6 +4,8 @@
 
 <div align=center> ![](https://github.com/yongbowin/blog/blob/master/tools/maven/img/m_01.png)
 
+<div align=center>![这里写图片描述](img/m_01.png)
+
 * 进行调整
 这时创建好的工程的webapp文件夹下边还没东西：
 
