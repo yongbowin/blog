@@ -8,7 +8,7 @@
    * [J2EE开发]()
       * [前端开发]()
       * [后台开发]()
-   * []()
+   * [数据库](database/mysql/single_score_rank.md)
    * []()
    * []()
    * []()
