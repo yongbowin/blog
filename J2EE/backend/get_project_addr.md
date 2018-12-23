@@ -1,4 +1,4 @@
-## 获取项目地址的集中方式
+## 获取项目地址的方式
 
 * 获取项目绝对路径：
 String reqUrl2 =request.getRealPath("/");
