@@ -3,7 +3,7 @@
 > 之前都是以笔记的形式记录在工程中遇到的问题和开发经验，现在打算慢慢的将阵地转移到这里。
 
 ### 目录
-* 工程(#工程)
+* [工程](#工程)
    * [J2EE开发](#J2EE开发)
       * [前端开发](#前端开发)
       * [后台开发](#后台开发)
@@ -13,11 +13,11 @@
       * [MongoDB](#MongoDB)
    * []()
 
-* 算法(#算法)
+* [算法](#算法)
 
 ## 工程
 ### J2EE开发
-* #### [后台开发](backend/README.md)
+* #### 后台开发
    * [查看数据类型](backend/check_datatype.md)
    * [字符串比较](backend/compete_str.md)
    * [struts2下载文件时，中文文件名不显示](backend/filename_no_show.md)
@@ -27,7 +27,7 @@
    * [session值的获取](backend/get_session.md)
    * [JSONObject添加元素](backend/JSONObject_add_elem.md)
    * [在java中保留两位小数](backend/save2float.md)
-* [前端开发](frontend/)
+* #### 前端开发
    * [Ajax前后台交互](frontend/ajax_interact.md)
    * [自动换行](frontend/auto_wrap.md)
    * [jquery添加的class后,无法为其添加点击事件](frontend/click_event.md)
@@ -49,3 +49,7 @@
    * [让div或者文字旋转90度](frontend/rotate_work.md)
    * [将div保存为图片](frontend/save_page_2_img.md)
    * [字数限制-超出的省略号表示](frontend/word_ellipsis.md)
+* #### 微信开发
+   * [在应用中心配置可信域名](weixin/app_center_domain.md)
+   * [微信企业号启用回调模式过程](weixin/open_callback.md)
+   * [后台打印信息到页面问题](weixin/print_2_front.md)
