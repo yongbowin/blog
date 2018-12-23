@@ -1,9 +1,8 @@
 # 个人博客
-
+---
 > 之前都是以笔记的形式记录在工程中遇到的问题和开发经验，现在打算慢慢的将阵地转移到这里。
 
 ## 目录
-
 * 工程
    * [J2EE开发](J2EE/README.md)
       * [前端开发](J2EE/frontend/README.md)
@@ -17,9 +16,7 @@
 * 算法
 
 ## 工程
-
 ### J2EE开发
----
 * [后台开发](backend/README.md)
    * [查看数据类型](backend/check_datatype.md)
    * [字符串比较](backend/compete_str.md)
