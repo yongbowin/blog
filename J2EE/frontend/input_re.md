@@ -1,6 +1,7 @@
 ## 输入框限制只能输入数字或者字母
 
 * 只能输入数字
+
 ```
 $.fn.onlyNum = function () {
     $(this).keypress(function (event) {
@@ -25,6 +26,7 @@ $.fn.onlyNum = function () {
 ```
 
 * 只能输入字母
+
 ```
 $.fn.onlyAlpha = function () {
     $(this).keypress(function (event) {
@@ -47,6 +49,7 @@ $.fn.onlyAlpha = function () {
 ```
 
 * 只能输入数字和字母
+
 ```
 $.fn.onlyNumAlpha = function () {
     $(this).keypress(function (event) {
@@ -79,6 +82,7 @@ $(function () {
 
 * 只能输入大于0的正整数
 > jquery限制文本框只能输入数字,兼容IE、chrome、FF（表现效果不一样）,代码如下：
+
 ```
 $("input").keyup(function(){ 
     //keyup事件处理 
@@ -90,6 +94,7 @@ $("input").keyup(function(){
 ```
 
 * 只能输入0-9的数字和小数点
+
 ```
 $("#rnumber").keyup(function(){
     $(this).val($(this).val().replace(/[^0-9.]/g,''));  

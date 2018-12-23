@@ -5,6 +5,7 @@ var from = 'abcdefg';
 var to = from.substr(1,3); //表示从1位开始截取后面的3个字符，"bcd"
 to = from.substring(1,3); //表示从1位开始截取到3位，"bc"
 ```
+
 或者直接用from[0]，获取第0个字符
 
 > 注意：均为小写；
