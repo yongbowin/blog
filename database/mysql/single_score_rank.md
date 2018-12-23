@@ -1,6 +1,7 @@
 ## 使用sql语句对单科成绩进行排名
 
 对单科成绩进行排名：
+
 ```
 String sql = "select "
                 + "b.student_id,"
@@ -26,4 +27,5 @@ rank() over,dense_rank(),row_number() 的区别：
 http://jingyan.baidu.com/article/597035521ff2ec8fc107404b.html
 
 sql语句的写法：
+
 `select 姓名,学号,总分,RANK() over(order by 总分 desc)排名 from 成绩表`

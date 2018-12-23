@@ -9,10 +9,13 @@ String build_time = request.getParameter("questionBuildTime");
 ```
 
 > 注意：
-> 获取的时候进行转码 `String str = new String(request.getParameter("ptname").getBytes("ISO-8859-1"), "UTF-8");`
+> 获取的时候进行转码
+> 
+> `String str = new String(request.getParameter("ptname").getBytes("ISO-8859-1"), "UTF-8");`
 
 
 在前端页面：
+
 ```
 //在学生作业上传页面搜索作业
 $("#hw_btn").click(function(){

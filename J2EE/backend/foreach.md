@@ -14,6 +14,7 @@ public static void main(String[] args) {
 ```
 
 上边代码相当于下边的写法：
+
 ```
 for(int i=0; i<index.length; i++){
     i = index[i];

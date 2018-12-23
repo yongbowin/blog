@@ -10,6 +10,7 @@ downFileName = new String(downFileName.getBytes(), "ISO8859-1");
 ```
 
 这样就行，一定要弄明白字符集的设置是对那个流的设置！例如在实际的项目中：
+
 ```
 filePath = new String(filePath.getBytes("ISO-8859-1"), "utf-8");
 
