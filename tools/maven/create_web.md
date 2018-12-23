@@ -2,7 +2,7 @@
 
 * 在创建的时候选择打包为war包，
 
-<div align=center> ![](https://github.com/yongbowin/blog/blob/master/tools/maven/img/m_01.png)
+<div style="align:center">![](https://github.com/yongbowin/blog/blob/master/tools/maven/img/m_01.png)</div>
 
 <div align=center>![这里写图片描述](img/m_01.png)
 
