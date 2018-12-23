@@ -36,4 +36,4 @@
 > * 方法1：将tomcat加入到工程中来
 > * 方法2：在pom.xml中加入依赖，如下图所示
 
-<div align=center>![](img/m_08.png)</div>
+<div align="center">![](img/m_08.png)</div>
