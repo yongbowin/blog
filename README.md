@@ -58,7 +58,7 @@
    * [微信企业号启用回调模式过程](https://github.com/yongbowin/blog/tree/master/J2EE/weixin/open_callback.md)
    * [后台打印信息到页面问题](https://github.com/yongbowin/blog/tree/master/J2EE/weixin/print_2_front.md)
 * #### 学习笔记
-   * [Javascript]()
+   * [Javascript](https://github.com/yongbowin/blog/tree/master/J2EE/notes/js_notes.md)
 
 ### 数据库
 * #### MySQL
@@ -78,6 +78,7 @@
    * [统一管理jar包依赖的版本号](https://github.com/yongbowin/blog/blob/master/tools/maven/set_jdk.md)
    * [继承](https://github.com/yongbowin/blog/blob/master/tools/maven/inherit.md)
    * [配置文件中依赖的来源](https://github.com/yongbowin/blog/blob/master/tools/maven/conf_deps.md)
+   * [idea创建maven项目过程](https://github.com/yongbowin/blog/blob/master/tools/maven/create_problem.md)
 
 
 ## 算法
