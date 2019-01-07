@@ -35,6 +35,7 @@
    * isFinite() 判断是否产出范围（true、false）
    * NAN 是一个特殊的值not a number （除数为零的情况）
 
+	> 
 	> 本来要返回一个数值的数，而未返回数值的情况
 	> 比如： var box = 0/0     返回NaN
 	>        Var box=12/0     返回Infinity
@@ -69,20 +70,20 @@ alert(Number(undefined)); //NaN，undefined 返回NaN
    * Arguments对象，函数体可以通过此对象接受传递过来的参数
    * JavaScript没有函数重载的功能
 
-> 什么是对象? 
+> 什么是对象?  
 > 其实就是一种类型，即引用类型。而对象的值就是引用类型的实例。虽然ECMAScript 是一门面向对象的语言，却不具备传统面向对象语言所支持的类和接口等基本结构。
 > 
-> Object类型?
+> Object类型?  
 > 虽然Object 的实例不具备多少功能，但对于在应用程序中的存储和传输数据而言，它确实是非常理想的选择。
 > 
-> 对象包括哪些元素?
-> 1.属性（字段） `box.name="王勇博`
+> 对象包括哪些元素?  
+> 1.属性（字段） `box.name="王勇博`  
 > 2.方法（函数）
 > 
-> 输出对象的两种方式：
+> 输出对象的两种方式：  
 > `Alert(box.name)` 或者 `alert(box['name'])`
 > 
-> 给对象创建方法：
+> 给对象创建方法：  
 > ```
 > var box = {
 > 	run : function () { //对象中的方法
@@ -122,7 +123,7 @@ function ttt() {
 > 可能大家会想到另外一个事件：onchange。  
 > 但是，onchange有两个弊端，  
 > * 一、就是它在触发对象失去焦点时，才触发onchange事件。  
-> * 二、如果得用javascript改变触发对象的属性时，并不能触发onchange事件，oninput也有这个问题。  
+> * 二、如果得用javascript改变触发对象的属性时，并不能触发onchange事件，oninput也有这个问题。   
 > onpropertychange会在设置disable=true的时候失效。而且，onpropertychange是在触发对象改变任何属性时都会触发。而oninput只是在改变input的value值时才触发。  
 > oninput 事件：不但JS 改变 value 值时不能触发，有从浏览器的自动下拉提示中选值时，也不会触发。  
 > onpropertychange触发函数只有一个默认参数，是所以可以触发属性的集合。
