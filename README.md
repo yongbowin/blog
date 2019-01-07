@@ -10,6 +10,7 @@
       * [前端开发](#前端开发)
       * [后台开发](#后台开发)
       * [微信开发](#微信开发)
+      * [学习笔记](#学习笔记)
    * [数据库](#数据库)
       * [MySQL](#MySQL)
       * [MongoDB](#MongoDB)
@@ -56,6 +57,8 @@
    * [在应用中心配置可信域名](https://github.com/yongbowin/blog/tree/master/J2EE/weixin/app_center_domain.md)
    * [微信企业号启用回调模式过程](https://github.com/yongbowin/blog/tree/master/J2EE/weixin/open_callback.md)
    * [后台打印信息到页面问题](https://github.com/yongbowin/blog/tree/master/J2EE/weixin/print_2_front.md)
+* #### 学习笔记
+   * [Javascript]()
 
 ### 数据库
 * #### MySQL
