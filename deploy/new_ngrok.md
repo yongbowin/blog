@@ -26,8 +26,7 @@ bin/darwin_amd64/ngrok      	osx客户端
 bin/windows_amd64/ngrok.exe 	windows客户端
 ```
 
-* 启动 `Ngrok server`
-
+* 启动 `Ngrok server`  
 直接挂载刚刚的 `/data/ngrok` 到容器即可启动服务，执行
 
 `docker run -idt --name ngrok-server -v /data/ngrok:/myfiles -p 80:80 -p 443:443 -p 4443:4443 -e DOMAIN='tunnel.hteen.cn' hteen/ngrok /bin/bash /server.sh`
