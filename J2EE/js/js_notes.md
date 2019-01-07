@@ -35,7 +35,7 @@
    * isFinite() 判断是否产出范围（true、false）
    * NAN 是一个特殊的值not a number （除数为零的情况）
 
-> 本来要返回一个数值的数，而未返回数值的情况
+   > 本来要返回一个数值的数，而未返回数值的情况
 > 比如： var box = 0/0     返回NaN
 >        Var box=12/0     返回Infinity
 >        Var box=12/0*0   返回NaN
@@ -49,71 +49,60 @@
    * 函数是转型函数，可以用于任何数据类型，而另外两个则专门用于把字符串转成数值。
 
 ```
-alert(Number(true)); //1，Boolean 类型的true 和false 分别转换成1 和0
-alert(Number(25)); //25，数值型直接返回
-alert(Number(null)); //0，空对象返回0
-alert(Number(undefined)); //NaN，undefined 返回NaN
+	alert(Number(true)); //1，Boolean 类型的true 和false 分别转换成1 和0
+	alert(Number(25)); //25，数值型直接返回
+	alert(Number(null)); //0，空对象返回0
+	alert(Number(undefined)); //NaN，undefined 返回NaN
 ```
 
    * 字符串可以用单引号和双引号表示，单双引号不能穿插使用，必须成对出现
- 
-*toString(参数)，默认参数是十进制，一般参数为2、8、16
- 
-*对象就是一组数据和功能的集合
- 
-* JavaScript也是面向对象的
- 
-* var box = 100 + '100'; //100100，字符串连接符，有字符串就不是加法
-* 只要其中有一个是字符串，结果就是字符串
- 
-* var box = '3' > '22'; //true
- 
-* 不需要任何转换的情况下，null 和undefined 是相等的
- 
-* var box = {  } == {  }; //false，比较的是他们的地址，每个新创建对象的引用地址都不同
- 
-* 位运算符比较底层，运算速度比较快
- 
-* for...in 语句是一种精准的迭代语句，可以用来枚举对象的属性。
- 
-* Arguments对象，函数体可以通过此对象接受传递过来的参数
- 
-* JavaScript没有函数重载的功能
- 
-* 什么是对象?
-其实就是一种类型，即引用类型。而对象的值就是引用类型的实例
-虽然ECMAScript 是一门面向对象的语言，却不具备传统面向对象语言所支持的类和接口等基本结构。
-Object类型：虽然Object 的实例不具备多少功能，但对于在应用程序中的存储和传输数据而言，它确实是非常理想的选择。
- 
-对象包括哪些元素
-1.属性（字段）    box.name=”王勇博”
-2.方法（函数）
- 
-输出对象的两种方式：
-`Alert(box.name)` 或者 `alert(box[‘name’])`
-给对象创建方法
+   * toString(参数)，默认参数是十进制，一般参数为2、8、16
+   * 对象就是一组数据和功能的集合
+   * JavaScript也是面向对象的
+   * var box = 100 + '100'; //100100，字符串连接符，有字符串就不是加法
+   * 只要其中有一个是字符串，结果就是字符串
+   * var box = '3' > '22'; //true
+   * 不需要任何转换的情况下，null 和undefined 是相等的
+   * var box = {  } == {  }; //false，比较的是他们的地址，每个新创建对象的引用地址都不同
+   * 位运算符比较底层，运算速度比较快
+   * for...in 语句是一种精准的迭代语句，可以用来枚举对象的属性。
+   * Arguments对象，函数体可以通过此对象接受传递过来的参数
+   * JavaScript没有函数重载的功能
 
-```
-var box = {
-	run : function () { //对象中的方法
-	return '运行';
-	}
-}
-alert(box.run()); //调用对象中的方法
-```
+> 什么是对象? 
+> 
+> 其实就是一种类型，即引用类型。而对象的值就是引用类型的实例。虽然ECMAScript 是一门面向对象的语言，却不具备传统面向对象语言所支持的类和接口等基本结构。
+> 
+> Object类型：虽然Object 的实例不具备多少功能，但对于在应用程序中的存储和传输数据而言，它确实是非常理想的选择。
+> 
+> 对象包括哪些元素
+> 1.属性（字段） `box.name=”王勇博”`
+> 2.方法（函数）
+> 
+> 输出对象的两种方式：
+> `Alert(box.name)` 或者 `alert(box[‘name’])`
+> 
+> 给对象创建方法：
+> 
+> ```
+> var box = {
+> 	run : function () { //对象中的方法
+> 	return '运行';
+> 	}
+> }
+> alert(box.run()); //调用对象中的方法
+> ```
 
 * #### 例子
 
 写一个输入框验证，当在输入框输入不合法字符时（比如：fuck），提示用户，并删除不合法字符，用原生javascript完成，不用jquery
  
 答案一：
-
 ```
 <input type="text" onpropertychange="javascript:if(/[\+\-\*\\]/.test(this.value)){alert('字符不合法，请从新输入！');this.value='';}">
 ```
 
 答案二：
-
 ```
 <input type="text" value="" onpropertychange="return ttt();" id="yanzheng">
 <script type="text/javascript">
