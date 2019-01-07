@@ -33,9 +33,8 @@
    * 不要用浮点数进行精确的判断，因为不精确
    * `Number.MIN_VALUE、number.MAX_VALUE、Infinity、-Infinity、POSITIVE_INFINITY、NEGATIVE_INFINITY`
    * isFinite() 判断是否产出范围（true、false）
-   * NAN 是一个特殊的值not a number （除数为零的情况）
+   * NAN 是一个特殊的值not a number （除数为零的情况）  
 
-	> 
 	> 本来要返回一个数值的数，而未返回数值的情况
 	> 比如： var box = 0/0     返回NaN
 	>        Var box=12/0     返回Infinity
@@ -120,10 +119,10 @@ function ttt() {
 > onpropertychange事件和onchange事件的区别：  
 > onpropertychange事件，顾名思义，就是property(属性)change(改变)的时候，触发事件。这是IE专有的！如果想兼容其它浏览器，有个类似的事件，oninput！  
 > 
-> 可能大家会想到另外一个事件：onchange。  
-> 但是，onchange有两个弊端，  
+> 另外一个事件：onchange有两个弊端，  
 > * 一、就是它在触发对象失去焦点时，才触发onchange事件。  
-> * 二、如果得用javascript改变触发对象的属性时，并不能触发onchange事件，oninput也有这个问题。   
+> * 二、如果得用javascript改变触发对象的属性时，并不能触发onchange事件，oninput也有这个问题。  
+> 
 > onpropertychange会在设置disable=true的时候失效。而且，onpropertychange是在触发对象改变任何属性时都会触发。而oninput只是在改变input的value值时才触发。  
 > oninput 事件：不但JS 改变 value 值时不能触发，有从浏览器的自动下拉提示中选值时，也不会触发。  
 > onpropertychange触发函数只有一个默认参数，是所以可以触发属性的集合。
