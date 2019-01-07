@@ -92,7 +92,7 @@ alert(Number(undefined)); //NaN，undefined 返回NaN
 > alert(box.run()); //调用对象中的方法
 > ```
 
-* #### 例子
+#### 例子
 
 题目： 写一个输入框验证，当在输入框输入不合法字符时（比如：fuck），提示用户，并删除不合法字符，用原生javascript完成，不使用jquery。
 
@@ -103,13 +103,13 @@ alert(Number(undefined)); //NaN，undefined 返回NaN
 
 答案二：
 ```
-<input type="text" value="" onpropertychange="return ttt();" id="yanzheng">
+<input type="text" value="" onpropertychange="return ttt();" id="test">
 <script type="text/javascript">
 function ttt() {
-	var val = document.getElementById("yanzheng").value;
+	var val = document.getElementById("test").value;
 	if(val == 'fuck'){
 		alert("输入错误！");
-		document.getElementById("yanzheng").value = '';
+		document.getElementById("test").value = '';
 	}
 }
 </script>
@@ -127,4 +127,68 @@ function ttt() {
 > oninput 事件：不但JS 改变 value 值时不能触发，有从浏览器的自动下拉提示中选值时，也不会触发。  
 > onpropertychange触发函数只有一个默认参数，是所以可以触发属性的集合。
 
+#### JavaScript DOM编程
 
+* DOM对象必须在html文档加载完毕才可以获取
+* IE是以COM实现的DOM。所以只会返回一个object
+* 动态脚本： 在适当的时候加载响应的脚本，提高网站的性能
+* json的语法: JSON和XML类型，都是一种结构化的数据表示方式。所以，JSON并不是JavaScript独有的数据格式，其他很多语言都可以对JSON进行解析和序列化。
+
+![](img/j_01.jpeg)
+
+> PS：一般情况下，我们可以把JSON 结构数据保存到一个文本文件里，然后通过XMLHttpRequest 对象去加载它，得到这串结构数据字符串
+
+![](img/j_02.jpeg)
+
+![](img/j_03.jpeg)
+
+* 解析和序列化
+
+![](img/j_04.jpeg)
+
+* 新的ECMA对解析JSON的行为进行了规范
+
+![](img/j_05.jpeg)
+
+![](img/j_06.jpeg)
+
+![](img/j_07.jpeg)
+
+![](img/j_08.jpeg)
+
+* Ajax基础知识：XMLHttpRequest对象（简称XHR）
+* Ajax 技术核心是XMLHttpRequest 对象(简称XHR)，这是由微软首先引入的一个特性，其他浏览器提供商后来都提供了相同的实现。在XHR 出现之前，Ajax 式的通信必须借助一些hack 手段来实现，大多数是使用隐藏的框架或内嵌框架。虽然Ajax 中的x 代表的是XML，但Ajax 通信和数据格式无关，也就是说这种技术不
+一定使用XML。
+
+![](img/j_09.jpeg)
+
+![](img/j_10.jpeg)
+
+* 发送请求：
+
+![](img/j_11.jpeg)
+
+![](img/j_12.jpeg)
+
+* 常见的状态吗：
+
+![](img/j_13.jpeg)
+
+![](img/j_14.jpeg)
+
+* 在Ajax使用的过程中，使用get的请求的情况会比post的情况要高
+
+> PS：我们只可以获取服务器返回回来响应头信息，无法获取向服务器提交的请求头信息，自然自定义的请求头，在JavaScript 端是无法获取到的。
+
+![](img/j_15.jpeg)
+
+* Cookie与存储, 具有能够本地化存储的脚本功能。Cookie的意图是：在本地的客户端的磁盘上以很小的文件形式保存数据。
+
+![](img/j_16.jpeg)
+
+![](img/j_17.jpeg)
+
+> Cookie的局限性  
+> 第一：每个特定的域名下最多生成20 个cookie（根据不同的浏览器有所区别）  
+> 第二：cookie 的最大大约为4096 字节(4k)，为了更好的兼容性，一般不能超过4095 字节即可。  
+> 第三：cookie 存储在客户端的文本文件，所以特别重要和敏感的数据是不建议保存在cookie 的。比如银行卡号，用户密码等。
