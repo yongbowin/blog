@@ -16,7 +16,9 @@
       * [MongoDB](#MongoDB)
    * [工具](#工具)
       * [Maven](#Maven)
-   * [项目部署](#项目部署)
+   * [部署](#部署)
+      * [项目部署](#项目部署)
+      * [分布式](#分布式)
    * [其它](#其它)
 
 * [算法](#算法)
@@ -82,12 +84,15 @@
    * [9.配置文件中依赖的来源](https://github.com/yongbowin/blog/blob/master/tools/maven/conf_deps.md)
    * [10.idea创建maven项目过程](https://github.com/yongbowin/blog/blob/master/tools/maven/create_problem.md)
 
-### 项目部署
-* [搭建ngrok服务](https://github.com/yongbowin/blog/blob/master/deploy/new_ngrok.md)
-* [linux下配置apache](https://github.com/yongbowin/blog/blob/master/deploy/apa_conf.md)
-* [Tomcat安装配置](https://github.com/yongbowin/blog/blob/master/deploy/tom_conf.md)
-* [ubuntu部署neo4j](https://github.com/yongbowin/blog/blob/master/deploy/neo_conf.md)
-* [使用ngrok开启项目的代理服务](https://github.com/yongbowin/blog/blob/master/deploy/open_agent.md)
+### 部署
+* #### 项目部署
+   * [搭建ngrok服务](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/new_ngrok.md)
+   * [linux下配置apache](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/apa_conf.md)
+   * [Tomcat安装配置](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/tom_conf.md)
+   * [ubuntu部署neo4j](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/neo_conf.md)
+   * [使用ngrok开启项目的代理服务](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/open_agent.md)
+* #### 分布式
+   * [搭建ELK+Kafka日志分析系统]()
 
 ### 其它
 * [添加原有分区的容量，或者添加新分区](https://github.com/yongbowin/blog/blob/master/others/dyna_add_disk.md)

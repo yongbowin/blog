@@ -41,7 +41,11 @@ mkdir /opt/data/data1
 mount -t xfs /dev/sdb /opt/data/data1
 ```
 
-df -lhT可以看到信息
+查看信息
+
+```
+df -lhT
+```
 
 #### 添加新硬盘到新的分区(xfs/ext4)
 
