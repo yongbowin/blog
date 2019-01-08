@@ -1,6 +1,8 @@
 ## Tomcat安装配置
 
-* 1.下载压缩包解压，进入 `/usr/soft/apache-tomcat-7.0.78/bin` 目录，编辑startup.sh文件，在该文件中添加jdk和jre环境变量（事先打印下 `echo $JAVA_HOME` 和 `java -version` ，再考虑要不要配置下边的java环境变量）
+#### 下载
+
+下载压缩包解压，进入 `/usr/soft/apache-tomcat-7.0.78/bin` 目录，编辑startup.sh文件，在该文件中添加jdk和jre环境变量（事先打印下 `echo $JAVA_HOME` 和 `java -version` ，再考虑要不要配置下边的java环境变量）
 
 ```
 JAVA_HOME=/usr/soft/jdk1.8.0_20
@@ -19,10 +21,12 @@ sudo /usr/soft/apache-tomcat-7.0.78/bin/shutdown.sh      关闭Tomcat
 
 在浏览器输入 `localhost:8080` 查看tomcat的启动情况
 
-* 2.部署RDF-Demo到Tomcat
+#### 部署
+
+部署RDF-Demo到Tomcat
 参考[blog](http://blog.csdn.net/dy898850285/article/details/60134798), 同一个Tomcat不同端口部署不同项目
 
-   * 第一步：修改tomcat下的server.xml文件
+* 第一步：修改tomcat下的server.xml文件
 
 配置service 节点，个人认为有几个项目，就相应的配置几个service 节点；
 
@@ -30,21 +34,17 @@ sudo /usr/soft/apache-tomcat-7.0.78/bin/shutdown.sh      关闭Tomcat
 
 ![](img/d_03.jpeg)
 
-
-   * 第二步：先依照此配置文件配置，完成后在tomcat根目录下复制文件夹webapps，粘贴重命名为webapps1，webapps2，如下图：此文件夹就是分别用来部署项目的。
-
+* 第二步：先依照此配置文件配置，完成后在tomcat根目录下复制文件夹webapps，粘贴重命名为webapps1，webapps2，如下图：此文件夹就是分别用来部署项目的。
 
 ![](img/d_04.jpeg)
 
-
-   * 第三步：在tomcat根目录下的conf文件中，复制conf文件夹下的Catalina文件夹，粘贴并重命名为Catalina1，Catalina2，如图：
-
+* 第三步：在tomcat根目录下的conf文件中，复制conf文件夹下的Catalina文件夹，粘贴并重命名为Catalina1，Catalina2，如图：
 
 ![](img/d_05.jpeg)
 
 配置完成，现在可以把项目分别部署到配置好的两个文件夹webapps1和webapps2中；
 
-   * 启动tomcat，分别用不同的端口号测试；
+* 启动tomcat，分别用不同的端口号测试；
 
 ```
 127.0.0.1:9999/项目名
