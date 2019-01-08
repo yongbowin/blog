@@ -128,7 +128,7 @@ sudo vim /etc/security/limits.conf
 > ulimit -l unlimited
 > ```
 
-* 2.切换到root用户 `vim /etc/security/limits.conf`
+* 2.切换到root用户 `vim /etc/security/limits.conf`  
 
    * 添加如下内容:
 
@@ -139,7 +139,7 @@ sudo vim /etc/security/limits.conf
     * hard nproc 4096
     ```
 
-   * 修改 `vim /etc/security/limits.d/90-nproc.conf`, 修改如下内容：
+   * 修改 `vim /etc/security/limits.d/90-nproc.conf`, 修改如下内容：  
 
     ```
     * soft nproc 4096
@@ -147,17 +147,17 @@ sudo vim /etc/security/limits.conf
     * soft nproc 8192
     ```
 
-   * 修改 `vim /etc/sysctl.conf`, 添加下面配置：
+   * 修改 `vim /etc/sysctl.conf`, 添加下面配置：  
 
-```
-vm.max_map_count=655360
-```
+    ```
+    vm.max_map_count=655360
+    ```
 
-   * 执行命令：
+   * 执行命令：  
 
-```
-sysctl -p
-```
+    ```
+    sysctl -p
+    ```
 
    * 然后，重新启动elasticsearch，即可启动成功。
 
@@ -204,118 +204,118 @@ git clone git://github.com/mobz/elasticsearch-head.git
 
 > 安装nodejs过程参考[博客](http://www.cnblogs.com/shhnwangjian/p/6559732.html)
 
-   - 下载编译好的文件
+   * 下载编译好的文件  
 下载最新版本 `node-v8.9.0-linux-x64.tar.xz`，其余安装步骤参见（安装配置EventCoreference模块)
 
-   - 淘宝镜像cnpm安装  `https://npm.taobao.org/`
+   * 淘宝镜像cnpm安装  `https://npm.taobao.org/`  
 
-```
-npm install -g cnpm --registry=https://registry.npm.taobao.org
-ln -s /usr/soft/node-v8.9.0-linux-x64/bin/cnpm /usr/local/bin/cnpm
-cnpm -v
-```
+    ```
+    npm install -g cnpm --registry=https://registry.npm.taobao.org
+    ln -s /usr/soft/node-v8.9.0-linux-x64/bin/cnpm /usr/local/bin/cnpm
+    cnpm -v
+    ```
 
-   - 安装grunt
-执行下边的命令，全局安装bower和grunt-cli：
+   * 安装grunt  
+    执行下边的命令，全局安装bower和grunt-cli：
 
-```
-yum install npm
-npm install -g yo bower grunt-cli gulp
-npm init   根据提示填入相关信息，
-npm install grunt
-```
+    ```
+    yum install npm
+    npm install -g yo bower grunt-cli gulp
+    npm init   根据提示填入相关信息，
+    npm install grunt
+    ```
 
-安装完成后，添加索引后，如果直接执行grunt，会发现报错，应该在有Gruntfile.js文件的目录下执行
+    安装完成后，添加索引后，如果直接执行grunt，会发现报错，应该在有Gruntfile.js文件的目录下执行
 
-   - 修改Elasticsearch配置文件
-配置文件位置 `/usr/share/elasticsearch/config/elasticsearch.yml` ，`/etc/elasticsearch/` 下边的没用，事先需要将etc下边的配置文件复制到usr下边对应的目录下
+   * 修改Elasticsearch配置文件
+    配置文件位置 `/usr/share/elasticsearch/config/elasticsearch.yml` ，`/etc/elasticsearch/` 下边的没用，事先需要将etc下边的配置文件复制到usr下边对应的目录下
 
-```
-http.cors.enabled: true
-http.cors.allow-origin: "*"
-```
+    ```
+    http.cors.enabled: true
+    http.cors.allow-origin: "*"
+    ```
 
-   - 修改Gruntfile.js
+   * 修改Gruntfile.js
 
-> 其位置在之前下载的elasticsearch-head文件夹下边
+    > 其位置在之前下载的elasticsearch-head文件夹下边
 
-在这里下载[地址](https://github.com/mobz/elasticsearch-head)
+    在这里下载[地址](https://github.com/mobz/elasticsearch-head)
 
-```
-elasticsearch-head/Gruntfile.js
-                connect: {
-                        server: {
-                                options: {
-                                        hostname: '0.0.0.0',
-                                        port: 9100,
-                                        base: ‘.‘,
-                                        keepalive: true
-                                }
-                        }
-                }
-```
+    ```
+    elasticsearch-head/Gruntfile.js
+                    connect: {
+                            server: {
+                                    options: {
+                                            hostname: '0.0.0.0',
+                                            port: 9100,
+                                            base: ‘.‘,
+                                            keepalive: true
+                                    }
+                            }
+                    }
+    ```
 
-增加hostname属性，设置为 `0.0.0.0`
+    增加hostname属性，设置为 `0.0.0.0`
 
-   - 修改app.js
+   * 修改app.js
 
-```
-elasticsearch-head/_site/app.js
-this.base_uri = this.config.base_uri || this.prefs.get("app-base_uri") || "http://192.168.100.241:9200";
-```
+    ```
+    elasticsearch-head/_site/app.js
+    this.base_uri = this.config.base_uri || this.prefs.get("app-base_uri") || "http://192.168.100.241:9200";
+    ```
 
-把localhost修改成ES的服务器地址，如上面 `192.168.100.241`
+    把localhost修改成ES的服务器地址，如上面 `192.168.100.241`
 
-   - 运行head
-进入elasticsearch-head 目录（ `x.x.xx` 为版本号）
+       * 运行head
+    进入elasticsearch-head 目录（ `x.x.xx` 为版本号）
 
-```
-/usr/soft/node-v8.9.0-linux-x64/bin/npm install phantomjs-prebuilt@2.1.16 --ignore-scripts
-npm install
-```
+    ```
+    /usr/soft/node-v8.9.0-linux-x64/bin/npm install phantomjs-prebuilt@2.1.16 --ignore-scripts
+    npm install
+    ```
 
-   - 启动elasticsearch-head
-在 `/usr/soft/elasticsearch-head-master` 目录下执行
+   * 启动elasticsearch-head
+    在 `/usr/soft/elasticsearch-head-master` 目录下执行
 
-```
-grunt server
-```
+    ```
+    grunt server
+    ```
 
-> 发现报错：提示没有grunt命令  
-> 解决方案：
-> 
-> ```
-> npm init   根据提示填入相关信息，
-> npm install grunt
-> ```
+    > 发现报错：提示没有grunt命令  
+    > 解决方案：
+    > 
+    > ```
+    > npm init   根据提示填入相关信息，
+    > npm install grunt
+    > ```
 
-后台启动
+    后台启动
 
-```
-nohup grunt server &
-```
+    ```
+    nohup grunt server &
+    ```
 
-如果想关闭head插件，查找进程命令：
+    如果想关闭head插件，查找进程命令：
 
-```
-ps aux|grep head
-```
+    ```
+    ps aux|grep head
+    ```
 
    * x-pack安全模块(security机制)
-      - 1.修改Elasticsearch配置文件
+      * 1.修改Elasticsearch配置文件
 
-```
-/etc/elasticsearch/elasticsearch.yml
-http.cors.allow-headers: Authorization
-```
+        ```
+        /etc/elasticsearch/elasticsearch.yml
+        http.cors.allow-headers: Authorization
+        ```
 
-      - 2.页面访问
+      * 2.页面访问
 
-```
-http://192.168.100.241:9100/?auth_user=elastic&auth_password=changeme
-```
+        ```
+        http://192.168.100.241:9100/?auth_user=elastic&auth_password=changeme
+        ```
 
-页面访问： `http://192.168.100.241:9100`
+        页面访问： `http://192.168.100.241:9100`
 
 
 ## 安装过程中常见错误及解决方法
