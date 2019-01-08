@@ -269,7 +269,8 @@ git clone git://github.com/mobz/elasticsearch-head.git
 
     把localhost修改成ES的服务器地址，如上面 `192.168.100.241`
 
-       * 运行head
+   * 运行head
+
     进入elasticsearch-head 目录（ `x.x.xx` 为版本号）
     
     ```
