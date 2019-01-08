@@ -41,7 +41,11 @@ docker run -idt --name ngrok-server -v /data/ngrok:/myfiles -p 80:80 -p 443:443 
 这样我们就启动了一个ngrok服务端程序
 
 * 域名解析  
-这里我们需要添加两条A记录到阿里云服务器, 这样我们才能将 `tunnel.hteen.cn` 和 `*.tunnel.hteen.cn` DNS解析到我们的服务器
+这里我们需要添加两条A记录到阿里云服务器, 
+
+![](img/d_01.jpeg)
+
+这样我们才能将 `tunnel.hteen.cn` 和 `*.tunnel.hteen.cn` DNS解析到我们的服务器
 
 * 客户端连接  
 下载我们生成的客户端,我这里以osx为例,其他平台一样
@@ -63,6 +67,7 @@ trust_host_root_certs: false
 
 成功连接效果
 
+![](img/d_02.jpeg)
 
 * Nginx + Docker + Ngrok
 
