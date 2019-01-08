@@ -17,7 +17,6 @@
    * [工具](#工具)
       * [Maven](#Maven)
    * [项目部署](#项目部署)
-      * [搭建ngrok服务]()
 
 * [算法](#算法)
 
@@ -71,17 +70,23 @@
 
 ### 工具
 * #### Maven
-   * [基本概念](https://github.com/yongbowin/blog/blob/master/tools/maven/basic_theory.md)
-   * [设置Maven创建工程的JDK版本](https://github.com/yongbowin/blog/blob/master/tools/maven/manage_jar_v.md)
-   * [执行maven项目](https://github.com/yongbowin/blog/blob/master/tools/maven/exec_mvn.md)
-   * [创建web工程](https://github.com/yongbowin/blog/blob/master/tools/maven/create_web.md)
-   * [点击打开maven的lib目录](https://github.com/yongbowin/blog/blob/master/tools/maven/open_lib.md)
-   * [出现的页面错误问题](https://github.com/yongbowin/blog/blob/master/tools/maven/page_error.md)
-   * [统一管理jar包依赖的版本号](https://github.com/yongbowin/blog/blob/master/tools/maven/set_jdk.md)
-   * [继承](https://github.com/yongbowin/blog/blob/master/tools/maven/inherit.md)
-   * [配置文件中依赖的来源](https://github.com/yongbowin/blog/blob/master/tools/maven/conf_deps.md)
-   * [idea创建maven项目过程](https://github.com/yongbowin/blog/blob/master/tools/maven/create_problem.md)
+   * [1.基本概念](https://github.com/yongbowin/blog/blob/master/tools/maven/basic_theory.md)
+   * [2.设置Maven创建工程的JDK版本](https://github.com/yongbowin/blog/blob/master/tools/maven/manage_jar_v.md)
+   * [3.执行maven项目](https://github.com/yongbowin/blog/blob/master/tools/maven/exec_mvn.md)
+   * [4.创建web工程](https://github.com/yongbowin/blog/blob/master/tools/maven/create_web.md)
+   * [5.点击打开maven的lib目录](https://github.com/yongbowin/blog/blob/master/tools/maven/open_lib.md)
+   * [6.出现的页面错误问题](https://github.com/yongbowin/blog/blob/master/tools/maven/page_error.md)
+   * [7.统一管理jar包依赖的版本号](https://github.com/yongbowin/blog/blob/master/tools/maven/set_jdk.md)
+   * [8.继承](https://github.com/yongbowin/blog/blob/master/tools/maven/inherit.md)
+   * [9.配置文件中依赖的来源](https://github.com/yongbowin/blog/blob/master/tools/maven/conf_deps.md)
+   * [10.idea创建maven项目过程](https://github.com/yongbowin/blog/blob/master/tools/maven/create_problem.md)
 
+### 项目部署
+* [搭建ngrok服务](https://github.com/yongbowin/blog/blob/master/deploy/new_ngrok.md)
+* [linux下配置apache](https://github.com/yongbowin/blog/blob/master/deploy/apa_conf.md)
+* [Tomcat安装配置](https://github.com/yongbowin/blog/blob/master/deploy/tom_conf.md)
+* [ubuntu部署neo4j](https://github.com/yongbowin/blog/blob/master/deploy/neo_conf.md)
+* [使用ngrok开启项目的代理服务](https://github.com/yongbowin/blog/blob/master/deploy/open_agent.md)
 
 ## 算法
 ```
