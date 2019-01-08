@@ -131,7 +131,7 @@ sudo vim /etc/security/limits.conf
 * 2.切换到root用户 `vim /etc/security/limits.conf`  
 
    * 添加如下内容:
-
+    
     ```
     * soft nofile 65536
     * hard nofile 131072
@@ -140,7 +140,7 @@ sudo vim /etc/security/limits.conf
     ```
 
    * 修改 `vim /etc/security/limits.d/90-nproc.conf`, 修改如下内容：  
-
+    
     ```
     * soft nproc 4096
     #修改为
@@ -148,13 +148,13 @@ sudo vim /etc/security/limits.conf
     ```
 
    * 修改 `vim /etc/sysctl.conf`, 添加下面配置：  
-
+    
     ```
     vm.max_map_count=655360
     ```
 
    * 执行命令：  
-
+    
     ```
     sysctl -p
     ```
@@ -204,11 +204,12 @@ git clone git://github.com/mobz/elasticsearch-head.git
 
 > 安装nodejs过程参考[博客](http://www.cnblogs.com/shhnwangjian/p/6559732.html)
 
-   * 下载编译好的文件  
-下载最新版本 `node-v8.9.0-linux-x64.tar.xz`，其余安装步骤参见（安装配置EventCoreference模块)
+   * 下载编译好的文件
+    
+    下载最新版本 `node-v8.9.0-linux-x64.tar.xz`，其余安装步骤参见（安装配置EventCoreference模块)
 
    * 淘宝镜像cnpm安装  `https://npm.taobao.org/`  
-
+    
     ```
     npm install -g cnpm --registry=https://registry.npm.taobao.org
     ln -s /usr/soft/node-v8.9.0-linux-x64/bin/cnpm /usr/local/bin/cnpm
@@ -216,8 +217,9 @@ git clone git://github.com/mobz/elasticsearch-head.git
     ```
 
    * 安装grunt  
+    
     执行下边的命令，全局安装bower和grunt-cli：
-
+    
     ```
     yum install npm
     npm install -g yo bower grunt-cli gulp
@@ -228,8 +230,9 @@ git clone git://github.com/mobz/elasticsearch-head.git
     安装完成后，添加索引后，如果直接执行grunt，会发现报错，应该在有Gruntfile.js文件的目录下执行
 
    * 修改Elasticsearch配置文件
+    
     配置文件位置 `/usr/share/elasticsearch/config/elasticsearch.yml` ，`/etc/elasticsearch/` 下边的没用，事先需要将etc下边的配置文件复制到usr下边对应的目录下
-
+    
     ```
     http.cors.enabled: true
     http.cors.allow-origin: "*"
@@ -240,7 +243,7 @@ git clone git://github.com/mobz/elasticsearch-head.git
     > 其位置在之前下载的elasticsearch-head文件夹下边
 
     在这里下载[地址](https://github.com/mobz/elasticsearch-head)
-
+    
     ```
     elasticsearch-head/Gruntfile.js
                     connect: {
@@ -258,7 +261,7 @@ git clone git://github.com/mobz/elasticsearch-head.git
     增加hostname属性，设置为 `0.0.0.0`
 
    * 修改app.js
-
+    
     ```
     elasticsearch-head/_site/app.js
     this.base_uri = this.config.base_uri || this.prefs.get("app-base_uri") || "http://192.168.100.241:9200";
@@ -268,15 +271,16 @@ git clone git://github.com/mobz/elasticsearch-head.git
 
        * 运行head
     进入elasticsearch-head 目录（ `x.x.xx` 为版本号）
-
+    
     ```
     /usr/soft/node-v8.9.0-linux-x64/bin/npm install phantomjs-prebuilt@2.1.16 --ignore-scripts
     npm install
     ```
 
    * 启动elasticsearch-head
+    
     在 `/usr/soft/elasticsearch-head-master` 目录下执行
-
+    
     ```
     grunt server
     ```
@@ -290,27 +294,28 @@ git clone git://github.com/mobz/elasticsearch-head.git
     > ```
 
     后台启动
-
+    
     ```
     nohup grunt server &
     ```
 
     如果想关闭head插件，查找进程命令：
-
+    
     ```
     ps aux|grep head
     ```
 
    * x-pack安全模块(security机制)
+      
       * 1.修改Elasticsearch配置文件
-
+        
         ```
         /etc/elasticsearch/elasticsearch.yml
         http.cors.allow-headers: Authorization
         ```
 
       * 2.页面访问
-
+        
         ```
         http://192.168.100.241:9100/?auth_user=elastic&auth_password=changeme
         ```
