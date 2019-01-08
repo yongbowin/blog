@@ -17,6 +17,7 @@
    * [工具](#工具)
       * [Maven](#Maven)
    * [项目部署](#项目部署)
+   * [其它](#其它)
 
 * [算法](#算法)
 
@@ -87,6 +88,9 @@
 * [Tomcat安装配置](https://github.com/yongbowin/blog/blob/master/deploy/tom_conf.md)
 * [ubuntu部署neo4j](https://github.com/yongbowin/blog/blob/master/deploy/neo_conf.md)
 * [使用ngrok开启项目的代理服务](https://github.com/yongbowin/blog/blob/master/deploy/open_agent.md)
+
+### 其它
+* [添加原有分区的容量，或者添加新分区](https://github.com/yongbowin/blog/blob/master/others/dyna_add_disk.md)
 
 ## 算法
 ```

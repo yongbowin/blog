@@ -1,6 +1,6 @@
 ## Tomcat安装配置
 
-#### 下载
+#### 一、下载
 
 下载压缩包解压，进入 `/usr/soft/apache-tomcat-7.0.78/bin` 目录，编辑startup.sh文件，在该文件中添加jdk和jre环境变量（事先打印下 `echo $JAVA_HOME` 和 `java -version` ，再考虑要不要配置下边的java环境变量）
 
@@ -21,7 +21,7 @@ sudo /usr/soft/apache-tomcat-7.0.78/bin/shutdown.sh      关闭Tomcat
 
 在浏览器输入 `localhost:8080` 查看tomcat的启动情况
 
-#### 部署
+#### 二、部署
 
 部署RDF-Demo到Tomcat
 参考[blog](http://blog.csdn.net/dy898850285/article/details/60134798), 同一个Tomcat不同端口部署不同项目
@@ -44,7 +44,7 @@ sudo /usr/soft/apache-tomcat-7.0.78/bin/shutdown.sh      关闭Tomcat
 
 配置完成，现在可以把项目分别部署到配置好的两个文件夹webapps1和webapps2中；
 
-* 启动tomcat，分别用不同的端口号测试；
+* 第四步：启动tomcat，分别用不同的端口号测试；
 
 ```
 127.0.0.1:9999/项目名
