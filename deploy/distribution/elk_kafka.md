@@ -128,7 +128,8 @@ sudo vim /etc/security/limits.conf
 > ulimit -l unlimited
 > ```
 
-* 2.切换到root用户 `vim /etc/security/limits.conf`
+* 2.切换到root用户 `vim /etc/security/limits.conf`  
+
    * 添加如下内容:
 
 代码
