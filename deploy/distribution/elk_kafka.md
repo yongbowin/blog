@@ -132,7 +132,7 @@ sudo vim /etc/security/limits.conf
     
     * 添加如下内容:
 
-```
+  ```
 * soft nofile 65536
 * hard nofile 131072
 * soft nproc 2048
