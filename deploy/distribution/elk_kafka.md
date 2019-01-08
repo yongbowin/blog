@@ -107,7 +107,7 @@ done
 
 ##### 修改系统配置文件：
 
-1. 切换到root用户，编辑limits.conf配置文件， 添加类似如下内容： 
+* 1.切换到root用户，编辑limits.conf配置文件， 添加类似如下内容： 
 
 ```
 sudo vim /etc/security/limits.conf
@@ -128,29 +128,41 @@ sudo vim /etc/security/limits.conf
 > ulimit -l unlimited
 > ```
 
-2. 切换到root用户 `vim /etc/security/limits.conf`
-   1. 添加如下内容:
+* 2.切换到root用户 `vim /etc/security/limits.conf`
+   * 添加如下内容:
+
+代码
 ```
 * soft nofile 65536
 * hard nofile 131072
 * soft nproc 2048
 * hard nproc 4096
 ```
-   2. 修改 `vim /etc/security/limits.d/90-nproc.conf`, 修改如下内容：
+
+   * 修改 `vim /etc/security/limits.d/90-nproc.conf`, 修改如下内容：
+
+代码
 ```
 * soft nproc 4096
 #修改为
 * soft nproc 8192
 ```
-   3. 修改 `vim /etc/sysctl.conf`, 添加下面配置：
+
+   * 修改 `vim /etc/sysctl.conf`, 添加下面配置：
+
+代码
 ```
 vm.max_map_count=655360
 ```
-   4. 执行命令：
+
+   * 执行命令：
+
+代码
 ```
 sysctl -p
 ```
-   5. 然后，重新启动elasticsearch，即可启动成功。
+
+   * 然后，重新启动elasticsearch，即可启动成功。
 
 #### 6.启动Elasticsearch
 
