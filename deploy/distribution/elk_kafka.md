@@ -202,7 +202,7 @@ git clone git://github.com/mobz/elasticsearch-head.git
 
 * 2.安装nodejs
 
-> 安装nodejs过程参考[博客](http://www.cnblogs.com/shhnwangjian/p/6559732.html)
+    > 安装nodejs过程参考[博客](http://www.cnblogs.com/shhnwangjian/p/6559732.html)
 
    * 下载编译好的文件
     
