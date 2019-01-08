@@ -128,24 +128,24 @@ sudo vim /etc/security/limits.conf
 > ulimit -l unlimited
 > ```
 
-* 2.切换到root用户 `vim /etc/security/limits.conf` 。
+* 2.切换到root用户 `vim /etc/security/limits.conf`
 
    * 添加如下内容:
 
-```
-* soft nofile 65536
-* hard nofile 131072
-* soft nproc 2048
-* hard nproc 4096
-```
+    ```
+    * soft nofile 65536
+    * hard nofile 131072
+    * soft nproc 2048
+    * hard nproc 4096
+    ```
 
    * 修改 `vim /etc/security/limits.d/90-nproc.conf`, 修改如下内容：
 
-```
-* soft nproc 4096
-#修改为
-* soft nproc 8192
-```
+    ```
+    * soft nproc 4096
+    #修改为
+    * soft nproc 8192
+    ```
 
    * 修改 `vim /etc/sysctl.conf`, 添加下面配置：
 
