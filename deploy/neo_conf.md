@@ -31,17 +31,21 @@ conda install pandas
 
 ```
 # coding: utf-8
+
 import requests
 import pandas as pd
 import json
 from neo4j.v1 import GraphDatabase, basic_auth
+
 driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "123456"))
 session = driver.session()
 insert = "MERGE(a:展示行业{0})-[rel:{1}]->(b:展示行业{2})"
 data = pd.read_csv("222.csv").values
+
 for line in data:
   sub, rel, obj = line
   session.run(insert.format("{name:'"+sub+"'}",rel+"{rel:'"+rel+"'}","{name:'"+obj+"'}"))
+
 ```
 
 * 在浏览器中查看装填的内容：

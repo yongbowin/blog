@@ -13,7 +13,7 @@ TOMCAT_HOME=/usr/soft/apache-tomcat-8.0.12
 然后，执行
 
 ```
-sudo /usr/soft/apache-tomcat-7.0.78/bin/startup.sh          开启Tomcat
+sudo /usr/soft/apache-tomcat-7.0.78/bin/startup.sh       开启Tomcat
 sudo /usr/soft/apache-tomcat-7.0.78/bin/shutdown.sh      关闭Tomcat
 ```
 
@@ -26,21 +26,25 @@ sudo /usr/soft/apache-tomcat-7.0.78/bin/shutdown.sh      关闭Tomcat
 
 配置service 节点，个人认为有几个项目，就相应的配置几个service 节点；
 
-配置了两个端口号：分别为9999和8878
+> 配置了两个端口号：分别为9999和8878
 
 ![](img/d_03.jpeg)
 
+
    * 第二步：先依照此配置文件配置，完成后在tomcat根目录下复制文件夹webapps，粘贴重命名为webapps1，webapps2，如下图：此文件夹就是分别用来部署项目的。
+
 
 ![](img/d_04.jpeg)
 
+
    * 第三步：在tomcat根目录下的conf文件中，复制conf文件夹下的Catalina文件夹，粘贴并重命名为Catalina1，Catalina2，如图：
+
 
 ![](img/d_05.jpeg)
 
 配置完成，现在可以把项目分别部署到配置好的两个文件夹webapps1和webapps2中；
 
-启动tomcat，分别用不同的端口号测试；
+   * 启动tomcat，分别用不同的端口号测试；
 
 ```
 127.0.0.1:9999/项目名

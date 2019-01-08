@@ -22,5 +22,5 @@ trust_host_root_certs: false
 
 > 我自己电脑上需要开启的服务是：zh、neo4j
 
-中文project1的地址是： `http://zh.tunnel.project1.cn`
+中文project1的地址是： `http://zh.tunnel.project1.cn`  
 RDF-Demo的地址是： `http://nlp-demo.tunnel.project1.cn`
