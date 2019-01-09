@@ -18,6 +18,7 @@
       * [Maven](#Maven)
    * [部署](#部署)
       * [项目部署](#项目部署)
+      * [工具部署](#工具部署)
       * [分布式](#分布式)
    * [其它](#其它)
 
@@ -91,6 +92,8 @@
    * [Tomcat安装配置](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/tom_conf.md)
    * [ubuntu部署neo4j](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/neo_conf.md)
    * [使用ngrok开启项目的代理服务](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/open_agent.md)
+* #### 工具部署
+   * [nginx和elastic HQ安装](https://github.com/yongbowin/blog/blob/master/deploy/tools_deploy/nginx_hq.md)
 * #### 分布式
    * [搭建ELK+Kafka日志分析系统](https://github.com/yongbowin/blog/blob/master/deploy/distribution/elk_kafka.md)
 

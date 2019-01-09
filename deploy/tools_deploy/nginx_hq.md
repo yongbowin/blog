@@ -3,8 +3,7 @@
 * 1.安装nginx
 参见[官网](http://nginx.org/en/linux_packages.html)
 
-建立文件： `/etc/yum.repos.d/nginx.repo`  
-内容如下：
+建立文件 `/etc/yum.repos.d/nginx.repo` ，内容如下：
 
 ```
 [nginx]
