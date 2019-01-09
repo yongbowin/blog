@@ -16,7 +16,7 @@
       * [MongoDB](#MongoDB)
    * [工具](#工具)
       * [Maven](#Maven)
-      * [IntelliJ&nbsp;IDEA](#IntelliJ IDEA)
+      * [IntelliJ%20IDEA](#IntelliJ%20IDEA)
    * [部署](#部署)
       * [项目部署](#项目部署)
       * [工具部署](#工具部署)
