@@ -1,24 +1,8 @@
 ## 搭建ELK+Kafka日志分析系统
 
-<!-- MarkdownTOC -->
+目录
 
-- 1.安装jdk
-- 2.安装elasticsearch
-- 3.配置 配置文件
-- 4.创建文件
-- 5.进行集群部署
-    - 修改系统配置文件
-- 6.启动Elasticsearch
-- 7.Elasticsearch健康插件安装（Head插件）
-- 安装过程中常见错误及解决方法
-- 错误1
-- 错误2
-- 错误3
-- 错误4
-- 错误5
-- 错误6
-
-<!-- /MarkdownTOC -->
+[TOC]
 
 > 环境为Centos 7
 
