@@ -1,5 +1,25 @@
 ## 搭建ELK+Kafka日志分析系统
 
+<!-- MarkdownTOC -->
+
+- 1.安装jdk
+- 2.安装elasticsearch
+- 3.配置 配置文件
+- 4.创建文件
+- 5.进行集群部署
+    - 修改系统配置文件
+- 6.启动Elasticsearch
+- 7.Elasticsearch健康插件安装（Head插件）
+- 安装过程中常见错误及解决方法
+- 错误1
+- 错误2
+- 错误3
+- 错误4
+- 错误5
+- 错误6
+
+<!-- /MarkdownTOC -->
+
 > 环境为Centos 7
 
 #### 1.安装jdk
@@ -72,7 +92,7 @@ chown -R es /data/esdata1
 chgrp -R es /data/esdata1
 ```
 
-#### 5.进行集群部署：
+#### 5.进行集群部署
 * 集群名称不修改，节点名称修改、将 `elasticsearch.yml` 复制到其他节点，并替换其配置文件。并关闭自动发现，防止其他外来节点连入。
 * 然后将主节点的 `/usr/share/elasticsearch` 目录下的整个config文件夹分发到各个子节点：
 * 然后修改config文件夹中的配置：将子节点的 `elasticsearch.yml` 文件中去掉最后两行，主节点的该文件中保留最后两行（设置了两个主节点）
@@ -105,33 +125,33 @@ echo
 done
 ```
 
-##### 修改系统配置文件：
+##### 修改系统配置文件
 
-* 1.切换到root用户，编辑limits.conf配置文件， 添加类似如下内容： 
+* 1.切换到root用户，编辑limits.conf配置文件， 添加类似如下内容：
 
 ```
 sudo vim /etc/security/limits.conf
 ```
 
-添加如下内容: 
+添加如下内容:
 
 ```
-* soft memlock unlimited 
-* hard memlock unlimited 
+* soft memlock unlimited
+* hard memlock unlimited
 ```
 
-> 备注：* 代表Linux所有用户名称  
-> 保存、退出、重新登录才可生效  
-> 临时取消限制  
-> 
+> 备注：* 代表Linux所有用户名称
+> 保存、退出、重新登录才可生效
+> 临时取消限制
+>
 > ```
 > ulimit -l unlimited
 > ```
 
-* 2.切换到root用户 `vim /etc/security/limits.conf`  
+* 2.切换到root用户 `vim /etc/security/limits.conf`
 
    * 添加如下内容:
-    
+
     ```
     * soft nofile 65536
     * hard nofile 131072
@@ -139,22 +159,22 @@ sudo vim /etc/security/limits.conf
     * hard nproc 4096
     ```
 
-   * 修改 `vim /etc/security/limits.d/90-nproc.conf`, 修改如下内容：  
-    
+   * 修改 `vim /etc/security/limits.d/90-nproc.conf`, 修改如下内容：
+
     ```
     * soft nproc 4096
     #修改为
     * soft nproc 8192
     ```
 
-   * 修改 `vim /etc/sysctl.conf`, 添加下面配置：  
-    
+   * 修改 `vim /etc/sysctl.conf`, 添加下面配置：
+
     ```
     vm.max_map_count=655360
     ```
 
-   * 执行命令：  
-    
+   * 执行命令：
+
     ```
     sysctl -p
     ```
@@ -205,21 +225,21 @@ git clone git://github.com/mobz/elasticsearch-head.git
     > 安装nodejs过程参考[博客](http://www.cnblogs.com/shhnwangjian/p/6559732.html)
 
    * 下载编译好的文件
-    
+
     下载最新版本 `node-v8.9.0-linux-x64.tar.xz`，其余安装步骤参见（安装配置EventCoreference模块)
 
-   * 淘宝镜像cnpm安装  `https://npm.taobao.org/`  
-    
+   * 淘宝镜像cnpm安装  `https://npm.taobao.org/`
+
     ```
     npm install -g cnpm --registry=https://registry.npm.taobao.org
     ln -s /usr/soft/node-v8.9.0-linux-x64/bin/cnpm /usr/local/bin/cnpm
     cnpm -v
     ```
 
-   * 安装grunt  
-    
+   * 安装grunt
+
     执行下边的命令，全局安装bower和grunt-cli：
-    
+
     ```
     yum install npm
     npm install -g yo bower grunt-cli gulp
@@ -230,9 +250,9 @@ git clone git://github.com/mobz/elasticsearch-head.git
     安装完成后，添加索引后，如果直接执行grunt，会发现报错，应该在有Gruntfile.js文件的目录下执行
 
    * 修改Elasticsearch配置文件
-    
+
     配置文件位置 `/usr/share/elasticsearch/config/elasticsearch.yml` ，`/etc/elasticsearch/` 下边的没用，事先需要将etc下边的配置文件复制到usr下边对应的目录下
-    
+
     ```
     http.cors.enabled: true
     http.cors.allow-origin: "*"
@@ -243,7 +263,7 @@ git clone git://github.com/mobz/elasticsearch-head.git
     > 其位置在之前下载的elasticsearch-head文件夹下边
 
     在这里下载[地址](https://github.com/mobz/elasticsearch-head)
-    
+
     ```
     elasticsearch-head/Gruntfile.js
                     connect: {
@@ -261,7 +281,7 @@ git clone git://github.com/mobz/elasticsearch-head.git
     增加hostname属性，设置为 `0.0.0.0`
 
    * 修改app.js
-    
+
     ```
     elasticsearch-head/_site/app.js
     this.base_uri = this.config.base_uri || this.prefs.get("app-base_uri") || "http://192.168.100.241:9200";
@@ -272,51 +292,51 @@ git clone git://github.com/mobz/elasticsearch-head.git
    * 运行head
 
     进入elasticsearch-head 目录（ `x.x.xx` 为版本号）
-    
+
     ```
     /usr/soft/node-v8.9.0-linux-x64/bin/npm install phantomjs-prebuilt@2.1.16 --ignore-scripts
     npm install
     ```
 
    * 启动elasticsearch-head
-    
+
     在 `/usr/soft/elasticsearch-head-master` 目录下执行
-    
+
     ```
     grunt server
     ```
 
-    > 发现报错：提示没有grunt命令  
+    > 发现报错：提示没有grunt命令
     > 解决方案：
-    > 
+    >
     > ```
     > npm init   根据提示填入相关信息，
     > npm install grunt
     > ```
 
     后台启动
-    
+
     ```
     nohup grunt server &
     ```
 
     如果想关闭head插件，查找进程命令：
-    
+
     ```
     ps aux|grep head
     ```
 
    * x-pack安全模块(security机制)
-      
+
       * 1.修改Elasticsearch配置文件
-        
+
         ```
         /etc/elasticsearch/elasticsearch.yml
         http.cors.allow-headers: Authorization
         ```
 
       * 2.页面访问
-        
+
         ```
         http://192.168.100.241:9100/?auth_user=elastic&auth_password=changeme
         ```
@@ -326,7 +346,7 @@ git clone git://github.com/mobz/elasticsearch-head.git
 
 ## 安装过程中常见错误及解决方法
 
-#### 错误1：
+#### 错误1
 
 ```
 Exception in thread "main" java.lang.RuntimeException: don't run elasticsearch as root.
@@ -346,7 +366,7 @@ chown -R es /usr/share/elasticsearch
 chgrp -R es /usr/share/elasticsearch
 ```
 
-#### 错误2：
+#### 错误2
 
 在执行 `npm install` 时出现一下错误
 
@@ -363,7 +383,7 @@ npm install phantomjs-prebuilt@2.1.14 --ignore-scripts
 npm install
 ```
 
-#### 错误3：
+#### 错误3
 
 ```
 Caused by: java.lang.IllegalArgumentException: Property [elasticsearch.version] is missing for plugin [head]
@@ -395,7 +415,7 @@ grunt server
 http://localhost:9100/
 ```
 
-#### 错误4：
+#### 错误4
 
 ```
 ERROR: bootstrap checks failed
@@ -440,7 +460,7 @@ sysctl -p
 
 然后，重新启动elasticsearch，即可启动成功。
 
-#### 错误5：
+#### 错误5
 
 ```
 ERROR: bootstrap checks failed
@@ -449,20 +469,20 @@ memory locking requested for elasticsearch process but memory is not locked
 
 > 原因：锁定内存失败
 
-解决方案：切换到root用户，编辑 `limits.conf` 配置文件，添加类似如下内容： 
+解决方案：切换到root用户，编辑 `limits.conf` 配置文件，添加类似如下内容：
 
 ```
 sudo vim /etc/security/limits.conf
 ```
 
-添加如下内容: 
+添加如下内容:
 
 ```
-* soft memlock unlimited 
-* hard memlock unlimited 
+* soft memlock unlimited
+* hard memlock unlimited
 ```
 
-> 备注：* 代表Linux所有用户名称  
+> 备注：* 代表Linux所有用户名称
 > 保存、退出、重新登录才可生效
 
 临时取消限制
@@ -471,7 +491,7 @@ sudo vim /etc/security/limits.conf
 ulimit -l unlimited
 ```
 
-#### 错误6：
+#### 错误6
 
 ```
 ERROR: bootstrap checks failed
@@ -493,11 +513,11 @@ sudo vim /etc/security/limits.conf
 * hard nofile 131072
 ```
 
-> 备注：* 代表Linux所有用户名称  
+> 备注：* 代表Linux所有用户名称
 > 保存、退出、重新登录才可生效
 
 > 其他操作：
-> 
+>
 > ```
 > 卸载rpm安装的包   rpm -e <包的名字> 删除特定rpm包
 > 查询rpm已经安装的包   rpm -q <关键字> 可以查询到rpm包的名字
@@ -508,14 +528,14 @@ sudo vim /etc/security/limits.conf
 
 > * 1.使用rpm安装logstash和kibana（前后顺序，有依赖） ==> 只需要在一台上边安装即可
 > 先下载安装包，然后使用命令：
-> 
+>
 > ```
 > rpm -ivh XXXXXX.rpm
 > ```
-> 
-> * 2.启动kibana ==> 只需要在一台上边安装即可  
-> rpm安装后的程序在 `/usr/share/kibana` 目录下，配置文件在 `/etc/kibana` 目录下  
-> 修改配置文件 `/etc/kibana/kibana.yml`  
+>
+> * 2.启动kibana ==> 只需要在一台上边安装即可
+> rpm安装后的程序在 `/usr/share/kibana` 目录下，配置文件在 `/etc/kibana` 目录下
+> 修改配置文件 `/etc/kibana/kibana.yml`
 > 修改其中的：（将localhost修改为ip）
 >
 > ```
