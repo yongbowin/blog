@@ -38,6 +38,8 @@ nginx
 * 3.将HQ部署在nginx
 将项目文件夹cp到 `/usr/share/nginx` 目录下，修改 `/etc/nginx/conf.d/default.conf` 文件,将
 
+![](img/td_01.png)
+
 关闭nginx
 
 ```

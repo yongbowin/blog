@@ -16,6 +16,7 @@
       * [MongoDB](#MongoDB)
    * [工具](#工具)
       * [Maven](#Maven)
+      * [IntelliJ IDEA](#IntelliJ IDEA)
    * [部署](#部署)
       * [项目部署](#项目部署)
       * [工具部署](#工具部署)
@@ -84,6 +85,8 @@
    * [8.继承](https://github.com/yongbowin/blog/blob/master/tools/maven/inherit.md)
    * [9.配置文件中依赖的来源](https://github.com/yongbowin/blog/blob/master/tools/maven/conf_deps.md)
    * [10.idea创建maven项目过程](https://github.com/yongbowin/blog/blob/master/tools/maven/create_problem.md)
+* #### IntelliJ IDEA
+   * [Java读取大文件时，JVM报错](https://github.com/yongbowin/blog/blob/master/tools/idea/jvm_error.md)
 
 ### 部署
 * #### 项目部署
@@ -96,6 +99,7 @@
    * [nginx和elastic HQ安装](https://github.com/yongbowin/blog/blob/master/deploy/tools_deploy/nginx_hq.md)
 * #### 分布式
    * [搭建ELK+Kafka日志分析系统](https://github.com/yongbowin/blog/blob/master/deploy/distribution/elk_kafka.md)
+   * [Elasticsearch全文搜索引擎](https://github.com/yongbowin/blog/blob/master/deploy/distribution/es.md)
 
 ### 其它
 * [添加原有分区的容量，或者添加新分区](https://github.com/yongbowin/blog/blob/master/others/dyna_add_disk.md)
