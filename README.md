@@ -85,7 +85,7 @@
    * [8.继承](https://github.com/yongbowin/blog/blob/master/tools/maven/inherit.md)
    * [9.配置文件中依赖的来源](https://github.com/yongbowin/blog/blob/master/tools/maven/conf_deps.md)
    * [10.idea创建maven项目过程](https://github.com/yongbowin/blog/blob/master/tools/maven/create_problem.md)
-* #### IntelliJ&nbsp;IDEA
+* #### IntelliJ IDEA
    * [Java读取大文件时，JVM报错](https://github.com/yongbowin/blog/blob/master/tools/idea/jvm_error.md)
 
 ### 部署
