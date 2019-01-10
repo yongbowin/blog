@@ -51,7 +51,7 @@ python manage.py runserver 0.0.0.0:8090
 
 * 6.修改weixinAPI中的utils和views文件
 
-> 注意：还有views中几个参数的修改，和微信配置网页上的
+	> 注意：还有views中几个参数的修改，和微信配置网页上的
 
    * ①连接地址
    * ②网页授权回调地址
