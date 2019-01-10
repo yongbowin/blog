@@ -1,6 +1,7 @@
 ## Apache部署Django项目
 
-#### 部署过程
+### 部署过程
+
 
 * 1.安装wampserver和mysql
 在安装完wampserver之后，不用另外安装mysql数据库，因为其中自带mysql数据库，使用navicat连接wampserver的mysql数据库的时候，将连接的地址设置为 `127.0.0.1` ，不要使用localhost，否则会失败！
@@ -135,7 +136,8 @@
 
 
 
-#### 服务器同步文件
+### 服务器同步文件
+
 
 在服务器部署项目步骤如下
 
