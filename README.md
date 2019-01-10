@@ -100,6 +100,7 @@
 * #### 分布式
    * [搭建ELK+Kafka日志分析系统](https://github.com/yongbowin/blog/blob/master/deploy/distribution/elk_kafka.md)
    * [Elasticsearch全文搜索引擎](https://github.com/yongbowin/blog/blob/master/deploy/distribution/es.md)
+   * [青云部署nwr分布式虚拟机测试](https://github.com/yongbowin/blog/blob/master/deploy/distribution/qing_nwr.md)
 
 ### 其它
 * [添加原有分区的容量，或者添加新分区](https://github.com/yongbowin/blog/blob/master/others/dyna_add_disk.md)
