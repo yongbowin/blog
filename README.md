@@ -95,6 +95,7 @@
    * [Tomcat安装配置](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/tom_conf.md)
    * [ubuntu部署neo4j](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/neo_conf.md)
    * [使用ngrok开启项目的代理服务](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/open_agent.md)
+   * [Apache部署Django项目](https://github.com/yongbowin/blog/blob/master/deploy/project_deploy/django.md)
 * #### 工具部署
    * [nginx和elastic HQ安装](https://github.com/yongbowin/blog/blob/master/deploy/tools_deploy/nginx_hq.md)
 * #### 分布式
