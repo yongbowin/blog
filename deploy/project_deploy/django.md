@@ -111,7 +111,7 @@
 
    * 2.新上传的本地aitechWeixin项目需要修改：（才能作为生产环境）
     
-	> 首先备份正在运行的项目和数据库各一份，记录部署过程中产生的Bug
+		> 首先备份正在运行的项目和数据库各一份，记录部署过程中产生的Bug
 
       * ①检查所有文件的print中不能含有中文
       * ②修改 `weixinAPI.py` 文件中，菜单createMenu函数中的链接为域名
@@ -123,7 +123,7 @@
         ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
         ```
 
-	> 注意：在DEBUG为True时，必须指定可运行的主机 `ALLOWED_HOSTS`
+		> 注意：在DEBUG为True时，必须指定可运行的主机 `ALLOWED_HOSTS`
 
       * ⑥根据需要运行 `www.demo.com/GetStockList` 获取最新股票列表和首字母于数据库中
       * ⑦运行 `www.demo.com/createMenu` 更新公众号菜单
