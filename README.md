@@ -24,6 +24,8 @@
    * [其它](#其它)
 
 * [算法](#算法)
+   * [Information Retrieval](#Information_Retrieval)
+      * [BM25](#BM25)
 
 ## 工程
 ### J2EE开发
@@ -110,4 +112,6 @@
 ```
 正在迁移中......
 ```
+### Information_Retrieval
+* #### [BM25](https://github.com/yongbowin/blog/blob/master/algorithm/information_retrieval/BM25.md)
 
