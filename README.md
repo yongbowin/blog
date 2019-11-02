@@ -115,3 +115,6 @@
 ### Information_Retrieval
 * #### [BM25](https://github.com/yongbowin/blog/blob/master/algorithm/information_retrieval/BM25.md)
 
+## Notes
+[Python读写文件操作](https://github.com/yongbowin/blog/blob/master/notes/python_op/python.md)
+
