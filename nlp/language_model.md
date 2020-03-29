@@ -447,7 +447,7 @@
  可参考基于上下文的词嵌入模型\[Huang et al., 2012, Neelakantan et al., 2014]。
 
 
-**GloVe：**
+## GloVe模型
 
 
 

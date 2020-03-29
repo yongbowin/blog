@@ -1079,6 +1079,9 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
 ## BERT-style模型
 
 
+## ELMO模型
+
+
 ## MRC与QA
 
 
