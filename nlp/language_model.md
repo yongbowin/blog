@@ -448,7 +448,45 @@
 
 
 ## GloVe模型
+参考博客：[理解GloVe模型](https://blog.csdn.net/coderTC/article/details/73864097)
 
+**概述：**
+ - 模型目标：进行词的向量化表示，使得向量之间尽可能多地蕴含语义和语法的信息。
+ - 输入：语料库
+ - 输出：词向量
+ - 方法概述：首先基于语料库构建**词的共现矩阵**，然后基于共现矩阵和GloVe模型学习词向量。
+
+**统计词共现矩阵:**
+ - 设共现矩阵为X，其元素为`X_{i,j}`。 
+ - `X_{i,j}`的意义为：在整个语料库中，单词i和单词j共同出现在一个窗口中的次数。 
+ - 例子：
+    ```
+    语料库：
+    i love you but you love him i am sad
+    
+    这个小小的语料库只有1个句子，涉及到7个单词：i、love、you、but、him、am、sad。 
+    如果我们采用一个窗口宽度为5（左右长度都为2）的统计窗口，那么就有以下窗口内容：
+    ```
+    窗口标号 | 中心词 | 窗口内容
+    -|-|-
+    0 | i | i love you |
+    1 | love | i love you but |
+    2 | you | i love you but you |
+    3 | but | love you but you love |
+    4 | you | you but you love him |
+    5 | love | but you love him i |
+    6 | him | you love him i am |
+    7 | i | love him i am sad |
+    8 | am | him i am sad |
+    9 | sad | i am sad |
+    
+
+
+****
+
+
+
+****
 
 
 ## word2vec数学原理
