@@ -1,10 +1,5 @@
 # 信息检索
 
-**参考文献：**
- - 《An Introduction to Neural Information Retrieval》 [pdf](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/fntir2018-neuralir-mitra.pdf)
- - 《Introduction to Information Retrieval》 [pdf](https://nlp.stanford.edu/IR-book/)
-
-
 ## 文本检索基础
 
 输入一个query，返回排序好的结果列表
@@ -47,9 +42,6 @@
 
 
 ## 主题建模
-
-参考博客：[一文读懂如何用LSA、PSLA、LDA和lda2vec进行主题建模](https://www.zhihu.com/search?type=content&q=LSA)
-
 **一般概念：**
  - 在文档层面，理解文本最有效的方式之一就是分析其主题
  - 在文档集合中学习、识别和提取这些主题的过程被称为主题建模
@@ -171,12 +163,6 @@ svd_matrix = svd_transformer.fit_transform(documents)
 
 
 #### 潜在狄利克雷分布（LDA）
-
-参考博客：
- - [LDA主题模型笔记](https://www.cnblogs.com/yang901112/p/11644930.html)
- - [主题模型-LDA浅析](https://blog.csdn.net/huagong_adu/article/details/7937616)
- - [LDA主题模型详解](https://blog.csdn.net/daycym/article/details/88876460)
-
 **一般概念：**
  - LDA即潜在狄利克雷分布，是pLSA的贝叶斯版本
  - 它使用狄利克雷先验来处理文档-主题和单词-主题分布，从而有助于更好地泛化。
@@ -282,3 +268,12 @@ svd_matrix = svd_transformer.fit_transform(documents)
  - 结构图：
  
     ![lda_arch](img/lda_arch.png)
+
+
+## 参考文献
+ - [An Introduction to Neural Information Retrieval](https://www.microsoft.com/en-us/research/uploads/prod/2017/06/fntir2018-neuralir-mitra.pdf)
+ - [Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/)
+ - [一文读懂如何用LSA、PSLA、LDA和lda2vec进行主题建模](https://www.zhihu.com/search?type=content&q=LSA)
+ - [LDA主题模型笔记](https://www.cnblogs.com/yang901112/p/11644930.html)
+ - [主题模型-LDA浅析](https://blog.csdn.net/huagong_adu/article/details/7937616)
+ - [LDA主题模型详解](https://blog.csdn.net/daycym/article/details/88876460)
