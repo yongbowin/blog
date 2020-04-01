@@ -171,6 +171,7 @@ svd_matrix = svd_transformer.fit_transform(documents)
 参考博客：
  - [LDA主题模型笔记](https://www.cnblogs.com/yang901112/p/11644930.html)
  - [主题模型-LDA浅析](https://blog.csdn.net/huagong_adu/article/details/7937616)
+ - [LDA主题模型详解](https://blog.csdn.net/daycym/article/details/88876460)
 
 **一般概念：**
  - LDA即潜在狄利克雷分布，是pLSA的贝叶斯版本
@@ -270,6 +271,8 @@ svd_matrix = svd_transformer.fit_transform(documents)
             ```
  - ----------------------------- 分割线 -----------------------------
  - 在LDA主题模型中，一篇文档生成的方式如下：
+ 
     ![lda_doc](img/lda_doc.png)
  - 结构图：
+ 
     ![lda_arch](img/lda_arch.png)
