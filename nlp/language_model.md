@@ -705,6 +705,15 @@
 ## 序列生成算法
 
 
+## BERT-style模型
+
+
+## ELMO模型
+
+
+## word2vec与BERT的区别
+
+
 ## 一些问题
 **线性插值法和Attention机制：**
 
