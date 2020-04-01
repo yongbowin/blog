@@ -154,6 +154,7 @@ svd_matrix = svd_transformer.fit_transform(documents)
             - 可以发现pLSA模型和LSA模型之间存在一个直接的平行对应关系
             
             ![plsa_lsa](img/plsa_lsa.png)
+            
             主题`P(Z)`的概率对应于奇异主题概率的对角矩阵，给定主题`P(D|Z)`的文档概率对应于文档-主题矩阵U，给定主题`P(W|Z)`的单词概率对应于术语-主题矩阵V
  - 尽管pLSA看起来与LSA差异很大、且处理问题的方法完全不同，但实际上pLSA只是在LSA的基础上**添加了对主题和词汇的概率处理**罢了。
  - pLSA是一个更加灵活的模型，但仍然存在一些问题，尤其表现为：
@@ -268,6 +269,76 @@ svd_matrix = svd_transformer.fit_transform(documents)
  - 结构图：
  
     ![lda_arch](img/lda_arch.png)
+ - LDA比pLSA对比：
+    - 通常而言，LDA比pLSA效果更好，因为它可以轻而易举地泛化到新文档中去。
+    - 在pLSA中，文档概率是数据集中的一个固定点。如果没有看到那个文件，我们就没有那个数据点。
+    - 然而，在LDA中，数据集作为训练数据用于文档-主题分布的狄利克雷分布。即使没有看到某个文件，我们可以很容易地从狄利克雷分布中抽样得来，并继续接下来的操作。
+
+ - 通过使用LDA，我们可以从文档语料库中提取人类可解释的主题，其中每个主题都以与之关联度最高的词语作为特征。
+    - 例如，主题2可以用诸如「石油、天然气、钻井、管道、楔石、能量」等术语来表示。
+    - 此外，在给定一个新文档的条件下，我们可以获得表示其主题混合的向量，例如，5％的主题1，70％的主题2，10％的主题3等。
+    - 通常来说，这些向量对下游应用非常有用。
+
+
+**代码实现：**
+```
+from gensim.corpora.Dictionary import load_from_text, doc2bow
+from gensim.corpora import MmCorpus
+from gensim.models.ldamodel import LdaModel
+document = "This is some document..."
+# load id->word mapping (the dictionary)
+id2word = load_from_text('wiki_en_wordids.txt')
+# load corpus iterator
+mm = MmCorpus('wiki_en_tfidf.mm')
+# extract 100 LDA topics, updating once every 10,000
+lda = LdaModel(corpus=mm, id2word=id2word, num_topics=100, update_every=1, chunksize=10000, passes=1)
+# use LDA model: transform new doc to bag-of-words, then apply lda
+doc_bow = doc2bow(document.split())
+doc_lda = lda[doc_bow]
+# doc_lda is vector of length num_topics representing weighted presence of each topic in the doc
+```
+
+#### 深度学习中的LDA：lda2vec
+**一般概念：**
+ - 在文章的开头，我们谈到能够从每个级别的文本（单词、段落、文档）中提取其含义是多么重要。
+ - 在文档层面，我们现在知道如何将文本表示为主题的混合。
+ - 在单词级别上，我们通常使用诸如word2vec之类的东西来获取其向量表征。
+ - lda2vec是word2vec和LDA的扩展，它共同学习单词、文档和主题向量
+ - lda2vec专门在word2vec的skip-gram模型基础上建模，以生成单词向量。
+ - skip-gram和word2vec本质上就是一个神经网络，通过利用输入单词预测周围上下文词语的方法来学习词嵌入
+
+**lda2vec：**
+ - 通过使用lda2vec，我们不直接用单词向量来预测上下文单词，而是使用上下文向量来进行预测。
+ - 该上下文向量被创建为两个其它向量的总和：单词向量和文档向量。
+    - 单词向量由前面讨论过的skip-gram word2vec模型生成
+    - 而文档向量更有趣，它实际上是下列两个组件的加权组合：
+        - 文档权重向量，表示文档中每个主题的「权重」（稍后将转换为百分比）
+        - 主题矩阵，表示每个主题及其相应向量嵌入
+    - 文档向量和单词向量协同起来，为文档中的每个单词生成「上下文」向量。
+ - lda2vec的强大之处在于，它不仅能学习单词的词嵌入（和上下文向量嵌入），还同时学习主题表征和文档表征。
+    
+    ![lda2vec](img/lda2vec.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## 参考文献
