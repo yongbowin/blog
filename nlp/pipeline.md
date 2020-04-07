@@ -1469,7 +1469,11 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
         - 单一学习器通常需要使用交叉验证等方法来确定参数值，而集成方法相当于把这些学习器都利用起来，其实开销不一定比使用单一学习器大很多
  - 不同的扰动机制可同时使用，例如随机森林中同时使用了数据样本扰动（有放回采样）和输入属性扰动
 
-**AdaBoost/GBDT/随机森林/XGBoost/LightGBM的区别**
+**XGBoost/LightGBM的区别：**
+ - XGBoost是大规模并行boosting tree的工具，它是目前最快最好的开源boosting tree工具包，比常见的工具包快10倍以上。Xgboost和GBDT两者都是boosting方法，除了工程实现、解决问题上的一些差异外，**最大的不同就是目标函数的定义**。
+ - XGBoost：
+    - Xgboost的**基模型不仅支持决策树，还支持线性模型**，这里我们主要介绍基于决策树的目标函数。
+ - LightGBM：
 
 
 
