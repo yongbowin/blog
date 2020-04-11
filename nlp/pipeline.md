@@ -2163,7 +2163,196 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
 ## 实体关系抽取
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Attention机制
+
+参考博客：
+ - [Attention? Attention!](https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html#references)
+ - [Attention Mechanism](https://blog.floydhub.com/attention-mechanism/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## 情感分析
@@ -2313,10 +2502,10 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
  相关[论文1](https://arxiv.org/abs/1511.04108)，[论文2](https://arxiv.org/pdf/1509.06664.pdf)，还有比较古老的方法DSSM。
 
 **从Kaggle赛题: Quora Question Pairs 看文本相似性/相关性**
- - Quora给的题是给定两个quora中的提问。判断两个问题是不是一个问题。比如：A.如何学习NLP？ B.怎样学习自然语言处理？
+ - 给定两个quora中的提问。判断两个问题是不是一个问题。比如：A.如何学习NLP？ B.怎样学习自然语言处理？
  - 特征工程方法：传统方法不外乎各种角度的特征工程
     - 编辑距离
-        - 编辑距离（Edit Distance），又称Levenshtein距离，是指两个字串之间，由一个转成另一个所需的最少编辑操作次数。
+        - 编辑距离（Edit Distance），是指两个字串之间，由一个转成另一个所需的最少编辑操作次数。
         - 许可的编辑操作包括将一个字符替换成另一个字符，插入一个字符，删除一个字符。
         - 一般来说，编辑距离越小，两个串的相似度越大。
     
@@ -2346,12 +2535,12 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
     
         ![kg_similar](img/kg_similar.png)
     
-    这是一个非常直观的思路，最后一层的matching score建模方法甚至可以用一个简单的FC代替，或者做一次element-wise 乘之后接FC。下面有在IR中用表示方法做这个问题的几篇论文：
+        这是一个非常直观的思路，最后一层的matching score建模方法甚至可以用一个简单的FC代替，或者做一次element-wise 乘之后接FC。下面有在IR中用表示方法做这个问题的几篇论文：
     
-    [DSSM](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/cikm2013_DSSM_fullversion.pdf)，
-    [CDSSM](http://www.iro.umontreal.ca/~lisa/pointeurs/ir0895-he-2.pdf)，
-    [ARC I](http://www.hangli-hl.com/uploads/3/1/6/8/3168008/hu-etal-nips2014.pdf)，
-    [LSTM-RNN](https://arxiv.org/abs/1502.06922)
+        [DSSM](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/cikm2013_DSSM_fullversion.pdf)，
+        [CDSSM](http://www.iro.umontreal.ca/~lisa/pointeurs/ir0895-he-2.pdf)，
+        [ARC I](http://www.hangli-hl.com/uploads/3/1/6/8/3168008/hu-etal-nips2014.pdf)，
+        [LSTM-RNN](https://arxiv.org/abs/1502.06922)
     - 基于交互的方法：是通过Interaction来对文本相似性建模，其模型基本的原理是
         
         ![kg_similar_1](img/kg_similar_1.png)
