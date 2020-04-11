@@ -1304,63 +1304,6 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
 ## 损失函数
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 优化函数
 
 参考博客：
@@ -1426,6 +1369,29 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
  - 因此，
  
     ![adam_form](img/adam_form.png)
+ - Adam的缺点：
+    - 可能不收敛
+    
+        ![adam_disad](img/adam_disad.png)
+        
+        - 对于SGD和AdaGrad而言：
+            - 其中，SGD没有用到二阶动量，因此学习率是恒定的（实际使用过程中会采用学习率衰减策略，因此学习率递减）。
+            - AdaGrad的二阶动量不断累积，单调递增，因此学习率是单调递减的。
+            - 因此，这两类算法会使得学习率不断递减，最终收敛到0，模型也得以收敛。
+        - 对于AdaDelta和Adam而言：
+            - 但AdaDelta和Adam则不然。
+            - 二阶动量是固定时间窗口内的累积，随着时间窗口的变化，遇到的数据可能发生巨变，使得`V_t`可能会时大时小，不是单调变化。
+            - 这就可能在训练后期引起学习率的震荡，导致模型无法收敛。
+        - 一个修正的方法是：由于Adam中的学习率主要是由二阶动量控制的，为了保证算法的收敛，可以对二阶动量的变化进行控制，避免上下波动。
+        
+            ![adam_disad_1](img/adam_disad_1.png)
+    - 可能错过全局最优解
+        - 深度神经网络往往包含大量的参数，在这样一个维度极高的空间内，非凸的目标函数往往起起伏伏，拥有无数个高地和洼地。有的是高峰，通过引入动量可能很容易越过；但有些是高原，可能探索很多次都出不来，于是停止了训练。
+        - 同样的一个优化问题，不同的优化算法可能会找到不同的答案，但自适应学习率的算法往往找到非常差的答案。
+        - 自适应学习率算法可能会对前期出现的特征过拟合，后期才出现的特征很难纠正前期的拟合效果。
+        - 有论文在CIFAR-10数据集上进行测试，发现Adam的收敛速度比SGD要快，但最终收敛的结果并没有SGD好。他们进一步实验发现，主要是后期Adam的学习率太低，影响了有效的收敛。他们试着对Adam的学习率的下界进行控制，发现效果好了很多。
+        - 改进Adam的方法：前期用Adam，享受Adam快速收敛的优势；后期切换到SGD，慢慢寻找最优解。
+        - 理解数据对于设计算法的必要性。优化算法的演变历史，都是基于对数据的某种假设而进行的优化，那么某种算法是否有效，就要看你的数据是否符合该算法的胃口了。
 
 **Nadam：**
  - NAG中Nesterov的思想是：不计算当前位置的梯度方向，而是计算如果按照累积动量走了一步，那个时候的下降方向
@@ -1440,82 +1406,36 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
  
     ![optim_form_1](img/optim_form_1.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**总结：**
+ - 各类优化算法只是相当于在SGD基础上增加了各类学习率的主动控制。如果不想做精细的调优，那么Adam显然最便于直接拿来上手。
+ - **学习率衰减的作用：**
+    - 对于经常更新的参数而言，在参数更新的时候不希望变化很大，所以学习率要设置的小一点
+    - 对于不常更新的参数或者在模型刚开始训练时，学习率更改设置大一点，因为大的学习率使得模型能够接触更多不一样的信息进行梯度下降
+ - 不同优化算法最核心的区别，就是第三步所执行的下降方向：
+    
+    ![adam_disad_2](img/adam_disad_2.png)
+    
+    - 这个式子中，前半部分是实际的学习率（也即下降步长），后半部分是实际的下降方向。
+    - SGD算法的下降方向就是该位置的梯度方向的反方向，带一阶动量的SGD的下降方向则是该位置的一阶动量方向。
+    - 自适应学习率类优化算法为每个参数设定了不同的学习率，在不同维度上设定不同步长，因此其下降方向是缩放过（scaled）的一阶动量方向。
+    - 由于下降方向的不同，可能导致不同算法到达完全不同的局部最优点。
+    - 不同算法在高原的时候，选择了不同的下降方向。
+ - Adam+SGD组合策略
+    - Adam等自适应学习率算法对于稀疏数据具有优势，且收敛速度很快；但精调参数的SGD（+Momentum）往往能够取得更好的最终结果。
+    - 把这两者结合起来，先用Adam快速下降，再用SGD调优，涉及到两个问题：
+        - 什么时候切换优化算法
+        - 切换算法以后用什么样的学习率
+
+**优化算法的常用tricks：**
+ - **首先，各大算法孰优孰劣并无定论。如果是刚入门，优先考虑SGD+Nesterov Momentum或者Adam**.
+ - **选择你熟悉的算法**——这样你可以更加熟练地利用你的经验进行调参。
+ - **充分了解你的数据**——如果模型是非常稀疏的，那么优先考虑自适应学习率的算法。
+ - **根据你的需求来选择**——在模型设计实验过程中，要快速验证新模型的效果，可以先用Adam进行快速实验优化；在模型上线或者结果发布前，可以用精调的SGD进行模型的极致优化。
+ - **先用小数据集进行实验**。有论文研究指出，随机梯度下降算法的收敛速度和数据集的大小的关系不大。因此可以先用一个具有代表性的小数据集进行实验，测试一下最好的优化算法，并通过参数搜索来寻找最优的训练参数。
+ - **考虑不同算法的组合**。先用Adam进行快速下降，而后再换到SGD进行充分的调优。切换策略可以参考本文介绍的方法。
+ - **数据集一定要充分的打散（shuffle）**。这样在使用自适应学习率算法的时候，可以避免某些特征集中出现，而导致的有时学习过度、有时学习不足，使得下降方向出现偏差的问题。
+ - 训练过程中**持续监控训练数据和验证数据**上的目标函数值以及精度或者AUC等指标的变化情况。对训练数据的监控是要保证模型进行了充分的训练——下降方向正确，且学习率足够高；对验证数据的监控是为了避免出现过拟合。
+ - **制定一个合适的学习率衰减策略**。可以使用定期衰减策略，比如每过多少个epoch就衰减一次；或者利用精度或者AUC等性能指标来监控，当测试集上的指标不变或者下跌时，就降低学习率。
 
 
 ## 对数似然函数
@@ -2237,6 +2157,12 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
 ## 事件抽取
 
 
+## 实体抽取
+
+
+## 实体关系抽取
+
+
 ## Attention机制
 
 
@@ -2246,7 +2172,358 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
 ## 文本分类的方法
 
 
+## 文本/语义相似度
+
+参考博客：
+ - [文本相似度度量——词移距离（WMD）](https://www.zhihu.com/search?type=content&q=WMD)
+ - [如何用 word2vec 计算两个句子之间的相似度？](https://www.zhihu.com/search?type=content&q=WMD)
+ - [如何通过词向量技术来计算 2 个文档的相似度？](https://www.zhihu.com/question/33952003)
+ - [从Kaggle赛题: Quora Question Pairs 看文本相似性/相关性](https://www.zhihu.com/search?type=content&q=WMD)
+
+**计算文本相似度的常用方法：**
+ - bag-of-words (BOW)
+ - TF-IDF
+ - BM25
+ - LSI
+ - LDA
+ - mSDA（Marginalized Stacked Denoising Autoencoder）
+ - CCG（Componential Counting Grid）
+ - WMD
+
+**WMD：**
+ - 词移距离（Word Mover's Distance, WMD），用于判断两个文本之间的相似度，即WMD距离越大相似度越小
+ - WMD是通过将一个文档中包含的词语“移动”（travel）到另一个文档中的词语，这个“移动”过程产生的距离总和的最小值作为词移距离。
+ 
+    ```
+    例子：
+    
+    两个短文本：
+        “Obama speaks to the media in Illinois”
+        “The President greets the press in Chicago”，
+    
+    那么从第一句子转移到第二个句子的示意图如下（已去除停用词）
+    ```
+    
+    ![wmd_img](img/wmd_img.png)
+ 
+    - 针对示意图中的词移距离则表示为：distance("Obama"->"President")+distance("speaks"->"greets")+...
+    - 使用word2vec来表征词，通过word2vec将词语向量化后，使用欧式距离公式计算两个词语之间的距离 
+ - 上边方式存在的问题：
+    - 仅仅考虑距离和最小，那么每两个词之间的距离都最小则为最优解，那么肯定会出现一对多，甚至一对全部的情况
+        
+        ```
+        举个栗子，文档 1 中每个词都跟“音乐”密切相关；文档 2 中只有一个词跟“音乐”密切相关，其余词都跟“音乐”完全无关；
+        文档 3 中有一个词跟“音乐”密切相关，其他词都跟“音乐”有点关系但关联性不大。那么直觉上文档1和文档3更相似，即：
+        
+        distance(d1, d3) < distance(d1, d2)
+        
+        但如果按照词语距离和最小的方式，最优解应该是文档1所有词转移到文档2中与“音乐”密切相关的词上，
+        文档1同样也所有词转移到文档3中和“音乐”密切相关的词上，即一对所有。那么此时很有可能导致：
+        
+        distance(d1, d3) = distance(d1, d2)
+        
+        文档2与文档3中与音乐密切相关的词语刚好同一个。这显然是不合理的。
+        ```
+ - 为了让结果合理，WMD作者提出让文档1中的词以不同的权重转移到另一个文档的所有词上，即一个词不再全部转移到另一个词，而是部分转移到另一个词，这样让另一个文档的所有词去分配该词的权重。
+ - 那么有一个问题，怎么确定每个转移分配到的权重合理，并且不会出现一对全部的情况，WMD提出增加两个约束条件来解决这个问题：
+    
+    ![wmd_form](img/wmd_form.png)
+ 
+    - 约束1让文档1中的每个词都部分转移到文档2，但为了求最优解依然可能出现权重为0的情况。
+    - 第二个约束表明，文档2中所有词收到的权重必须和文档2中词本身的权重相同，即保证了文档2中每个词都会得到转移权重，避免出现一对所有的情况。
+ - 计算上式中参数`d_i`, `d'_j`, `c(i,j)`, `T_{ij}`的值：
+    - 标准化BOW表示
+        
+        ![wmd_form_1](img/wmd_form_1.png)
+    - 词转移代价
+        
+        ![wmd_form_2](img/wmd_form_2.png)
+    - 获取`T_{ij}`的过程其实就是WMD模型求解的过程。
+        - WMD求解--(Earth Mover's Distance，EMD)
+            - WMD的求解是EMD问题的一个特例，而EMD问题实际上是线性规划中运输问题的最优解（参考[博客](https://blog.csdn.net/sinat_33741547/article/details/80163719)）。因此可以用同样的求解方式求解。
+            - WMD算法复杂度为`O(p^{3}logp)`，其中p是文档中不重复词的个数，对于大的数据集来说这个模型的优化复杂度会非常高。
+    - 那么怎么来减小模型的复杂度呢？
+        - **词质心距离（Word centroid distance， WCD）**
+        - 为了加快模型速度（ps：作者论文中对WMD加速方法是基于WMD算法对文本做KNN分类为下做的加速），作者提出下界来排除不必要的运算。
+        - 下界WCD的推导方法如下：
+        
+            ![wmd_form_3](img/wmd_form_3.png)
+        - WCD算法的距离表示，一个文本中词的质心到另一个文本中词的质心的距离。
+        - WCD算法的复杂度为`O(dp)`，在做KNN时,通过使用WCD将待分类文档与样本集文档做一个快速的预计算，对计算结果进行从小到大排序，那么可以排除掉排序靠后的文档不做耗时的WMD计算。
+        - **但WCD有个问题，就是这个下界太宽松**，什么意思呢？就是说如6>1这个下界1与WMD为6相差有点远了，可能会造成误判。
+    - 那么有没有一种紧一点的下界呢？
+        - **Relaxed word moving distance(RWMD)**
+        - RWMD的思想是将WMD模型中的**两个限制条件去除一个**，只留下其中一个限制条件，这样因为放松的条件限制那最小距离也会随之减小。假设去掉第二限制条件，优化目标变成了：
+        
+            ![wmd_form_4](img/wmd_form_4.png)
+            
+            ![wmd_img_1](img/wmd_img_1.png)
+        
+        从图中可以看到，WCD与WMD相差较大，而RWMD与WMD相距很紧。
+    - 现在得到两个下界距离，应该怎么使用呢？
+        - **使用预取和裁剪（Prefetch and prune）**
+        - 预取和裁剪是利用WCD与RWMD相配合，来缩减对基于WMD做KNN时的计算时间。具体方法如下：
+            - 1.先用WCD计算待分类文档与其他文档的距离，取离它最近的个文档；
+            - 2.计算m个文档中前k个文档的WMD；
+            - 3.计算剩下文档的RWMD，如果某个文档的RWMD大于KNN列表中第k个文档的WMD就裁剪掉（排除），否则就计算它的WMD。如果发现在KNN列表中就更新KNN列表，否则裁剪。
+    - 这就形成了最终的计算方式。通过使用Prefetch and prune缩减计算量，提高效率。
+        
+        ![wmd_res](img/wmd_res.png)
+    
+        ![wmd_res_1](img/wmd_res_1.png)
+    
+        - 结果1展示了在8个数据集上的各种方法的在KNN分类上的错误率，可以看到WMD的表现优于其他方法。
+        - 结果2展示了7中方法在8个数据集上相对于BOW的平均错误率，即每种方法的平均错误率除以BOW的平均错误率。
+
+**罗列一些计算句子间相似度的方法：**
+ - 1.无监督的方法，即不使用额外的标注数据，常用的方法有：
+    - （1）对句子中所有词的word vector求平均，获得sentence embedding
+    - （2）以每个词的TF-IDF为权重，对所有词的word vector加权平均，获得sentence embedding
+    - （3）以smooth inverse frequency ([SIF](https://openreview.net/pdf?id=SyK00v5xx))为权重，对所有词的word vector加权平均，最后从中减掉principal component，得到sentence embedding
+    - （4）通过Word Mover’s Distance ([WMD](http://proceedings.mlr.press/v37/kusnerb15.pdf))，直接度量句子之间的相似度
+ - 2.有监督的方法，需要额外的标注数据，常见的有监督任务有：
+    - （1）分类任务，例如训练一个[CNN的文本分类器](https://arxiv.org/abs/1408.5882)，取最后一个hidden layer的输出作为sentence embedding，其实就是取分类器的前几层作为预训练的encoder
+    - （2）sentence pair的等价性/等义性判定 ([pdf1](http://people.csail.mit.edu/jonasmueller/info/MuellerThyagarajan_AAAI16.pdf), 
+    [pdf2](https://www.aclweb.org/anthology/W16-1617.pdf))，这种方法的好处是不仅可以得到sentence embedding，还可以直接学习到距离度量函数里的参数
+ - 博客[Comparing Sentence Similarity Methods](http://nlp.town/blog/sentence-similarity/)里比较了常见方法在计算句子相似句上的效果：
+ 
+    ![sents_similar](img/sents_similar.png)
+ 
+ 从图中可以看到在这几个评估数据上：
+    - （1）WMD方法（WMD-W2V）相对于其他无监督方法并没有明显的优势
+    - （2）简单加权的词向量平均（AVG-W2V和AVG-W2V-TFIDF）已经可以作为一个较好的baseline，但是**考虑SIF加权的词向量平均（SIF-W2V)通常可以得到更好的效果**
+    - （3）这里比较了两种预训练的encoder（InferSent/INF和Google's Sentence Encoder/GSE），相对而言GSE效果更好一些，但要注意它的性能并不一定在所有的数据集上都稳定。
+ - 另外，从实践中的经验来看，如果要在无标注的数据上从零开始实现相似度的计算，可以**综合几种方法来得到更好的效果**。一种可能的步骤如下：
+    - （1）使用某种无监督方法，对于句子集合做简单归类和标注
+    - （2）通过1中得到的标注数据，训练分类模型或者句子对模型，从而得到相似度模型
+    - （3）评估模型效果，适当引入新的标注数据，重复步骤1）2）
+
+**深度学习派方法：**
+ - （1）最简单的就是两个句子分别过一个CNN或者LSTM，然后在向量空间算分，相关[论文](http://cis.csuohio.edu/~sschung/CIS660/RankShortTextCNNACM2015.pdf)
+    - 这个方法有一个trick就是千万别用MLP在向量空间算，效果大打折扣，一定要用`a^{T}wb`这种，或者你把`[a, b b a^{T}wb]`当做MLP的输入。一定要有这项，原因是其实你a和b直接连接会丢信息，
+    就是boundary信息，并不知道a的边界在哪里，b的边界在哪里。
+    - 如果靠连接起来走MLP不靠Bilinear的计算训练收敛速度会慢很多，且最后往往没有Bilinear的收敛的好。这个原因大概是Bilinear相当于我已经告诉神经网络，a和b都是哪里，不用神经网络去学，让收敛速度变快。另外，a自己作用自己往往是无效的（设想MLP时候A自己的第一维度还要和自己的第二维度发生作用，这其实是奇怪的在匹配任务重）。当然这两种模型的差距在数据的增大时候会效果越来越接近，可见模型在很大规模数据上，可以学习到这件事情（不过往往写论文的数据集没这么大）。
+ - （2）李航老师的Arc2不是很work，但是想法非常非常好，亲测仍需提高，稍微改改就可以很work。
+ 相关[论文1](https://arxiv.org/pdf/1503.03244.pdf)，[论文2](https://arxiv.org/abs/1602.06359)，
+ 改为RNN上做CNN（原始方法是只做了Pooling，如果做Convolution会更好）[论文3](https://arxiv.org/pdf/1511.08277.pdf)
+    - 先简介Arc2，这个模型把两句话的所有word算了个分生成了一个`n*m`的矩阵，然后把这个矩阵当图片过cnn。
+    - 原本算词-词相似度是两个词向量连一起然后算个分，其实`a^{T}b`或`a^{T}wb`比Arc2中原始的`[a,b]·W`好用很多。
+    - 另外，在cnn算的时候，直接用word embedding不是最佳方案，最佳方案是用已经过了LSTM的hidden state。
+ - （3）去年还提出了一套Attention系列的匹配方法，例如[Match-LSTM](https://www.aclweb.org/anthology/N16-1170.pdf)，在聊天这个任务上评测没有（2）好用。
+ 相关[论文1](https://arxiv.org/abs/1511.04108)，[论文2](https://arxiv.org/pdf/1509.06664.pdf)，还有比较古老的方法DSSM。
+
+**从Kaggle赛题: Quora Question Pairs 看文本相似性/相关性**
+ - Quora给的题是给定两个quora中的提问。判断两个问题是不是一个问题。比如：A.如何学习NLP？ B.怎样学习自然语言处理？
+ - 特征工程方法：传统方法不外乎各种角度的特征工程
+    - 编辑距离
+        - 编辑距离（Edit Distance），又称Levenshtein距离，是指两个字串之间，由一个转成另一个所需的最少编辑操作次数。
+        - 许可的编辑操作包括将一个字符替换成另一个字符，插入一个字符，删除一个字符。
+        - 一般来说，编辑距离越小，两个串的相似度越大。
+    
+            ```
+            例如：
+            
+            有两个字符串：kitten和sitting，现在我们要将kitten转换成sitting，可以做如下的一些操作；
+            
+            将K替换成S，将e替换成i，添加g。
+            
+            在这里我们设置每经过一次编辑，也就是变化（插入，删除，替换）我们花费的代价都是1。
+            ```
+        - FuzzyWuzzy这个python包提供了比较齐全的编辑距离度量方法。
+    - 集合度量特征
+        - 集合度量方式就是把两个句子看成BOW(bag of words)。
+        - 然后使用集合相似性度量方法比如Jaccard等。
+        - 这种方法有一个严重问题就是丢失语序。
+    - 统计特征
+        - 比如句子长度，词长度，标点数量，标点种类，以及词性序列上的度量，这也是最直观的度量方法
+    - 使用预训练的词向量得到句子表示进行度量
+        - 使用词向量的一种简单的方法是，BOW求平均，得到两个句子的表示，然后利用余弦相似度度量，这是一种非常简单而直观的方法。
+        - 或者WMD的度量方法，这个思路也非常直觉，实际表现也非常良好
+    - 使用传统方法如tfidf，LDA等topic model等拿到句子表示进行度量，使用tfidf值对词向量做一个加权，得到的句子表示也是一种不错的表示。
+ - 深度模型：
+    - 深度模型有两种思路，一种是基于表示，一种是基于交互。不过基于交互的模型大多也是先要拿到文本表示，从文本表示构建交互，从交互到特征抽取的思路。
+    - 基于表示的方法：
+    
+        ![kg_similar](img/kg_similar.png)
+    
+    这是一个非常直观的思路，最后一层的matching score建模方法甚至可以用一个简单的FC代替，或者做一次element-wise 乘之后接FC。下面有在IR中用表示方法做这个问题的几篇论文：
+    
+    [DSSM](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/cikm2013_DSSM_fullversion.pdf)，
+    [CDSSM](http://www.iro.umontreal.ca/~lisa/pointeurs/ir0895-he-2.pdf)，
+    [ARC I](http://www.hangli-hl.com/uploads/3/1/6/8/3168008/hu-etal-nips2014.pdf)，
+    [LSTM-RNN](https://arxiv.org/abs/1502.06922)
+    - 基于交互的方法：是通过Interaction来对文本相似性建模，其模型基本的原理是
+        
+        ![kg_similar_1](img/kg_similar_1.png)
+    
+        ![kg_similar_2](img/kg_similar_2.png)
+        - 文章[Text Matching as Image Recognition](https://arxiv.org/abs/1602.06359)原理如下：
+            - 拿到每个词的embedding。(embedding)
+            - 构建两个文本的相似矩阵。(Interaction)
+            - 把相似矩阵放入两层CNN中。(Feature extract)
+            - 把CNN的结果放入两层的全连接中。(FC)
+            - 获得二分类的score。(distribution)
+        - 后来的一些工作都大同小异，比如不直接使用词向量，利用RNN的隐层向量去构建交互等等。具体的文章如下：
+        [DeepMatch](https://www.semanticscholar.org/paper/A-Deep-Architecture-for-Matching-Short-Texts-Lu-Li/4aba54ea82bf99ed4690d45051f1b25d8b9554b5)，
+        [ARC II](https://arxiv.org/pdf/1503.03244.pdf)，
+        [MatchPyramid](http://www.bigdatalab.ac.cn/~lanyanyan/papers/2016/AAAI2016_pang.pdf)，
+        [Match-SRNN](https://arxiv.org/abs/1604.04378)
+ - 在比赛中发现，训练集和测试集的正负样本比有明显差异，分布上的差异最后体现在logloss指标上的gap，在比赛中大家推导出一个后处理的公式，然后可以拉平分布带来的分数异动。使用贝叶斯公式能推导出这个后处理，
+ 前提是可以测出分布的情况下。有[论文](https://www.isys.ucl.ac.be/staff/marco/Publications/Saerens2002a.pdf)对这个做了详细的讲解。
+ - 比赛中一些预处理方法有：
+    - 词元化/词干化
+    - 去停止词
+    - 标点符号清洗
+    - 特殊符号替换
+    - 词向量扩充句子得到另一份句子（这个直觉的思路是，利用词向量找相关词的特性，增加传统特征方法的容错性。比如集合度量方法，开心和高兴虽然是一个意思，但是不扩充近义词的话，其容错性很低）
+ - 不得不提的是，这个比赛中有一个非常关键的leak信息，一个问题如果出现频繁的话，就很可能是一个重复的问题。后来发现前几名在这个leak上做了很多文章，取得了非常好的效果。
+ - 比赛前几名解决方案：
+    - [第一名的解法](https://link.zhihu.com/?target=https%3A//www.kaggle.com/c/quora-question-pairs/discussion/34355)：他的特征工程中含有大量的来自图的Structural features，有300多个模型做了stacking
+    - [第四名的解法](https://link.zhihu.com/?target=https%3A//www.kaggle.com/c/quora-question-pairs/discussion/34349)，代码[地址](https://link.zhihu.com/?target=https%3A//github.com/HouJP/kaggle-quora-question-pairs)
+    - 第五名的解法：也是在图的建模上挖掘了大量的特征
+    - [第七名的解法](https://link.zhihu.com/?target=https%3A//www.kaggle.com/c/quora-question-pairs/discussion/34697)：花了大量的时间在深度模型上。和第一名都用了一个叫[decomposable attention](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1606.01933)的东西
+    - [本文解法](https://link.zhihu.com/?target=https%3A//github.com/SpongebBob/Quora-Kaggle)
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 分词算法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## 新词发现
@@ -2517,6 +2794,11 @@ TODO:
 ## 模型评估与选择
 
 
+## 词性标注
+
+
+## 命名实体识别
+
 
 
 
@@ -2601,6 +2883,3 @@ TODO:
     使得最终输出落在非线性区间的概率大一些。这样就在sigmoid函数梯度小和线性表达之间做了一个平衡，使得神经网络有了非线性变换，保证了其学习能力，也使梯度比较大，加快了训练速度。
 
 **生成一个n*n螺旋矩阵：**
-
-
-
