@@ -2250,7 +2250,7 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
  - 该模型有一个encoder-decoder结构：
     - Encoder：处理输入序列，压缩信息到一个固定长度的context vector中（即句子的embedding）
     - Decoder：使用context vector进行初始化，进行转换后输出。早期的工作仅仅使用encoder的最后一个状态所谓context vector
-    - 两则都是RNN网络
+    - 两者都是RNN网络
     
         ![attention_s2s](img/attention_s2s.png)
  - 劣势在于：使用固定长度的context vector限制了记忆长句子的能力
@@ -2288,18 +2288,30 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
  - 在attention的帮助下，源序列和目标序列不再受距离的限制
  - 流行的attention如下：
     
-    
-xx | xx | xx 
--|-|-
-xx | ![111](img/attention_nmt_3.png) | [url](www.baidu.com) |
-xx | x | xx |
+Num | Name | Alignment score function | Citation 
+-|-|-|-
+1 | Content-base  基于内容的attention | ![attention_tab_form](img/attention_tab_form.png) | [Graves2014](https://arxiv.org/abs/1410.5401) |
+2 | Additive      基于累加的attention | ![attention_tab_form_1](img/attention_tab_form_1.png) | [Bahdanau2015](https://arxiv.org/pdf/1409.0473.pdf) |
+3 | Location-Base 基于位置的attention | ![attention_tab_form_2](img/attention_tab_form_2.png) | [Luong2015](https://arxiv.org/pdf/1508.04025.pdf) |
+4 | General       通用attention | ![attention_tab_form_3](img/attention_tab_form_3.png) | [Luong2015](https://arxiv.org/pdf/1508.04025.pdf) |
+5 | Dot-Product   基于点乘的attention | ![attention_tab_form_4](img/attention_tab_form_4.png) | [Luong2015](https://arxiv.org/pdf/1508.4025.pdf) |
+6 | Scaled Dot-Product 基于缩放点乘的attention | ![attention_tab_form_5](img/attention_tab_form_5.png) | [Vaswani2017](http://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf) |
 
+> 2中又称为concat，  
+> 3中简化softmax对齐仅仅依赖于目标位置，  
+> 4中`W_a`是在attention层的可训练权重矩阵，  
+> 6和5非常相似，对了一个缩放因子，n是源隐藏状态的维度，当输入很大的时候，softmax函数可能会有极小的梯度，比较困难去训练，所以添加了一个缩放因子
 
+ - 下边是更广泛的类别定义：
 
+Num | Name | Definition | Citation 
+-|-|-|-
+1 | Self/intra-Attention | 关于同一输入序列的不同位置的。理论上，Self-Attention可以采用上述任何score函数，但只需将目标序列替换为相同的输入序列 | [Cheng2016](https://arxiv.org/pdf/1601.06733.pdf) |
+2 | Global/Soft | Attending to整个输入状态空间 | [Xu2015](http://proceedings.mlr.press/v37/xuc15.pdf) |
+3 | Local/Hard | Attending to部分输入状态空间，例如输入图像的一小块 | [Xu2015](http://proceedings.mlr.press/v37/xuc15.pdf), [Luong2015](https://arxiv.org/pdf/1508.04025.pdf) |
 
-
-
-
+**Self-Attention：**
+ - xx
 
 
 
