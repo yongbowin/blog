@@ -2246,13 +2246,53 @@ H(P) = - sum(log(P(x)log(P(x)))), for add x
  - [Attention? Attention!](https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html#references)
  - [Attention Mechanism](https://blog.floydhub.com/attention-mechanism/)
 
+**Seq2Seq模型存在的问题：**
+ - 该模型有一个encoder-decoder结构：
+    - Encoder：处理输入序列，压缩信息到一个固定长度的context vector中（即句子的embedding）
+    - Decoder：使用context vector进行初始化，进行转换后输出。早期的工作仅仅使用encoder的最后一个状态所谓context vector
+    - 两则都是RNN网络
+    
+        ![attention_s2s](img/attention_s2s.png)
+ - 劣势在于：使用固定长度的context vector限制了记忆长句子的能力
 
+**从翻译中诞生：**
+ - attention是为了记忆长的原始句子，而不是仅仅依赖encoder的最后一个隐藏状态
+ - attention是为了在context vector和整个原始输入之间建立快捷方式，那些快捷连接的权重是可以为输出的每个元素进行定制化的
+ - 原始输入和目标输出之间的对其是被context vector学习和控制的
+ - 本质上来说，context vector包含三个信息：
+    - 编码隐藏状态
+    - 解码隐藏状态
+    - 源和目标的对齐
+    
+    ![attention_paper_1](img/attention_paper_1.png)
 
+    encoder-decoder model with additive attention机制，来自论文[NMT](https://arxiv.org/pdf/1409.0473.pdf)
+ - NMT中定义的attention如下：
+    - 源序列x，长度为n；目标序列y，长度为m
+    - encoder是一个Bi-RNN，前者为前向隐藏状态，后者为反向隐藏状态，`h_i`表示将两者进行串联，将当前词的前后依赖加进来
+    
+        ![attention_nmt_1](img/attention_nmt_1.png)
+    - decoder对位置t有隐状态`s_t = f(s_{t-1}, y_{t-1}, c_t)`，输出词。其中，`t=1,2,...,m`，context vector `c_t`是输入序列隐状态的权重加和，权重通过对齐分数确定：
+    
+        ![attention_nmt_2](img/attention_nmt_2.png)
+        
+        - 对齐模型分配分数`a_{t.i}`对输入位置i和当前输出位置t
+        - 集合`{ a_{t,i} }`定义的是：对于每一个输出，每一个输入隐藏状态应该以多大的权重被考虑。
+        - 在NMT论文中，分数a使用一层FC进行参数化，FC的参数与模型一块训练，打分函数形式如下：
+        
+            ![attention_nmt_3](img/attention_nmt_3.png)
+            
+            其中`v_a`和`W_a`都是需要学习的权重矩阵，`tanh`是非线性的激活函数
 
-
-
-
-
+**Attention家族概览：**
+ - 在attention的帮助下，源序列和目标序列不再受距离的限制
+ - 流行的attention如下：
+    
+    
+xx | xx | xx 
+-|-|-
+xx | ![111](img/attention_nmt_3.png) | [url](www.baidu.com) |
+xx | x | xx |
 
 
 
