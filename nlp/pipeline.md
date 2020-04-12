@@ -2311,6 +2311,15 @@ Num | Name | Definition | Citation
 3 | Local/Hard | Attending to部分输入状态空间，例如输入图像的一小块 | [Xu2015](http://proceedings.mlr.press/v37/xuc15.pdf), [Luong2015](https://arxiv.org/pdf/1508.04025.pdf) |
 
 **Self-Attention：**
+ - Self-attention又叫intra-attention
+ - 是使用attention机制关联同一个句子的不同位置，目的是为了计算该句子的表示
+ - Self-attention机制使我们学习当前的词和前后词的关联（对于LSTM来说是前边的词）
+    
+    ![attention_self](img/attention_self.png)
+    
+    其中红字表示当前的词，蓝色阴影的大小表示激活的水平，来自论文[Cheng et al., 2016](https://arxiv.org/pdf/1601.06733.pdf)
+
+**Soft vs Hard Attention：**
  - xx
 
 
@@ -2406,8 +2415,13 @@ Num | Name | Definition | Citation
 
 
 
-
 ## 情感分析
+
+
+## 文本摘要
+
+
+## 生成式MRC
 
 
 ## 文本分类的方法
