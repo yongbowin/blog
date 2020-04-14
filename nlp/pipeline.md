@@ -2513,8 +2513,30 @@ Num | Name | Definition | Citation
 参考博客：
  - [对抗攻击基础知识（一）](https://zhuanlan.zhihu.com/p/37260275)
  - [论文阅读：对抗训练（adversarial training）](https://www.zhihu.com/search?type=content&q=FreeLB)
- - []()
- - []()
+ - [功守道：NLP中的对抗训练 + PyTorch实现](https://fyubang.com/2019/10/15/adversarial-train/)
+
+**对抗样本：**
+ - 对抗样本可以用来攻击和防御，而对抗训练其实是“对抗”家族中防御的一种方式，其基本的原理呢，就是通过添加扰动构造一些对抗样本，放给模型去训练，以攻为守，提高模型在遇到对抗样本时的鲁棒性，同时一定程度也能提高模型的表现和泛化能力。
+ 
+    ![at_img](img/at_img.png)
+ - 什么样的样本才是好的对抗样本呢？对抗样本一般需要具有两个特点：
+    - 相对于原始输入，所添加的扰动是微小的；
+    - 能使模型犯错。
+
+**攻击模式分类：**
+ - 黑盒攻击与白盒攻击
+    - 白盒攻击：攻击者能够获知机器学习所使用的算法，以及算法所使用的参数。攻击者在产生对抗性攻击数据的过程中能够与机器学习的系统有所交互。
+    - 黑盒攻击：攻击者并不知道机器学习所使用的算法和参数，但攻击者仍能与机器学习的系统有所交互，比如可以通过传入任意输入观察输出，判断输出。
+    - 在实际应用中，这两者的区别体现为：**通过模型A来生成对抗样本，进而攻击模型B。当模型A与模型B是一个模型时，为白盒攻击；当模型A与模型B不为一个模型时，则为黑盒攻击**。
+ - 有目标攻击与无目标攻击
+    - 无目标攻击（untargeted attack）：对于一张图片，生成一个对抗样本，使得标注系统在其上的标注与原标注无关，即只要攻击成功就好，对抗样本的最终属于哪一类不做限制。
+    - 有目标攻击（targeted attack）：对于一张图片和一个目标标注句子，生成一个对抗样本，使得标注系统在其上的标注与目标标注完全一致，即不仅要求攻击成功，还要求生成的对抗样本属于特定的类。
+
+**常见防御方法分类：**
+ - **对抗训练**：对抗训练旨在从随机初始化的权重中训练一个鲁棒的模型，其训练集由真实数据集和加入了对抗扰动的数据集组成，因此叫做对抗训练。
+ - **梯度掩码**：由于当前的许多对抗样本生成方法都是基于梯度去生成的，所以如果将模型的原始梯度隐藏起来，就可以达到抵御对抗样本攻击的效果。
+ - **随机化**：向原始模型引入随机层或者随机变量。使模型具有一定随机性，全面提高模型的鲁棒性，使其对噪声的容忍度变高。
+ - **去噪**：在输入模型进行判定之前，先对当前对抗样本进行去噪，剔除其中造成扰动的信息，使其不能对模型造成攻击。
 
 **对抗训练：**
  - 对抗训练（adversarial training）是增强神经网络鲁棒性的重要方式。在对抗训练的过程中，样本会被混合一些微小的扰动（改变很小，但是很可能造成误分类），然后使神经网络适应这种改变，从而对对抗样本具有鲁棒性。
@@ -2524,9 +2546,16 @@ Num | Name | Definition | Citation
     
     ![at_form](img/at_form.png)
  
-    **即寻找使损失函数最大的扰动，简单来讲就是添加的扰动要尽量让神经网络迷惑**。    
+    - 该公式分为两个部分，一个是内部损失函数的最大化，一个是外部经验风险的最小化。
+    - **即寻找使损失函数最大的扰动，简单来讲就是添加的扰动要尽量让神经网络迷惑**。
+    - 内部max是为了找到worst-case的扰动，也就是攻击
+    - 外部min是为了基于该攻击方式，找到最鲁棒的模型参数，也就是防御    
  - 外层就是对神经网络进行优化的最小化公式，即当**扰动固定的情况下，我们训练神经网络模型使得在训练数据上的损失最小**，也就是说，使模型具有一定的鲁棒性能够适应这种扰动。
  - 对抗训练的研究基本上就是在寻找合适的扰动，使得模型具有更强的鲁棒性。
+ - 对抗训练的两个作用：
+    - 提高模型应对恶意对抗样本时的鲁棒性；
+    - 作为一种regularization，减少overfitting，提高泛化能力。
+ - 在NLP任务中，对抗训练的角色不再是为了防御基于梯度的恶意攻击，反而更多的是作为一种regularization，提高模型的泛化能力。
 
 **FGSM/FGM方法：**
  - FGSM（Fast Gradient Sign Method）和FGM（Fast Gradient Method），两者的扰动如下：
@@ -2541,6 +2570,52 @@ Num | Name | Definition | Citation
     - 理论上L2归一化更严格的保留了梯度的方向，但是max归一化则不一定和原始梯度的方向相同。
  - 当然两种方法都有个假设，就是损失函数是线性的或者至少是局部线性的。如果不是（局部）线性的，那梯度提升的方向就不一定是最优方向了。
 
+**FGM代码实现：**
+ - 为了实现插件式的调用，笔者将一个batch抽象成一个样本，一个batch统一用一个norm，由于本来norm也只是一个scale的作用，影响不大。笔者的实现如下
+
+```
+class FGM():
+    def __init__(self, model):
+        self.model = model
+        self.backup = {}
+
+    def attack(self, epsilon=1., emb_name='emb.'):
+        # emb_name这个参数要换成你模型中embedding的参数名
+        for name, param in self.model.named_parameters():
+            if param.requires_grad and emb_name in name:
+                self.backup[name] = param.data.clone()
+                norm = torch.norm(param.grad)
+                if norm != 0:
+                    r_at = epsilon * param.grad / norm
+                    param.data.add_(r_at)
+
+    def restore(self, emb_name='emb.'):
+        # emb_name这个参数要换成你模型中embedding的参数名
+        for name, param in self.model.named_parameters():
+            if param.requires_grad and emb_name in name: 
+                assert name in self.backup
+                param.data = self.backup[name]
+        self.backup = {}
+```
+ - 需要使用对抗训练的时候，只需要添加五行代码：
+
+```
+# 初始化
+fgm = FGM(model)
+for batch_input, batch_label in data:
+    # 正常训练
+    loss = model(batch_input, batch_label)
+    loss.backward() # 反向传播，得到正常的grad
+    # 对抗训练
+    fgm.attack() # 在embedding上添加对抗扰动
+    loss_adv = model(batch_input, batch_label)
+    loss_adv.backward() # 反向传播，并在正常的grad基础上，累加对抗训练的梯度
+    fgm.restore() # 恢复embedding参数
+    # 梯度下降，更新参数
+    optimizer.step()
+    model.zero_grad()
+```
+
 **PGD方法：**
  - 为了解决FGSM和FGM中的线性假设问题，使用PGD(Projected Gradient descent)方法来求解内部的最大值问题。
  - PGD是一种迭代攻击，相比于普通的**FGSM和FGM仅做一次迭代，PGD是做多次迭代，每次走一小步，每次迭代都会将扰动投射到规定范围内**。
@@ -2552,6 +2627,78 @@ Num | Name | Definition | Citation
     - 论文还证明用PGD算法得到的攻击样本，是一阶对抗样本中最强的了。这里所说的一阶对抗样本是指依据一阶梯度的对抗样本。如果模型对PGD产生的样本鲁棒，那基本上就对所有的一阶对抗样本都鲁棒。
     - 实验也证明，利用PGD算法进行对抗训练的模型确实具有很好的鲁棒性。
  - PGD虽然简单，也很有效，但是存在一个问题是计算效率不高。如果不用对抗训练的方法，m次迭代只会有m次梯度的计算，但是对于PGD而言，每做一次梯度下降（获取模型参数的梯度，训练模型），都要对应有K步的梯度提升（获取输出的梯度，寻找扰动）。所以相比不采用对抗训练的方法，PGD需要做`(mK+m) = m(K+1)`次梯度计算。
+
+**PGD代码实现：**
+ - 核心代码：
+
+```
+class PGD():
+    def __init__(self, model):
+        self.model = model
+        self.emb_backup = {}
+        self.grad_backup = {}
+
+    def attack(self, epsilon=1., alpha=0.3, emb_name='emb.', is_first_attack=False):
+        # emb_name这个参数要换成你模型中embedding的参数名
+        for name, param in self.model.named_parameters():
+            if param.requires_grad and emb_name in name:
+                if is_first_attack:
+                    self.emb_backup[name] = param.data.clone()
+                norm = torch.norm(param.grad)
+                if norm != 0:
+                    r_at = alpha * param.grad / norm
+                    param.data.add_(r_at)
+                    param.data = self.project(name, param.data, epsilon)
+
+    def restore(self, emb_name='emb.'):
+        # emb_name这个参数要换成你模型中embedding的参数名
+        for name, param in self.model.named_parameters():
+            if param.requires_grad and emb_name in name: 
+                assert name in self.emb_backup
+                param.data = self.emb_backup[name]
+        self.emb_backup = {}
+        
+    def project(self, param_name, param_data, epsilon):
+        r = param_data - self.emb_backup[param_name]
+        if torch.norm(r) > epsilon:
+            r = epsilon * r / torch.norm(r)
+        return self.emb_backup[param_name] + r
+        
+    def backup_grad(self):
+        for name, param in self.model.named_parameters():
+            if param.requires_grad:
+                self.grad_backup[name] = param.grad.clone()
+    
+    def restore_grad(self):
+        for name, param in self.model.named_parameters():
+            if param.requires_grad:
+                param.grad = self.grad_backup[name]
+```
+
+ - 使用用方式
+
+```
+pgd = PGD(model)
+K = 3
+for batch_input, batch_label in data:
+    # 正常训练
+    loss = model(batch_input, batch_label)
+    loss.backward() # 反向传播，得到正常的grad
+    pgd.backup_grad()
+    # 对抗训练
+    for t in range(K):
+        pgd.attack(is_first_attack=(t==0)) # 在embedding上添加对抗扰动, first attack时备份param.data
+        if t != K-1:
+            model.zero_grad()
+        else:
+            pgd.restore_grad()
+        loss_adv = model(batch_input, batch_label)
+        loss_adv.backward() # 反向传播，并在正常的grad基础上，累加对抗训练的梯度
+    pgd.restore() # 恢复embedding参数
+    # 梯度下降，更新参数
+    optimizer.step()
+    model.zero_grad()
+```
 
 **FreeAT方法：**
  - FreeAT（Free Adversarial Training）
@@ -2571,6 +2718,8 @@ Num | Name | Definition | Citation
 
 **FreeLB方法：**
  - FreeLB（Free Large Batch Adversarial Training）
+ 
+    ![at_form_5](img/at_form_5.png)
  - 和FreeAT一样，FreeLB也想更高效的利用两种梯度。但是和FreeAT不一样的是，FreeLB并**不是在每次梯度提升的过程中，都会对参数进行跟新**，而是**将参数的梯度累积起来**，即算法第8行`g_t`更新的过程。
  - 因为每次都是在一个batch的数据做K次迭代，这样走过K步之后，FreeLB利用K步之后积累的参数梯度`g_K`，对参数`theta`，进行更新，即算法第13行的更新过程
  - FreeLB对于每个batch一共需要进行`N_{ep}·K`次梯度计算，相比于PGD需要进行`N_{ep}·(K+1)`次梯度计算（其中`N_{ep}`是epoch的个数，这个次数是对每个batch而言的，前者的次数表示在每个epoch中的每个batch都要计算K次模型参数`theta`的梯度），是节省了`N_{ep}`次梯度计算，
@@ -2579,7 +2728,8 @@ Num | Name | Definition | Citation
  - 为什么论文成这种算法为Large Batch呢？在梯度下降时，我们使用的梯度是基于`X + theta_0, ..., X + treta_{K-1}`进行计算的，这**可以理解为近似的对K个不同batch的样本进行平均，所以相当于虚拟的增大了样本的数量**。
  - 论文中还指出了很重要的一点，就是**对抗训练和dropout不能同时使用**，加上dropout相当于改变了网络结构，会影响r的计算。如果要用的话需要在K步中都使用同一个mask。
 
-
+**SMART方法：**
+ - xx
 
 
 
