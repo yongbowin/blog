@@ -132,9 +132,63 @@
 
 
 
-
-
-
+**Exploring the Limits of Language Modeling**
+ - 论文时间：2016年2月7日， [pdf](https://arxiv.org/pdf/1602.02410v1.pdf)
+ - 扩展已有的模型去处理两个关键的任务：
+    - 语料库和词汇尺寸
+    - 以及复杂的、长期依赖的语言结构
+ - seq2seq使用的是条件语言模型
+ - 强条件独立型假设是不切实际的，像n-gram仅仅利用前边词的短的历史信息来预测下一个词
+ - 本文的主要贡献：
+    - 大规模的LM
+    - 基于character level CNNs设计一个softmax loss，精度和full softmax一样，但是具有更多的参数量
+    - 比之前的模型减少了20倍参数量，困惑度从51.3下降到30.0，集成模型困惑度下降到23.7
+ - **LM的目标是学习与语言相关的符号序列的概率分布**。
+ - 已有的工作：
+    - 参数化的方法：
+        - log-linear models
+    - 非参数化的方法：
+        - count-based LMs：基于N-grams的统计，增加平滑项（考虑未见过的序列），缺点是不能考虑长距离的依赖
+ - 模型架构：
+ 
+    ![ellm](img/ellm.png)
+    
+    - （a）是一个标准的LSTM LM
+    - （b）表示一个输入和softmax embedding被一个character CNN取代的语言模型
+    - （c）将softmax用一个下一个character预测的LSTM网络替换
+ - 采用10亿个词进行训练，相对count-based模型是中等大小，对于NN-based来说就是巨大的量级了
+ - 卷积嵌入模型（Convolutional Embedding Models）
+    - 参考：[Character-Aware Neural Language Models](https://arxiv.org/pdf/1508.06615.pdf)
+    - character经过一个1-d CNN处理，对每一个卷积特征用max-pooling横跨整个序列
+    - 将结果特征输入到一个2-layer highway network
+ - 在大词汇表上应用softmax（Softmax Over Large Vocabularies）
+    - 一般地，预测通过softmax non-linearity：
+        
+        ![ellm_form](img/ellm_form.png)
+                
+        - `z_w`是logit，对应一个词w
+        - logit一般使用公式：
+            
+            ![ellm_form_1](img/ellm_form_1.png)
+            
+            进行计算，其中h是一个context vector，`e_w`是w的word embedding
+    - 如果词汇边很大，计算量会相当巨大，使用以下方式减小计算量：
+        - importance sampling：重要性采样（本文采用此方法）
+        - Noise Contrastive Estimation（NCE）：噪声对比估计
+        - self normalizing partition functions：自规范化分区函数
+        - Hierarchical Softmax：分层softmax
+ - 语言模型改进：
+    - 基于RNN的语言模型采用链式规则在词序列上去建模联合概率
+        
+        ![ellm_form_2](img/ellm_form_2.png)
+        
+        所有之前的词的上下文信息使用LSTM去编码，用softmax计算在词上的概率
+    - 噪声对比估计和重要性采样之间的关系：
+        - 分层softmax采用一个树结构，词上的概率分布被分解成两个概率的乘积（对于每个词），大大节省了时间，因为只有制定路径的层次需要被计算和更新，选择一个好的层次很重要（本文不采用这种方法）
+        - 采样方法仅仅用在训练的时候，因为它们的目的是对loss做一个近似，方便计算，但是在推断的时候还是要计算所有词的规范化项
+        - 噪声对比估计考虑用一个代理的二分类任务，该分类器被训练去区分真实数据和从任意分布中采样的数据
+    - CNN softmax：
+        - xx
 
 
 
@@ -145,14 +199,64 @@
 
 
 **Deep contextualized word representations**
- - 即ELMo (Embeddings from Language Models)，词向量是一个深度双向语言模型（BiLM）的内部状态的函数，在大规模的语料上进行预训练
- - ELMo的表示是深层次的，所有
+ - 论文时间：2018年3月22日， [pdf](https://arxiv.org/pdf/1802.05365.pdf)
+ - 介绍：
+    - 即ELMo (Embeddings from Language Models)，词向量是一个深度双向语言模型（biLM）的内部状态的函数，在大规模的语料上进行预训练
+    - ELMo的表示是深层次的，是所有biLM内部层的函数
+    - 高层的LSTM状态捕获词义的上下文层面含义，它们不经过修改就可以被用到词义消歧任务，低层的状态对语法的层面建模，它们可以被用到词性标注
+    - 实验表明深层表示胜过那些仅仅从LSTM顶层派生出来的结果
+    - 大规模预训练的词向量可以在无标注的文本上进行训练，可以捕获到句法和语义的信息，但是那些方法对每个词仅仅允许一个单个的上下文无关文法的表示
+    - 之前的方法通过子词信息或者学习词义的分离的向量来克服缺点，本文的方法也获益于character convolutions
+    - 最近其它方法在关注上下文依赖的表示
+        - context2vec：用一个BiLSTM去编码中心词周围的上下文
+    - 使用3000万的句子来训练biLM
+    - biRNN的不同层编码信息的不同类型，例如引入多人物的句法监督（如词性标注）在深度LSTM的低层能够改善高层任务的总体的性能（如依赖关系分析）
+    - 在一个两层的LSTM中，第一层的表示在做词性标注任务时表现的比第二层好
+ - 双向语言模型：
+    - 前向语言模型通过给定的历史词信息来建模词的概率，进而来计算句子序列的概率
+    - 在每一个位置k，每一个LSTM层输出一个上下文依赖的表示 ![elmo_form_3](img/elmo_form_3.png)，顶层的LSTM输出经过一个softmax层被用来预测下一个词`t_{k+1}`
+        - 正向
+        
+            ![elmo_form](img/elmo_form.png)
+        - 反向
+        
+            ![elmo_form_1](img/elmo_form_1.png)
+        - biLM结合了正向和反向语言模型，联合正向和反向最大化log似然求解：
+        
+            ![elmo_form_2](img/elmo_form_2.png)
+            
+            `theta_x`是token表示的参数，`theta_s`是softmax层的参数
+ - ELMo：
+    - ELMo是一个用biLM中间层表示的特定任务的组合
+    - 对于每一个token `t_k`，一个L层的biLM计算一个包含`2L+1`个表示的集合：
+        
+        ![elmo_form_4](img/elmo_form_4.png)
+        
+        当`j=0`时是token层
+    - 对于下游的模型，ELMo折叠在R中的所有的层到一个单个的向量表示：
+    
+        ![elmo_form_5](img/elmo_form_5.png)
+        
+        `s^{task}`是softmax-normalized weights，缩放参数`gama^{task}`允许任务模型缩放整个ELMo向量，`gama`对于优化过程很重要
+    - 考虑到每一个biLM层的激活函数有不同的分布，在一些情况下，在weighting之前对每一个biLM层使用LayerNorm是有帮助的
+ - 将biLM用在有监督NLP任务上
+    - 记录每个词在每一层的表示，然后让端任务对那些表示去学习一个线性的结合
+    - 大部分NLP监督模型共享最底层的架构，允许我们用一致的和统一的方式去增加ELMo
+    - 首先冻结biLM的权重，然后将`x_k`和ELMo向量进行连接：
+    
+        ![elmo_form_6](img/elmo_form_6.png)
+    - 增加一定数量的dropout和正则化ELMo权重（例如在loss中增加`lambda ||w||_{2}^2`）
+ - pre-trained biLMs
+    - 相比已有的模型，增加支持双向联合训练和在LSTM层之间增加一个一个残差连接
+    - 减半所有的embedding和hidden维度从单个最好的模型[CNN-BIG-LSTM](https://arxiv.org/pdf/1602.02410.pdf)，最终的模型使用2层的BiLSTM，4096个单元、512维度、从第一层到第二层的一个残差连接
+    - 上下文不敏感的类型表示（也就是编码层）使用2048个character n-gram卷积过滤器，再加两层highway network，经过一个线性映射将维度转化为512
+    - 也就是说biLM为每一个token提供三层的表示（对于域外词也会有很好的表示）
+ - 分析
+    - 低层捕获句法信息，高层捕获语义信息
+    - biLM的不同层表示不同类型的信息
 
 
-
-
-
-
+**为啥固定biLM的权重？**
 
 
 
