@@ -608,6 +608,10 @@ doc_lda = lda[doc_bow]
 # doc_lda is vector of length num_topics representing weighted presence of each topic in the doc
 ```
 
+**主题模型非负矩阵分解（NMF）**
+ - TODO
+
+
 #### 深度学习中的LDA：lda2vec
 **一般概念：**
  - 在文章的开头，我们谈到能够从每个级别的文本（单词、段落、文档）中提取其含义是多么重要。
