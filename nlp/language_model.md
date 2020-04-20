@@ -803,11 +803,141 @@ BERT/spanBERT/RoBERT/Albert/...
 
 
 
+recurrent attention
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Attention机制允许模型依赖，不用考虑输入输出序列中的距离
+
+Transformer用一个attention机制去生成输入输出的全局依赖表示，完全取代了循环网络去生成
+
+Transformer将依赖操作的数量限定在一个常数，尽管因为平均attention-weighted position牺牲了有效性，这可以使用Multi-Head Attention来抵消
+
+
+
+
+
+
+
+
+模型架构
+
+Transformer之前，大部分的神经序列转换模型有一个encoder-decoder结构，encoder将输入符号序列`x=(x_1,x_2,...,x_n)`映射到一个连续的序列表示`z=(z_1,z_2,...,z_n)`，
+然后给定z，使用decoder去生成输出符号序列`y=(y_1,y2,...,y_m)`，在一个时间只生成一个元素
+
+在每一个step，模型是auto-regressive，在生成下一个符号时将之前生成的符号作为额外的输入
+
+Transformer基于上述这个总体架构，encoder和decoder使用堆叠的self-attention和point-wise的全连接层
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1.Transformer的decoder中，解码器的上一个输出做为Q还是解码器所有之前的输出作为Q？
+
+2.在encoder之前，为了捕捉顺序序列的能力，加上了位置编码，可以直接使用一层RNN来捕捉？
 
 
 
