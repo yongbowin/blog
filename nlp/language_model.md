@@ -778,103 +778,9 @@ BERT/spanBERT/RoBERT/Albert/...
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#### Transformer
 
 recurrent attention
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -886,11 +792,6 @@ Attention机制允许模型依赖，不用考虑输入输出序列中的距离
 Transformer用一个attention机制去生成输入输出的全局依赖表示，完全取代了循环网络去生成
 
 Transformer将依赖操作的数量限定在一个常数，尽管因为平均attention-weighted position牺牲了有效性，这可以使用Multi-Head Attention来抵消
-
-
-
-
-
 
 
 
@@ -909,35 +810,229 @@ Transformer基于上述这个总体架构，encoder和decoder使用堆叠的self
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 1.Transformer的decoder中，解码器的上一个输出做为Q还是解码器所有之前的输出作为Q？
 
 2.在encoder之前，为了捕捉顺序序列的能力，加上了位置编码，可以直接使用一层RNN来捕捉？
+
+Q,K,V是经过线性变换之后，才进行切分
+
+
+为了保持自回归特性，我们需要防止解码器中的信息流向左流动
+
+```
+>>> nn.softmax(torch.tensor([1,2,-10000000000]).float(), dim=0)
+tensor([0.2689, 0.7311, 0.0000])
+```
+
+
+
+变化的学习率：这相当于在前warmup_steps个训练步骤中线性地增加学习率，然后与步骤数的平方反比成比例地降低学习率。
+
+warmup_steps是固定的值，所以`warmup_steps^{-1.5}`也是固定值，`step_num·warmup_steps^{-1.5}`中step_num在线性增加，值越来越大
+
+
+
+进行缩放的原因：
+ - 矩阵-向量乘法各种模型里到处都是啊，也不会造成梯度流动的问题。dot-product attention 的问题是他要对点积过后的东西做 softmax，各个分量是互相影响的（而不像 tanh 之类的函数，各个分量各算各的）。导致的结果就是：向量维度越高，点积的结果范围越大，越有可能出现最大值比其他值大很多的情况，导致 softmax 的结果接近 one-hot（可以计算一下 softmax(np.random.random(10)) 和 softmax(100 * np.random.random(10))，后者概率质量集中到某个维度的现象很明显
+
+
+In our model, we share the same weight matrix between the two embedding layers and the pre-softmax linear transformation：
+ - 那两个embedding其实是词向量的正转换（onehot-词向量）和逆转换
+ - 原语言和目标语言混用了词表
+
+
+
+参考博客：
+ - [详解Transformer](https://zhuanlan.zhihu.com/p/48508221)
+ - [10分钟带你深入理解Transformer原理及实现](https://zhuanlan.zhihu.com/p/80986272)
+ - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
+ - [transformer中为什么使用不同的K和Q，为什么不能使用同一个值？](https://www.zhihu.com/question/319339652/answer/1012823289)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### BERT
+
+Bidirectional Encoder Representations from Transformers
+
+为什么ELMo是feature-based？
+
+
+预训练深度双向表示从无标签的文本中，在所有层中联合左边和右边的文本
+
+相关工作：
+ - Unsupervised feature-based -- ELMo
+ - Unsupervised fine-tuning -- BERT
+ - Transfer Learning from Supervised Data
+
+之前标准的语言模型是单向的，
+
+OpenAI GPT:
+ - a left-to-right架构，在transformer的self-attention层，每一个token仅仅attend to之前的tokens
+ - 这个限制对句子水平的任务而言是次最优的，当在token水平的任务进行精调时是毁灭性的，例如SQuAD任务
+ - 使用一个浅层的连接去单独训练left-to-right和right-to-left LMs，来抽取context-sensitive features
+ - 每个token的上下文表示是left-to-right表示和right-to-left表示的连接
+
+
+BERT改进：
+ - MLM：masked LM
+    - BERT为了解决之前语言模型中单向的限制，提出了一个新的预训练目标：masked language model (MLM)
+    - MLM随机mask一些输入中的token，目标是仅仅基于它的上下文来预测被masked的word的原始的词汇id
+    - 不像left-to-right的语言模型预训练，MLM目标允许表示去融合left和right的上下文，允许我们去预训练一个深度双向的Transformer
+    - 该双向性是BERT最重要的贡献
+ - Next Sentence Prediction
+    - 联合预训练text-pair表示
+
+
+[The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
+
+
+BERT：
+ - 模型架构：
+    - 是一个基于原始Transformer的，多层·双向·Transformer encoder
+    - BERT base  (L=12, H=768, A=12, Total Parameters=110M)
+    - BERT large (L=24, H=1024, A=16, Total Parameters=340M)
+    - 相比GPT来说，BERT Transformer使用双向self-attention，而GPT Transformer使用受约束self-attention，也就是每一个token仅仅attend to它左边的context
+    - 在一些文献中bidirectional Transformer常常被称为Transformer encoder，而left-context-only的版本被称为Transformer decoder，因为它能被用来做文本生成
+ - 输入/输出表示：
+    - xx
+ - 该框架分为两步：
+    - pre-training
+        - 和ELMo、GPT的left-to-right或者right-to-left LMs的预训练不同，BERT采用两个无监督的任务去预训练
+        - 任务1： Masked LM
+            - 深度双向模型完全比一个left-to-right模型或者一个left-to-right和一个right-to-left模型的浅层连接
+            - 因为双向的条件LM将会使每一个词间接地看到它自己，为了训练一个深度双向的表示，需要随机mask一定百分比的输入词，然后预测那些被masked掉的词，该过程就是MLM
+            - 对于每个序列，随机mask掉15%的wordpiece tokens，和降噪自编码不同，我们仅仅预测被masked的word，而不是重构整个句子
+            - 虽然上述过程允许我们获得一个双向预训练模型，缺点是这使得我们创造了一个pre-training和fine-tuning的不匹配，因为`[MASK]` token在fine-tuning时没有出现
+            - 为了减轻上述的影响，我们并不总是使用`[MASK]`取代masked token
+            - 具体过程：
+                - 随机选择15%的token位置来预测
+                - 加入第i个token被选中，我们取代第i个token：
+                    - 在80%的时间里使用`[MASK]`
+                    - 在10%的时间里使用随机token
+                    - 在10%的时间里token不变
+                - 然后第i个输入最后的隐藏向量`T_i`被用来预测原始的token，使用交叉熵损失函数
+        - 任务2： Next Sentence Prediction (NSP)
+            - 下游任务QA和NLI是基于理解两个句子的关系的基础上的，这种关系没有被LM所捕获
+            - 对于每一个预训练的例子在选择句子A和句子B的时候：
+                - 在50%的时间里，句子B是真实的下一句
+                - 在50%的时间里，句子B是语料中的一个随机的句子
+    - fine-tuning
+        - BERT用一个self-attention机制来同时对文本对进行编码，在两个句子间做双向cross attention
+        - BERT large在小数据集上表现比BERT base好很多
+        - **在fine-tuning SQuAD之前，先在TriviaQA上fine-tuning（将该数据集进行格式化，取篇章的前400个tokens，取出来的片段包含正确答案的），以进行适当的数据增强**
+        - 对于SQuAD2.0无答案的情况，如果answer span的开始和结束位置落在`[CLS]`中，当作无答案的情况：
+            
+            ```
+            C为[CLS] token, T_i为正常token，S为开始向量，属于R^H，H为隐状态的维度，E为结束向量，属于R^H
+            
+            通过计算T_i和S的点乘，然后经过softmax over all words，值最大的位置即为开始位置，同理计算出结束位置
+            
+            从位置i到位置j的候选span的分数为：
+            S·T_i + E·T_j，  其中j>=i
+            
+            无答案的span分数（即落在[CLS]中）：
+            s_{null} = S·C+E·C
+            有答案的span分数的最大值：
+            s_{i,j} = max_{j>=i} (S·T_i + E·T_j)
+            
+            通过比较下式来预测非空答案：
+            s_{i,j} > s_{null} + τ
+            其中阈值τ通过在dev数据集上最大化F1值来选择
+            
+            在这个版本的数据集上没有使用TriviaQA进行精调
+            ```
+        - xx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
