@@ -842,106 +842,92 @@ In our model, we share the same weight matrix between the two embedding layers a
 
 
 
-参考博客：
- - [详解Transformer](https://zhuanlan.zhihu.com/p/48508221)
- - [10分钟带你深入理解Transformer原理及实现](https://zhuanlan.zhihu.com/p/80986272)
- - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
- - [transformer中为什么使用不同的K和Q，为什么不能使用同一个值？](https://www.zhihu.com/question/319339652/answer/1012823289)
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**现有的Language Model Embedding**
+ - 语言模型通常有两种方式：
+    - feature-based方法
+        - Feature-based指利用语言模型的中间结果也就是LM embedding, 将其作为额外的特征，引入到原任务的模型中
+        - 例如在TagLM中，采用了两个单向RNN构成的语言模型，将语言模型的中间结果：
+        
+        ![lm_taglm](img/lm_taglm.png)
+    
+            - 引入到序列标注模型中，如图所示，其中左边部分为序列标注模型，也就是task-specific model，每个任务可能不同
+            - 右边是前向LM(Left-to-right)和后向LM(Right-To-Left), 两个LM的结果进行了合并
+            - 并将LM embedding与词向量、第一层RNN输出、第二层RNN输出进行了concat操作。
+        - 通常feature-based方法包括两步：
+            - 首先在大的语料A上无监督地训练语言模型，训练完毕得到语言模型
+            - 然后构造task-specific model例如序列标注模型，采用有标记的语料B来有监督地训练task-sepcific model，**将语言模型的参数固定，语料B的训练数据经过语言模型得到LM embedding，作为task-specific model的额外特征**
+            - ELMo是这方面的典型工作
+    - fine-tuning方法
+        - Fine-tuning方式是指在已经训练好的语言模型的基础上，加入少量的task-specific parameters, 例如对于分类问题在语言模型基础上加一层softmax网络，然后在新的语料上重新训练来进行fine-tune。
+        - 例如OpenAI GPT中采用了这样的方法，模型如下所示：
+        
+        ![lm_gpt](img/lm_gpt.png)
+        
+            - 首先语言模型**GPT采用了Transformer Decoder的方法来进行训练**，采用文本预测作为语言模型训练任务，训练完毕之后，加一层Linear Project来完成分类/相似度计算等NLP任务。
+            - 因此总结来说，LM + Fine-Tuning的方法工作包括两步：
+                - 1.构造语言模型，采用大的语料A来训练语言模型
+                - 2.在语言模型基础上增加少量神经网络层来完成specific task，例如序列标注、分类等，然后采用有标记的语料B来有监督地训练模型，**这个过程中语言模型的参数并不固定**，依然是trainable variables.
+            - 而BERT论文采用了LM + fine-tuning的方法，同时也讨论了BERT + task-specific model的方法。
 
 
 #### BERT
 
-Bidirectional Encoder Representations from Transformers
+**前言：**
+ - **BERT采用了Transformer Encoder的模型来作为语言模型**，完全抛弃了RNN/CNN等结构，而完全采用Attention机制来进行input-output之间关系的计算
+ - 如下图中左半边部分所示：
+ 
+    ![lm_bert](img/lm_bert.png)
+ - 其中模型包括两个sublayer：
+    - 1.Multi-Head Attention来做模型对输入的Self-Attention组合变换
+    - 2.Feed Forward部分来对attention计算后的输入进行变换
+ - 因为**语言模型本身的定义是计算句子的概率**：
 
-为什么ELMo是feature-based？
+    ![lm_elmo_form](img/lm_elmo_form.png)
+ - 那么如何才能同时利用好前面词和后面词的概率呢？
+    - BERT提出了Masked Language Model，也就是随机去掉句子中的部分token，然后模型来预测被去掉的token是什么。
+    - 这样实际上已经不是传统的神经网络语言模型(类似于生成模型)了，而是单纯作为分类问题，根据这个时刻的hidden state来预测这个时刻的token应该是什么，而**不是预测下一个时刻的词的概率分布了（区别于传统的语言模型预测下一时刻词的分布）**。
+ - 相关工作：
+    - Unsupervised feature-based -- ELMo
+    - Unsupervised fine-tuning -- BERT/GPT
+    - Transfer Learning from Supervised Data
+ - 之前标准的语言模型是单向的
+ - OpenAI GPT:
+    - a left-to-right架构，在transformer的self-attention层，每一个token仅仅attend to之前的tokens
+    - 这个限制对句子水平的任务而言是次最优的，当在token水平的任务进行精调时是毁灭性的，例如SQuAD任务
+    - 使用一个浅层的连接去单独训练left-to-right和right-to-left LMs，来抽取context-sensitive features
+    - 每个token的上下文表示是left-to-right表示和right-to-left表示的连接
+ - BERT改进：
+    - MLM：masked LM
+        - BERT为了解决之前语言模型中单向的限制，提出了一个新的预训练目标：masked language model (MLM)
+        - MLM随机mask一些输入中的token，目标是仅仅基于它的上下文来预测被masked的word的原始的词汇id
+        - 不像left-to-right的语言模型预训练，MLM目标允许表示去融合left和right的上下文，允许我们去预训练一个深度双向的Transformer
+        - 该双向性是BERT最重要的贡献
+    - Next Sentence Prediction
+        - 联合预训练text-pair表示
+ - token-level任务有QA、词性标注等（取所有token的最后层transformer输出，喂给softmax层做分类），sentence-level任务有文本蕴含、句子对分类、情感分析等（取第一个token的输出表示，喂给一个softmax层得到分类结果输出）
 
-
-预训练深度双向表示从无标签的文本中，在所有层中联合左边和右边的文本
-
-相关工作：
- - Unsupervised feature-based -- ELMo
- - Unsupervised fine-tuning -- BERT
- - Transfer Learning from Supervised Data
-
-之前标准的语言模型是单向的，
-
-OpenAI GPT:
- - a left-to-right架构，在transformer的self-attention层，每一个token仅仅attend to之前的tokens
- - 这个限制对句子水平的任务而言是次最优的，当在token水平的任务进行精调时是毁灭性的，例如SQuAD任务
- - 使用一个浅层的连接去单独训练left-to-right和right-to-left LMs，来抽取context-sensitive features
- - 每个token的上下文表示是left-to-right表示和right-to-left表示的连接
-
-
-BERT改进：
- - MLM：masked LM
-    - BERT为了解决之前语言模型中单向的限制，提出了一个新的预训练目标：masked language model (MLM)
-    - MLM随机mask一些输入中的token，目标是仅仅基于它的上下文来预测被masked的word的原始的词汇id
-    - 不像left-to-right的语言模型预训练，MLM目标允许表示去融合left和right的上下文，允许我们去预训练一个深度双向的Transformer
-    - 该双向性是BERT最重要的贡献
- - Next Sentence Prediction
-    - 联合预训练text-pair表示
-
-
-[The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
-
-
-BERT：
+**BERT模型：**
+ - BERT (**B**idirectional **E**ncoder **R**epresentations from **T**ransformers)
  - 模型架构：
     - 是一个基于原始Transformer的，多层·双向·Transformer encoder
     - BERT base  (L=12, H=768, A=12, Total Parameters=110M)
     - BERT large (L=24, H=1024, A=16, Total Parameters=340M)
     - 相比GPT来说，BERT Transformer使用双向self-attention，而GPT Transformer使用受约束self-attention，也就是每一个token仅仅attend to它左边的context
     - 在一些文献中bidirectional Transformer常常被称为Transformer encoder，而left-context-only的版本被称为Transformer decoder，因为它能被用来做文本生成
- - 输入/输出表示：
-    - xx
+ - 模型输入表示：
+    - 为了一个输入能够针对两个任务，输入构造规则如下：
+    
+        ![lm_bert_input](img/lm_bert_input.png)
+        
+        - 1.为了能够同时表示单句子和句子对，多句子(例如QA中的Q/A)需要进行拼接作为单个句子，用segment embedding和`[SEG]`来进行区分
+        - 2.句子第一个token总是有特殊含义，例如分类问题中是类别，如果不是分类问题那么就忽略
+        - 三个embedding进行sum得到输入的向量
  - 该框架分为两步：
     - pre-training
         - 和ELMo、GPT的left-to-right或者right-to-left LMs的预训练不同，BERT采用两个无监督的任务去预训练
@@ -951,13 +937,14 @@ BERT：
             - 对于每个序列，随机mask掉15%的wordpiece tokens，和降噪自编码不同，我们仅仅预测被masked的word，而不是重构整个句子
             - 虽然上述过程允许我们获得一个双向预训练模型，缺点是这使得我们创造了一个pre-training和fine-tuning的不匹配，因为`[MASK]` token在fine-tuning时没有出现
             - 为了减轻上述的影响，我们并不总是使用`[MASK]`取代masked token
-            - 具体过程：
+            - fine-tuning的时候没有`[MASK]` token，因此存在pre-training和fine-tuning之间的mismatch，为了解决这个问题，采用了下面的策略，具体过程：
                 - 随机选择15%的token位置来预测
                 - 假如第i个token被选中，我们取代第i个token：
                     - 在80%的时间里使用`[MASK]`
                     - 在10%的时间里使用随机token
                     - 在10%的时间里token不变（目的是让表示偏向真实的word）
                 - 然后第i个输入最后的隐藏向量`T_i`被用来预测原始的token，使用交叉熵损失函数
+            - 这样存在另一个问题在于在训练过程中只有15%的token被预测，正常的语言模型实际上是预测每个token的，因此Masked LM相比正常LM会收敛地慢一些。
             - Mask过程分析：
                 - 这个过程的优势是Transformer encoder不知道将要预测哪个词或者哪个词被随机的词所取代，所以它被要求去保持每一个输入token的分布式上下文表示
                 - 总体来看，随机mask占所有词的15% × 10% = 1.5%，不会伤害模型的语言理解能力
@@ -1014,6 +1001,11 @@ BERT：
     - GPT训练1M steps，每个batch size有32000 words，而BERT训练1M steps，每个batch size有128000 words
     - GPT使用学习率5e-5在所有的精调实验中，而BERT选择特定任务的精调学习率（即在dev数据集上最优的）
     - BERT相对于GPT主要的改进在于两个预训练任务和双向表示
+    - 它与OpenAI GPT的区别就在于**BERT采用了Transformer Encoder**，也就是每个时刻的Attention计算都能够得到全部时刻的输入。
+    - 而**OpenAI GPT采用了Transformer Decoder**，每个时刻的Attention计算只能依赖于该时刻前的所有时刻的输入，因为OpenAI GPT是采用了单向语言模型。做的是句子生成任务来预训练。
+    - 现有的语言模型的问题在于，没有同时利用到Bidirectional信息，现有的语言模型例如ELMo号称是双向LM(BiLM)，但是实际上是两个单向RNN构成的语言模型的拼接。ELMo架构如下：
+    
+        ![lm_elmo](img/lm_elmo.png)
  - BERT需要这么多steps吗？是的，在MNLI任务上提升了1%，通过把steps从500k提升到1M
  - feature-based方法的mismatch将会被方法，因为没有经过fine-tuning来调整表示
 
@@ -1028,6 +1020,14 @@ BERT：
 
 
 
+**参考博客：**
+ - [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
+ - [详解Transformer](https://zhuanlan.zhihu.com/p/48508221)
+ - [10分钟带你深入理解Transformer原理及实现](https://zhuanlan.zhihu.com/p/80986272)
+ - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
+ - [transformer中为什么使用不同的K和Q，为什么不能使用同一个值？](https://www.zhihu.com/question/319339652/answer/1012823289)
+ - [论文解读:BERT模型及fine-tuning](https://zhuanlan.zhihu.com/p/46833276)
+ - []()
 
 
 
@@ -1042,67 +1042,13 @@ BERT：
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## ELMO模型
-
-
-## word2vec与BERT的区别
 
 
 ## 一些问题
+
+**word2vec与BERT的区别：**
+
+
 **线性插值法和Attention机制：**
 
 
