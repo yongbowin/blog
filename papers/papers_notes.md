@@ -102,34 +102,7 @@
     - 对于perturbation embedding training process，使用给定的模型参数（训练好的）来训练权重矩阵w，并收集它的平均训练损失
     - 进行贪婪采样得到A，并将其插入到passage中得到（或创建）对抗样本
     - 使用上一步得到的丰富后的训练集重新训练模型
-    - 训练同志的条件是损失小雨阈值或者到达T
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    - 训练终止的条件是损失小于阈值或者到达T
 
 
 **Exploring the Limits of Language Modeling**

@@ -953,11 +953,16 @@ BERT：
             - 为了减轻上述的影响，我们并不总是使用`[MASK]`取代masked token
             - 具体过程：
                 - 随机选择15%的token位置来预测
-                - 加入第i个token被选中，我们取代第i个token：
+                - 假如第i个token被选中，我们取代第i个token：
                     - 在80%的时间里使用`[MASK]`
                     - 在10%的时间里使用随机token
-                    - 在10%的时间里token不变
+                    - 在10%的时间里token不变（目的是让表示偏向真实的word）
                 - 然后第i个输入最后的隐藏向量`T_i`被用来预测原始的token，使用交叉熵损失函数
+            - Mask过程分析：
+                - 这个过程的优势是Transformer encoder不知道将要预测哪个词或者哪个词被随机的词所取代，所以它被要求去保持每一个输入token的分布式上下文表示
+                - 总体来看，随机mask占所有词的15% × 10% = 1.5%，不会伤害模型的语言理解能力
+                - 和标准的语言模型训练相比，Masked LM仅仅在每个batch的15%的tokens上做预测，意味着可能需要更多的预训练steps来让模型收敛
+                - MLM收敛速度慢于left-to-right模型（该模型对每一个词都进行预测）
         - 任务2： Next Sentence Prediction (NSP)
             - 下游任务QA和NLI是基于理解两个句子的关系的基础上的，这种关系没有被LM所捕获
             - 对于每一个预训练的例子在选择句子A和句子B的时候：
@@ -988,9 +993,29 @@ BERT：
             
             在这个版本的数据集上没有使用TriviaQA进行精调
             ```
-        - xx
+        - 精调速度较快，可以使用参数搜索来最优化模型
+        - 大数据集（100K+）对超参数不敏感，小数据集较敏感
 
 
+**BERT/ELMo/GPT对比：**
+ - 三者的架构不同，如下图：
+ 
+    ![bert_img](img/bert_img.png)
+    
+ - 预训练架构不同：
+    - BERT使用一个双向Transformer
+    - GPT使用一个left-to-right Transformer
+    - ELMo将两个独立训练的模型，即left-to-right LSTM模型和right-to-left LSTM模型连接起来为下游任务去生成特征
+    - 在这三个模型中，仅仅只有BERT表示在所有的层都联合了左边和右边的上下文
+ - BERT和GPT是基于fine-tuning的方法，ELMo是基于feature-based方法
+ - BERT和GPT的区别：
+    - GPT预训练语料是BooksCorpus（800M words），BERT是BooksCorpus（800M words）和Wikipedia（2500M words）
+    - GPT使用句子分割`[SEP]`和分类token `[CLS]`，两者都是在精调的时候引入；而BERT在预训练的时候就学习`[SEP]`，`[CLS]`和句子`A/B`的embedding
+    - GPT训练1M steps，每个batch size有32000 words，而BERT训练1M steps，每个batch size有128000 words
+    - GPT使用学习率5e-5在所有的精调实验中，而BERT选择特定任务的精调学习率（即在dev数据集上最优的）
+    - BERT相对于GPT主要的改进在于两个预训练任务和双向表示
+ - BERT需要这么多steps吗？是的，在MNLI任务上提升了1%，通过把steps从500k提升到1M
+ - feature-based方法的mismatch将会被方法，因为没有经过fine-tuning来调整表示
 
 
 
