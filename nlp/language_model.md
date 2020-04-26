@@ -1238,6 +1238,13 @@ In our model, we share the same weight matrix between the two embedding layers a
             
             - 假如，模型只有一层的话，其实这样只有Query Stream（左下角图）就已经够了。
             - 但如果将层数加上去的话，**为了取得更高层的h，于是就需要Content Stream了（左上角图）**,h同时作为Q、K、V。
+        - 下边计算公式，其中z表示其中一个排列组合，t表示当前时刻（当前位置）：
+            
+            ![lm_xlnet_form_2](img/lm_xlnet_form_2.png)
+            
+            - （上式）Query stream：只能看到当前的位置信息，不能看到当前token的编码
+            - （下式）Content stream：传统self-attention，像GPT一样对当前token进行编码
+            - **预训练阶段最终预测只使用query stream，因为content stream已经见过当前token了。在精调阶段使用content stream，又回到了传统的self-attention结构**。
         - 上图中我们需要理解两点：
             - 第一点，最下面一层蓝色的Content Stream的输入是`e(x_i)`，也就是对应的词向量，但看旁边绿色的 Query Stream，就会觉得很奇怪，为什么都是一样的？这个和Relative Positional Encoding有关。
             - 第二点，Query stream attention图中为了便于说明，只将当前位置之外的h作为K和V，但实际上实现中应该是所有时序上的h都作为K和V，最后再交给上图中的Query stream的Attention Mask来完成位置的遮盖。
@@ -1429,6 +1436,8 @@ query stream attention和content stream attention，前者用来预训练，后�
 
 
 
+
+## ELECTRA
 
 
 
