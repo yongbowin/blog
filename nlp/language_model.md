@@ -1425,6 +1425,56 @@ query stream attention和content stream attention，前者用来预训练，后�
 
 
 
+## 时间轴
+
+序号 | 模型 | 首次发表时间 | 机构 | 会议
+-|-|-|-|-
+1 | [ALBERT](https://arxiv.org/abs/1909.11942) | 2019-09-26 | Google | ICLR2020 | [code](https://github.com/google-research/ALBERT) |
+2 | [ERNIE 2.0](https://arxiv.org/abs/1907.12412) | 2019-07-29 | 百度 | AAAI2020 | [code](https://github.com/PaddlePaddle/ERNIE) |
+3 | [RoBERTa](https://arxiv.org/abs/1907.11692) | 2019-07-26 | Facebook | xx | [code](https://github.com/pytorch/fairseq/tree/master/examples/roberta), [中文code](https://github.com/brightmart/roberta_zh) |
+4 | [SpanBERT](https://arxiv.org/abs/1907.10529) | 2019-07-24 | Facebook | TACL2020 | [code](https://github.com/facebookresearch/SpanBERT) |
+5 | [BERT-wwm-ext](https://arxiv.org/abs/1906.08101) | 2019-06-19 | 科大讯飞 | xxx | [code](https://github.com/ymcui/Chinese-BERT-wwm) |
+6 | [Transformer-XL](https://arxiv.org/abs/1901.02860) | 2019-01-09 | Google | ACL2019 | [code](https://github.com/kimiyoung/transformer-xl) |
+7 | [BERT](https://arxiv.org/abs/1810.04805) | 2018-10-11 | Google | NAACL2019 | [code](https://github.com/huggingface/transformers) |
+8 | [Transformer](https://arxiv.org/abs/1706.03762) | 2017-06-12 | Google | NIPS2017 | [code](https://github.com/tensorflow/tensor2tensor) |
+
+GPT
+GPT 2.0
+ELMo
+XLNet
+
+
+## 现有预训练模型
+
+序号 | 项目 | 机构 | 内容
+-|-|-|-
+1 | [OpenCLaP项目](https://github.com/thunlp/OpenCLaP) | 清华大学 | 民事文书BERT/刑事文书BERT/百度百科BERT |
+2 | [albert_zh](https://github.com/brightmart/albert_zh) | xxx | 海量中文预训练ALBERT模型 |
+3 | [roberta_zh](https://github.com/brightmart/roberta_zh) | xxx | 中文预训练RoBERTa模型 |
+4 | [Chinese-XLNet](https://github.com/ymcui/Chinese-XLNet) | 科大讯飞 | 中文XLNet预训练模型 |
+5 | [Chinese-BERT-wwm](https://github.com/ymcui/Chinese-BERT-wwm) | 科大讯飞 | 中文BERT-wwm系列模型 |
+
+
+
+## 训练语料
+
+序号 | 语料 | 描述
+-|-|-
+1 | [nlp_chinese_corpus](https://github.com/brightmart/nlp_chinese_corpus) | 维基百科(wiki2019zh)，100万个结构良好的中文词条/
+新闻语料(news2016zh)，250万篇新闻，含关键词、描述/百科问答(baike2018qa)，150万个带问题类型的问答/社区问答json版(webtext2019zh)，410万个高质量社区问答，适合训练超大模型/翻译语料(translation2019zh)，520万个中英文句子对 |
+2 | [Chinese-RC-Datasets](https://github.com/ymcui/Chinese-RC-Datasets) | 中文阅读理解数据集 |
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1433,6 +1483,282 @@ query stream attention和content stream attention，前者用来预训练，后�
 
 
 ## MASS
+
+
+
+
+
+
+## ERNIE
+
+
+
+
+
+
+
+## ERNIE 2.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## RoBERTa
+
+#### 主要贡献
+ - RoBERTa, A Robustly Optimized BERT Pretraining Approach
+ - RoBERTa：站在BERT的肩膀上，是基于BERT的一种改进版本。是BERT在多个层面上的重大改进。
+ - 从模型上来说，RoBERTa基本没有什么太大创新，主要是在BERT基础上做了几点调整：
+    - 1.训练时间更长，batch size更大，训练数据更多，预训练数据集从16G增加到了160G，训练轮数比BERT有所增加；
+    - 2.移除了next predict loss （NSP），相比于BERT，采用了连续的full-sentences和doc-sentences作为输入（长度最多为512），训练序列更长；
+    - 3.text encoding，基于bytes的编码可以有效防止unknown问题；
+    - 4.动态调整Masking机制，相比于静态，动态Masking是每次输入到序列的Masking都不一样。
+
+#### 更多训练数据/更大的batch size/训练更长时间
+ - 原本bert：BOOKCORPUS + English WIKIPEDIA.(16G original)
+    - add CC-NEWS(76G)
+    - add OPEN WEB TEXT(38G)
+    - add STORIES(31G)
+    - 一共161GB训练数据。
+ - 更大的batch size，第一行为原始的。
+        
+    ![ln_roberta](img/ln_roberta.png)
+ - 更长的训练时间 steps
+    
+    ![lm_roberta_tab](img/lm_roberta_tab.png)
+
+#### 动态掩码 Dynamic Masking
+ - 原版的 BERT 实现在数据预处理期间执行一次掩码，得到一个静态掩码。而RoBERTa使用了动态掩码：每次向模型输入一个序列时都会生成新的掩码模式。这样，在大量数据不断输入的过程中，模型会逐渐适应不同的掩码策略，学习不同的语言表征。
+ - static masking方法：
+    - 原本的BERT采用的是static mask的方式。
+    - 在创建预训练数据的过程中，先对数据进行提前的mask，为了充分利用数据，定义了`dupe_factor`（即同一条训练数据要复制`dupe_factor`份），然后同一条数据可以有不同的mask。
+    - 但是这些数据不是全部都喂给同一个epoch，是不同的epoch，例如`dupe_factor=10`， `epoch=40`，则**每种mask的方式在训练中会被使用重复使用4次**。
+    - 也就是说：如果复制10份，然后分别进行不同的mask，然后`epoch=10`，这时一个epoch就一一对应，但是epoch多了就会重复使用同一个样本的这10个不同的mask数据。
+ - dynamic masking：
+    - **每一次将训练example喂给模型的时候，才进行随机mask**。
+    - 保证了即使同一个样本每次epoch中也能用到不用的mask，不受epoch的限制。
+    
+        ![lm_roberta_dm](img/lm_roberta_dm.png)
+
+#### No NSP and Input Format
+ - 有无NSP实验结果：
+    
+    ![lm_roberta_nsp](img/lm_roberta_nsp.png)
+    
+    - Segment+NSP：bert style
+    - Sentence pair+NSP：使用两个连续的句子+NSP。用更大的batch size
+    - Full-sentences：如果输入的最大长度为512，那么就是尽量选择512长度的连续句子。如果跨document了，就在中间加上一个特殊分隔符。无NSP。实验使用了这个，因为能够固定batch size的大小。
+    - Doc-sentences：和full-sentences一样，但是不跨document。无NSP。最优。
+
+#### Text Encoding
+ - BERT原型使用的是character-level BPE vocabulary of size 30K
+ - RoBERTa使用了GPT2的BPE实现，使用的是byte而不是unicode characters作为subword的单位。
+ - 用更大的byte级别BPE词汇表来训练BERT，这一词汇表包含50K的subword单元，且没有对输入作任何额外的预处理或分词。
+ - 中文实现没有dynamic masking
+
+#### 为什么RoBERTa会比BERT、GPT-2和XLNet好？
+ - 首先实验结果说明BERT及其掩码机制还是老当益壮。
+ - 其次GPT-2和XLNet或多或少都反映了BERT某些方面的不足，不过这些对BERT都是非致命的。比如，**GPT-2中看到了更多数据的威力（BERT的训练数据远未饱和）**，**XLNet中看到next prediction loss非必须，batch size可以设置更大**。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## SpanBERT
+
+发表时间：2019-07-24
+
+#### 主要贡献
+ - 1.提出了**更好的Span Mask方案**，也再次展示了随机遮盖连续一段字要比随机遮盖掉分散字好；
+ - 2.通过**加入Span Boundary Objective (SBO)训练目标**，增强了BERT的性能，特别在一些与Span相关的任务，如抽取式问答；
+ - 3.用实验获得了和XLNet类似的结果，发现**不加入NSP任务，直接用连续一长句训练效果更好**。
+
+#### Span Masking
+ - 模型如下，训练过程：
+    
+    ![lm_spanbert_model](img/lm_spanbert_model.png)
+ - 对于原始的BERT，训练时，会随机选取整句中的最小输入单元token来进行遮盖，但这样会让本来应该有强相关的一些连在一起的字词，在训练时是割裂开来的。
+ - Google放出的BERT WWM模型就是-将属于同一个词的子词一块mask：
+    
+    ![lm_spanbert_wwm](img/lm_spanbert_wwm.png)
+ - 更进一步，因为有些实体是几个词组成的，直接将这个实体都遮盖掉，百度在ERNIE模型中，就引入命名实体（Named Entity）外部知识，遮盖掉实体单元，进行训练。
+ 
+    ![lm_ernie](img/lm_ernie.png)
+ - 但这两种做法会让人认为，或许必须得引入类似词边界信息才能帮助训练。但前不久的MASS模型，却表明可能并不需要，**随机遮盖可能效果也很好**，于是就有本篇的idea
+ - 根据[几何分布](https://blog.csdn.net/eric2016_lv/article/details/53132954)，先随机选择一段（span）的**长度**，之后再根据
+ [均匀分布](https://baike.baidu.com/item/%E5%9D%87%E5%8C%80%E5%88%86%E5%B8%83/954451?fr=aladdin)
+ 随机选择这一段的**起始位置**，最后**按照长度遮盖**。文中使用几何分布取p=0.2，最大长度只能是10，利用此方案获得平均采样长度分布。
+    
+    ![lm_spanbert_img](img/lm_spanbert_img.png)
+ - 通过采样，平均被遮盖长度是**3.8个词的长度**。计算过程如下：
+    
+    ![lm_spanbert_form](img/lm_spanbert_form.png)
+ - 对剩下的概率重新normalize，操作完后就会得到：
+ 
+    ![lm_spanbert_form_1](img/lm_spanbert_form_1.png)
+ - 各种mask方式效果对比：
+    
+    ![lm_spanbert_img_1](img/lm_spanbert_img_1.png)
+
+#### SBO
+ - 只要给Random Span再加上SBO训练目标，就能大大提高这个方法的表现。
+ - Span Boundary Objective (SBO，span边界目标)是该论文加入的新训练目标，希望**被遮盖Span边界的词向量，能学习到Span的内容**。
+ - 具体做法是：
+    - 在训练时取Span前后边界的两个词，值得指出，这两个词不在Span内，然后**用这两个词向量加上Span中被遮盖掉词的位置向量，来预测原词**。
+ 
+        ![lm_spanbert_form_2](img/lm_spanbert_form_2.png)
+    - 将词向量和位置向量拼接起来，过两层全连接层：
+    
+        ![lm_spanbert_form_3](img/lm_spanbert_form_3.png)
+    - 最后预测Span中原词时获得一个新损失，就是SBO目标的损失，之后将这个损失和BERT的MLM的损失加起来，一起用于训练模型：
+        
+        ![lm_spanbert_form_4](img/lm_spanbert_form_4.png)
+        
+        其中，`x_i`是masked span中的一个token。
+    - 加上SBO后效果普遍提高，特别是之前的指代消解任务，提升很大。
+        
+        ![lm_spanbert_form_5](img/lm_spanbert_form_5.png)
+    - SpanBERT还有一个和原始BERT训练很不同的地方，它没用NSP任务，而是直接用Single-Sequence Training，也就是直接用一句来训练。
+    - 为什么NSP没有用呢？
+        - 相比起两句拼接，**一句长句可以是模型获得更长上下文**（类似XLNet的一部分效果）；
+        - 在NSP的负例情况下，基于另一个文档的句子来预测词，**会给MLM任务带来很大噪音**。
+        - 于是SpanBERT就没采用NSP任务，**直接一句长句，然后MLM加上SBO任务来进行预训练**。
+    - 通过实验得出下边结论：
+        - SpanBERT普遍强于BERT；
+        - SpanBERT尤其**在抽取式问答上表现好**，这应该与它的预训练目标关系较大；
+        - 舍弃掉NSP的**一段长句训练普遍要比原始BERT两段拼接的方式要好**。
+    - 在XLNet中，是通过**PLM加上自回归方式来显式地学习遮盖词之间关系，而在SpanBERT，或上面提的WWM和ERNIE中，这种关系的学习是通过被遮盖掉部分本身的强相关性，隐式地学习到的**。
+
+
+
+
+
+**参考博客：**
+ - [SpanBert：对Bert预训练的一次深度探索](https://zhuanlan.zhihu.com/p/75893972)
+ - [RoBERTa中文预训练模型，你离中文任务的「SOTA」只差个它](https://mp.weixin.qq.com/s/v5wijUi9WgcQlr6Xwc-Pvw)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## WWM BERT
+
+
+
+## T5
+
+
+
+
+## ALBERT
+
+
 
 
 
