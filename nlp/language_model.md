@@ -1429,19 +1429,21 @@ query stream attention和content stream attention，前者用来预训练，后�
 
 序号 | 模型 | 首次发表时间 | 机构 | 会议
 -|-|-|-|-
-1 | [ALBERT](https://arxiv.org/abs/1909.11942) | 2019-09-26 | Google | ICLR2020 | [code](https://github.com/google-research/ALBERT) |
-2 | [ERNIE 2.0](https://arxiv.org/abs/1907.12412) | 2019-07-29 | 百度 | AAAI2020 | [code](https://github.com/PaddlePaddle/ERNIE) |
-3 | [RoBERTa](https://arxiv.org/abs/1907.11692) | 2019-07-26 | Facebook | xx | [code](https://github.com/pytorch/fairseq/tree/master/examples/roberta), [中文code](https://github.com/brightmart/roberta_zh) |
-4 | [SpanBERT](https://arxiv.org/abs/1907.10529) | 2019-07-24 | Facebook | TACL2020 | [code](https://github.com/facebookresearch/SpanBERT) |
-5 | [BERT-wwm-ext](https://arxiv.org/abs/1906.08101) | 2019-06-19 | 科大讯飞 | xxx | [code](https://github.com/ymcui/Chinese-BERT-wwm) |
-6 | [Transformer-XL](https://arxiv.org/abs/1901.02860) | 2019-01-09 | Google | ACL2019 | [code](https://github.com/kimiyoung/transformer-xl) |
-7 | [BERT](https://arxiv.org/abs/1810.04805) | 2018-10-11 | Google | NAACL2019 | [code](https://github.com/huggingface/transformers) |
-8 | [Transformer](https://arxiv.org/abs/1706.03762) | 2017-06-12 | Google | NIPS2017 | [code](https://github.com/tensorflow/tensor2tensor) |
+1 | [BART](https://arxiv.org/abs/1910.13461) | 2019-10-29 | Facebook | xxx | [code](https://github.com/pytorch/fairseq/tree/master/examples/bart) |
+2 | [T5](https://arxiv.org/abs/1910.10683) | 2019-10-23 | Google | xxx | [code](https://github.com/google-research/text-to-text-transfer-transformer) |
+3 | [ALBERT](https://arxiv.org/abs/1909.11942) | 2019-09-26 | Google | ICLR2020 | [code](https://github.com/google-research/ALBERT) |
+4 | [ERNIE 2.0](https://arxiv.org/abs/1907.12412) | 2019-07-29 | 百度 | AAAI2020 | [code](https://github.com/PaddlePaddle/ERNIE) |
+5 | [RoBERTa](https://arxiv.org/abs/1907.11692) | 2019-07-26 | Facebook | xx | [code](https://github.com/pytorch/fairseq/tree/master/examples/roberta), [中文code](https://github.com/brightmart/roberta_zh) |
+6 | [SpanBERT](https://arxiv.org/abs/1907.10529) | 2019-07-24 | Facebook | TACL2020 | [code](https://github.com/facebookresearch/SpanBERT) |
+7 | [XLNet](https://arxiv.org/abs/1906.08237) | 2019-06-19 | Google | NIPS2019 | [code](https://github.com/zihangdai/xlnet) |
+8 | [BERT-wwm-ext](https://arxiv.org/abs/1906.08101) | 2019-06-19 | 科大讯飞 | xxx | [code](https://github.com/ymcui/Chinese-BERT-wwm) |
+9 | [Transformer-XL](https://arxiv.org/abs/1901.02860) | 2019-01-09 | Google | ACL2019 | [code](https://github.com/kimiyoung/transformer-xl) |
+10 | [BERT](https://arxiv.org/abs/1810.04805) | 2018-10-11 | Google | NAACL2019 | [code](https://github.com/huggingface/transformers) |
+11 | [GPT 2.0](https://www.openai.com/blog/gpt-2-1-5b-release/) | 2019-08-24 | OpenAI | radford2019 | [code](https://github.com/openai/gpt-2) |
+12 | [GPT](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf) | 2018-06-11 | OpenAI | xxx | [code](https://github.com/openai/finetune-transformer-lm) |
+13 | [ELMo](https://arxiv.org/abs/1802.05365) | 2018-02-15 | Allen AI | NAACL2018 | [code](https://allennlp.org/elmo) |
+14 | [Transformer](https://arxiv.org/abs/1706.03762) | 2017-06-12 | Google | NIPS2017 | [code](https://github.com/tensorflow/tensor2tensor) |
 
-GPT
-GPT 2.0
-ELMo
-XLNet
 
 
 ## 现有预训练模型
@@ -1497,7 +1499,59 @@ XLNet
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## ERNIE 2.0
+
+#### 主要贡献
+ - ERNIE2是百度在ERNIE1基础上的一个升级版，提出了一个持续学习的机制（continual learning），持续学习包括**持续构建预训练任务和增量多任务学习两个部分**。
+
+
+
+
+
+#### RoBERTa和ERNIE2.0对比
+ - RoBERTa与ERNIE2的对比可以看到，现阶段改模型不如加数据，这样来看有几个问题：
+    - 1.数据量的底，就BERT-Large模型结构而言，到底多少才会趋于饱和；
+    - 2.预训练数据种类是否有关，比如我是不停地加新闻类数据就可以还是需要均衡新闻、小说、问答等各类数据；
+    - 3.如果拿同等的训练数据，RoBERTa与ERNIE2不知是哪种模式的训练效果会好些。
+
+
+
+
+
+
+
+
+
+## BERT-wwm-ext
+
+#### 主要贡献
+ - BERT-wwm-ext主要是有两点改进：
+    - 1.预训练数据集做了增加，次数达到5.4B；
+    - 2.训练步数增大，训练第一阶段1M步，训练第二阶段400K步。
+ - 在一些中文任务上效果稍微有提升，这也验证了RoBERTa的观点（不是BERT不行，是潜力没发挥而已）。
+
 
 
 
@@ -1586,61 +1640,6 @@ XLNet
 #### 为什么RoBERTa会比BERT、GPT-2和XLNet好？
  - 首先实验结果说明BERT及其掩码机制还是老当益壮。
  - 其次GPT-2和XLNet或多或少都反映了BERT某些方面的不足，不过这些对BERT都是非致命的。比如，**GPT-2中看到了更多数据的威力（BERT的训练数据远未饱和）**，**XLNet中看到next prediction loss非必须，batch size可以设置更大**。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
