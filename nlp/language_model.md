@@ -2,12 +2,6 @@
 
 > 目前主要采用的是n元语法模型，这种模型构建简单、直接，但同时也因为数据缺乏 而必须采取平滑（smoothing）算法
 
-**参考文献：**
- - 《统计自然语言处理》 by 宗成庆
- - 《深度学习》(花书) by Bengio
- - 《神经网络与深度学习》 by 邱锡鹏 第14章
-
-
 **一般概念：**
  - 词的局部表示就是one-hot向量表示，即词袋模型(Bag-of-Words, BOW)，即将文本看成是词的集合，不考虑词序信息。又叫做向量空间模型(Vector Space Model, VSM)
  - 将高维的局部表示向量空间`R^{|V|}`映射到一个非常低维的空间`R^d`，V为词表，。这个低维空间中的表示就是**分布式表示**
@@ -700,85 +694,60 @@
 
 
 ## 前后向算法
+ - TODO
 
 
 ## 序列生成算法
+ - TODO
 
 
 
 
 
+# BERT-style模型
 
+#### 时间轴
 
+序号 | 模型 | 首次发表时间 | 机构 | 会议
+-|-|-|-|-
+1 | [BART](https://arxiv.org/abs/1910.13461) | 2019-10-29 | Facebook | xxx | [code](https://github.com/pytorch/fairseq/tree/master/examples/bart) |
+2 | [T5](https://arxiv.org/abs/1910.10683) | 2019-10-23 | Google | xxx | [code](https://github.com/google-research/text-to-text-transfer-transformer) |
+3 | [ALBERT](https://arxiv.org/abs/1909.11942) | 2019-09-26 | Google | ICLR2020 | [code](https://github.com/google-research/ALBERT) |
+4 | [ERNIE 2.0](https://arxiv.org/abs/1907.12412) | 2019-07-29 | 百度 | AAAI2020 | [code](https://github.com/PaddlePaddle/ERNIE) |
+5 | [RoBERTa](https://arxiv.org/abs/1907.11692) | 2019-07-26 | Facebook | xx | [code](https://github.com/pytorch/fairseq/tree/master/examples/roberta), [中文code](https://github.com/brightmart/roberta_zh) |
+6 | [SpanBERT](https://arxiv.org/abs/1907.10529) | 2019-07-24 | Facebook | TACL2020 | [code](https://github.com/facebookresearch/SpanBERT) |
+7 | [XLNet](https://arxiv.org/abs/1906.08237) | 2019-06-19 | Google | NIPS2019 | [code](https://github.com/zihangdai/xlnet) |
+8 | [BERT-wwm-ext](https://arxiv.org/abs/1906.08101) | 2019-06-19 | 科大讯飞 | xxx | [code](https://github.com/ymcui/Chinese-BERT-wwm) |
+9 | [Transformer-XL](https://arxiv.org/abs/1901.02860) | 2019-01-09 | Google | ACL2019 | [code](https://github.com/kimiyoung/transformer-xl) |
+10 | [BERT](https://arxiv.org/abs/1810.04805) | 2018-10-11 | Google | NAACL2019 | [code](https://github.com/huggingface/transformers) |
+11 | [GPT 2.0](https://www.openai.com/blog/gpt-2-1-5b-release/) | 2019-08-24 | OpenAI | radford2019 | [code](https://github.com/openai/gpt-2) |
+12 | [GPT](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf) | 2018-06-11 | OpenAI | xxx | [code](https://github.com/openai/finetune-transformer-lm) |
+13 | [ELMo](https://arxiv.org/abs/1802.05365) | 2018-02-15 | Allen AI | NAACL2018 | [code](https://allennlp.org/elmo) |
+14 | [Transformer](https://arxiv.org/abs/1706.03762) | 2017-06-12 | Google | NIPS2017 | [code](https://github.com/tensorflow/tensor2tensor) |
 
 
+#### 现有预训练模型
 
+序号 | 项目 | 机构 | 内容
+-|-|-|-
+1 | [OpenCLaP项目](https://github.com/thunlp/OpenCLaP) | 清华大学 | 民事文书BERT/刑事文书BERT/百度百科BERT |
+2 | [albert_zh](https://github.com/brightmart/albert_zh) | xxx | 海量中文预训练ALBERT模型 |
+3 | [roberta_zh](https://github.com/brightmart/roberta_zh) | xxx | 中文预训练RoBERTa模型 |
+4 | [Chinese-XLNet](https://github.com/ymcui/Chinese-XLNet) | 科大讯飞 | 中文XLNet预训练模型 |
+5 | [Chinese-BERT-wwm](https://github.com/ymcui/Chinese-BERT-wwm) | 科大讯飞 | 中文BERT-wwm系列模型 |
 
 
+#### 训练语料
 
+序号 | 语料 | 描述
+-|-|-
+1 | [nlp_chinese_corpus](https://github.com/brightmart/nlp_chinese_corpus) | 维基百科(wiki2019zh)，100万个结构良好的中文词条/
+新闻语料(news2016zh)，250万篇新闻，含关键词、描述/百科问答(baike2018qa)，150万个带问题类型的问答/社区问答json版(webtext2019zh)，410万个高质量社区问答，适合训练超大模型/翻译语料(translation2019zh)，520万个中英文句子对 |
+2 | [Chinese-RC-Datasets](https://github.com/ymcui/Chinese-RC-Datasets) | 中文阅读理解数据集 |
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## BERT-style模型
-
-BERT/spanBERT/RoBERT/Albert/...
-
-
-
-
-#### Transformer
+## Transformer
 
 recurrent attention
 
@@ -876,7 +845,7 @@ In our model, we share the same weight matrix between the two embedding layers a
             - 而BERT论文采用了LM + fine-tuning的方法，同时也讨论了BERT + task-specific model的方法。
 
 
-#### BERT
+## BERT
 
 **前言：**
  - **BERT采用了Transformer Encoder的模型来作为语言模型**，完全抛弃了RNN/CNN等结构，而完全采用Attention机制来进行input-output之间关系的计算
@@ -1079,32 +1048,9 @@ In our model, we share the same weight matrix between the two embedding layers a
 
 
 
-**参考博客：**
- - [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
- - [详解Transformer](https://zhuanlan.zhihu.com/p/48508221)
- - [10分钟带你深入理解Transformer原理及实现](https://zhuanlan.zhihu.com/p/80986272)
- - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
- - [transformer中为什么使用不同的K和Q，为什么不能使用同一个值？](https://www.zhihu.com/question/319339652/answer/1012823289)
- - [论文解读:BERT模型及fine-tuning](https://zhuanlan.zhihu.com/p/46833276)
- - [什么是XLNet，它为什么比BERT效果好？](https://zhuanlan.zhihu.com/p/107350079)
- - [什么是XLNet中的双流自注意力](https://zhuanlan.zhihu.com/p/107560878)
- - [香侬读|XLnet：比Bert更强大的预训练模型](https://zhuanlan.zhihu.com/p/71759544)
- - [XLNet详解](https://zhuanlan.zhihu.com/p/110204573)
- - [飞跃芝麻街：XLNet详解](https://zhuanlan.zhihu.com/p/71916499)
- - []()
 
 
-
-
-
-
-
-
-
-
-
-
-#### XLNet
+## XLNet
 
 **自回归语言模型（Autoregressive LM）**
  - AR语言模型：指的是，依据前面（或后面）出现的tokens来预测当前时刻的token，代表有ELMO，GPT等。
@@ -1228,6 +1174,7 @@ In our model, we share the same weight matrix between the two embedding layers a
     - 这样，我们就需要既可以关联上下文，又能单方向生成的一种训练方法。XLnet给出的答案是：使用Permutation Language Modeling（PLM），即对输入顺序本身进行置换。
     - 怎么把LM和预训练模型相结合呢？XLnet提出的双流自注意力机制，这个机制的核心就是BERT所谓的掩码Mask。
  - **双流自注意力**
+    - query stream attention和content stream attention，前者用来预训练，后者用来精调。
     - 为了实现Permutation加上AR预测过程：
         - 首先我们会发现，打乱顺序后位置信息非常重要，同时对每个位置来说，需要预测的是内容信息（对应位置的词），于是**输入就不能包含内容信息，不然模型学不到东西**，只需要直接从输入复制到输出就好了。
         - 于是这里就造成了位置信息与内容信息的割裂，因此除了在BERT这样的位置信息加内容信息输入Self-Attention(自注意力) 的流（content Stream）之外，作者**还增加了另一个只有位置信息作为Self-Attention中query输入的流（query stream）**。
@@ -1336,68 +1283,6 @@ In our model, we share the same weight matrix between the two embedding layers a
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-query stream attention和content stream attention，前者用来预训练，后者用来精调？
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Transformer-XL
 
 **Transformer：**
@@ -1416,131 +1301,16 @@ query stream attention和content stream attention，前者用来预训练，后�
 
 
 
-
-
-
-
-
-
-
-
-
-## 时间轴
-
-序号 | 模型 | 首次发表时间 | 机构 | 会议
--|-|-|-|-
-1 | [BART](https://arxiv.org/abs/1910.13461) | 2019-10-29 | Facebook | xxx | [code](https://github.com/pytorch/fairseq/tree/master/examples/bart) |
-2 | [T5](https://arxiv.org/abs/1910.10683) | 2019-10-23 | Google | xxx | [code](https://github.com/google-research/text-to-text-transfer-transformer) |
-3 | [ALBERT](https://arxiv.org/abs/1909.11942) | 2019-09-26 | Google | ICLR2020 | [code](https://github.com/google-research/ALBERT) |
-4 | [ERNIE 2.0](https://arxiv.org/abs/1907.12412) | 2019-07-29 | 百度 | AAAI2020 | [code](https://github.com/PaddlePaddle/ERNIE) |
-5 | [RoBERTa](https://arxiv.org/abs/1907.11692) | 2019-07-26 | Facebook | xx | [code](https://github.com/pytorch/fairseq/tree/master/examples/roberta), [中文code](https://github.com/brightmart/roberta_zh) |
-6 | [SpanBERT](https://arxiv.org/abs/1907.10529) | 2019-07-24 | Facebook | TACL2020 | [code](https://github.com/facebookresearch/SpanBERT) |
-7 | [XLNet](https://arxiv.org/abs/1906.08237) | 2019-06-19 | Google | NIPS2019 | [code](https://github.com/zihangdai/xlnet) |
-8 | [BERT-wwm-ext](https://arxiv.org/abs/1906.08101) | 2019-06-19 | 科大讯飞 | xxx | [code](https://github.com/ymcui/Chinese-BERT-wwm) |
-9 | [Transformer-XL](https://arxiv.org/abs/1901.02860) | 2019-01-09 | Google | ACL2019 | [code](https://github.com/kimiyoung/transformer-xl) |
-10 | [BERT](https://arxiv.org/abs/1810.04805) | 2018-10-11 | Google | NAACL2019 | [code](https://github.com/huggingface/transformers) |
-11 | [GPT 2.0](https://www.openai.com/blog/gpt-2-1-5b-release/) | 2019-08-24 | OpenAI | radford2019 | [code](https://github.com/openai/gpt-2) |
-12 | [GPT](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf) | 2018-06-11 | OpenAI | xxx | [code](https://github.com/openai/finetune-transformer-lm) |
-13 | [ELMo](https://arxiv.org/abs/1802.05365) | 2018-02-15 | Allen AI | NAACL2018 | [code](https://allennlp.org/elmo) |
-14 | [Transformer](https://arxiv.org/abs/1706.03762) | 2017-06-12 | Google | NIPS2017 | [code](https://github.com/tensorflow/tensor2tensor) |
-
-
-
-## 现有预训练模型
-
-序号 | 项目 | 机构 | 内容
--|-|-|-
-1 | [OpenCLaP项目](https://github.com/thunlp/OpenCLaP) | 清华大学 | 民事文书BERT/刑事文书BERT/百度百科BERT |
-2 | [albert_zh](https://github.com/brightmart/albert_zh) | xxx | 海量中文预训练ALBERT模型 |
-3 | [roberta_zh](https://github.com/brightmart/roberta_zh) | xxx | 中文预训练RoBERTa模型 |
-4 | [Chinese-XLNet](https://github.com/ymcui/Chinese-XLNet) | 科大讯飞 | 中文XLNet预训练模型 |
-5 | [Chinese-BERT-wwm](https://github.com/ymcui/Chinese-BERT-wwm) | 科大讯飞 | 中文BERT-wwm系列模型 |
-
-
-
-## 训练语料
-
-序号 | 语料 | 描述
--|-|-
-1 | [nlp_chinese_corpus](https://github.com/brightmart/nlp_chinese_corpus) | 维基百科(wiki2019zh)，100万个结构良好的中文词条/
-新闻语料(news2016zh)，250万篇新闻，含关键词、描述/百科问答(baike2018qa)，150万个带问题类型的问答/社区问答json版(webtext2019zh)，410万个高质量社区问答，适合训练超大模型/翻译语料(translation2019zh)，520万个中英文句子对 |
-2 | [Chinese-RC-Datasets](https://github.com/ymcui/Chinese-RC-Datasets) | 中文阅读理解数据集 |
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## MASS
-
-
-
-
-
-
-## ERNIE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## ERNIE 2.0
 
 #### 主要贡献
  - ERNIE2是百度在ERNIE1基础上的一个升级版，提出了一个持续学习的机制（continual learning），持续学习包括**持续构建预训练任务和增量多任务学习两个部分**。
-
-
-
-
 
 #### RoBERTa和ERNIE2.0对比
  - RoBERTa与ERNIE2的对比可以看到，现阶段改模型不如加数据，这样来看有几个问题：
     - 1.数据量的底，就BERT-Large模型结构而言，到底多少才会趋于饱和；
     - 2.预训练数据种类是否有关，比如我是不停地加新闻类数据就可以还是需要均衡新闻、小说、问答等各类数据；
     - 3.如果拿同等的训练数据，RoBERTa与ERNIE2不知是哪种模式的训练效果会好些。
-
-
-
-
-
-
 
 
 
@@ -1551,36 +1321,6 @@ query stream attention和content stream attention，前者用来预训练，后�
     - 1.预训练数据集做了增加，次数达到5.4B；
     - 2.训练步数增大，训练第一阶段1M步，训练第二阶段400K步。
  - 在一些中文任务上效果稍微有提升，这也验证了RoBERTa的观点（不是BERT不行，是潜力没发挥而已）。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1710,56 +1450,189 @@ query stream attention和content stream attention，前者用来预训练，后�
 
 
 
+## ALBERT
+
+#### 主要贡献
+ - ALBERT: A Lite BERT for Self-supervised Learning of Language Representations
+ - 相比BERT有以下改进：
+    - Factorized Embedding Parameterization，较少参数量
+    - Cross-layer Parameter Sharing，减少参数量
+    - Sentence Order Prediction（SOP）
+ - 从数据来看，仅仅上面三点改进，是不足以使ALBERT超越BERT的。还有一些小trick，作者没有重点介绍，但是我个人认为必不可少。
+    - Segments-Pair
+    - Masked-ngram-LM
+    - remove dropout
+    - 模型规模
+ - ALBERT只是降低了空间复杂度，把参数量从108M降到了12M，但并没有降低时间复杂度。（训练时间大约是之前的三倍，相当于以时间换空间）
+ - ALBERT进行预测的速度并没有加快，甚至在同等性能的模型对比中还慢了。
+ - ALBERT降参数量，但不减计算量。
+
+#### 矩阵分解 Factorized Embedding Parameterization
+ - 先把word embedding映射到低维空间之后，再映射到hidden layer。这其实类似于做了矩阵的分解。
+ - 通过将大的vocab embedding矩阵分解为两个小矩阵，将vocab embedding size和隐藏层的size分割开。
+ - **对于Bert，词向量维度E和隐层维度H是相等的**（都是512维）。在large和xlarge等更大规模的模型中，**E会随着H不断增加**。
+ - 作者认为没有这个必要，因为预训练模型主要的**捕获目标是H所代表的“上下文相关信息”而不是E所代表的“上下文无关信息”**。
+    
+    ![lm_albert_fep_tab](img/lm_albert_fep_tab.png)
+ - “Factorized（分解）”说白了就是**在词表V到隐层H的中间，插入一个小维度E，多做一次尺度变换**，从![lm_albert_fep_form_1](img/lm_albert_fep_form_1.png)变为：
+
+    ![lm_albert_fep_form](img/lm_albert_fep_form.png)
+ - 词表包含3W个词，最大序列长度为512，下边是参数量的差距：
+    
+    ```
+    BERT-large在这一块的参数量约为：
+    (3W + 512) × 1024 = 31,244,288
+    
+    ALBERT-large的参数量约为：
+    (3W + 512) × 128 + 128 × 1024 = 4,036,608
+    
+    差为27,207,680。这是多少？只有 27M！
+    
+    只做词向量压缩，只能从334M参数变成307M左右。
+    ```
+ - **参数量减少主要靠的是“Parameter-sharing”**。从作者对于ALBERT-base列的数据证实了这一点。`E=64`和`E=768`的参数两只相差31M。此外，embedding降维并不是完美无缺的，模型性能也跟着掉下来了（0.6）。
+ 
+    ![lm_albert_fep_tab_1](img/lm_albert_fep_tab_1.png)
+    
+    不同的E对ALBERT-base模型的影响。
+ - 矩阵分解带来的参数量降低并不是最大的。
+
+#### 跨层参数共享 Cross-layer Parameter Sharing
+ - 可以把transformer分成三部分：attention、normalization layer、FFN，其中normalization layer参数量很少，忽略不计，重点就看attention和FFN。
+ - 跨层共享的机制非常简单，就是**单独用一个Self-Attention层循环12次，每一层的参数都一样。这样子我们就用1层的参数量来表示12层的参数**，为此，模型的参数当然大大降低了。
+ - 为什么这个机制能行？作者提到给BERT的每一层参数做了分析，**发现每一层的参数基本相似，因此直接共享了**。
+ - 该方法为参数量降维做出了巨大贡献，具体分为三种模式：
+    
+    ![lm_albert_fep_tab_2](img/lm_albert_fep_tab_2.png)
+    
+    - 只共享attention相关参数
+    - 只共享FFN相关参数
+    - 共享所有参数
+ - "all-shared"之后，ALBERT-BASE的参数量直接从89M变成了12M，毕竟这种策略就相当于**把12个完全相同的层摞起来**。
+ - 在保持模型性能下降不至于太厉害的同时，选择所有层次参数共享，降低的参数量是最多的，所以，ALBERT默认所有层次参数共享。
+ - 从最后一列的Avg来看，如果是只共享attention参数，不仅可以减维，还能保持性能不掉。然而，作者为了追求"轻量级"，坚持把FFN也共享了。那掉了的指标从哪里补？答案之一是**把ALBERT-large升级为ALBERT-xxlarge，进一步加大模型规模**，把参数量再加回去。
 
 
-**参考博客：**
- - [SpanBert：对Bert预训练的一次深度探索](https://zhuanlan.zhihu.com/p/75893972)
- - [RoBERTa中文预训练模型，你离中文任务的「SOTA」只差个它](https://mp.weixin.qq.com/s/v5wijUi9WgcQlr6Xwc-Pvw)
+#### 句子顺序预测 Sentence Order Prediction（SOP）
+ - SOP任务也很简单，它的**正例和NSP任务一致（判断两句话是否有顺序关系），反例则是判断两句话是否为反序关系**。
+ - SOP目标补偿了一部分因为embedding和FFN共享而损失的性能。
+ - Bert原版的NSP目标过于简单了，它把”topic prediction”和“coherence prediction”融合了起来，这样模型会更加forces学习语料的连贯性。
+ - SOP对其加强，**将负样本换成了同一篇文章中的两个逆序的句子，进而消除“topic prediction”**。
+    
+    ![lm_albert_fep_tab_3](img/lm_albert_fep_tab_3.png)
+    
+    - ALBERT-base下NSP与SOP的对比。
+    - SOP对NSP的改进，带来了0.9个点的平均性能提升。
+    - 该提升和Factorized embedding损失的性能可以相抵（约损失一个点）。
+
+
+#### Segments-Pair / input sequence limit
+ - BERT为了加速训练，前90%的steps使用了128个token的短句，最后10%才使用512个词的长句来训练position embedding。
+ - ALBERT则几乎全程使用raw sequence length 训练，随机10%的概率选择shorted than 512进行训练。
+ - 也就是在90%的情况下，ALBERT的输入都是raw sequence length，最长限制512，而BERT则是90%的情况下都只是128，所以输入长了近一倍，我们都知道输入越长，语言模型训练的越好，所以ALBER性能会有提高。
+ - 似乎是**90%的情况下，输入的segment取满了512个词，其输入序列要比BERT长接近一半**。剩下10%时间随机生成一些小于512的序列。
+ - 在RoBERTa的文章中，作者对比了不同序列长度下NSP目标的效果，分别是使用自然句作为样本的sentences-pair，和BERT系的segments-pair。从验数据来看，**更长的输入序列带来了更完整的上下文信息，显著地提升了模型性能**。也就是说**BERT系的segments-pair优于使用自然句作为样本的sentences-pair**。
+
+
+#### Masked-ngram-LM / n-gram masking
+ - Bert的MLM目标，是随机遮住15%的词来预测。
+ - ALBERT预测的是n-gram片段，包含更完整的语义信息。
+ - 每个片段的长度取值n（最大为3），根据概率公式计算得到。
+    
+    ```
+    比如，取1-gram 、2-gram、3-gram的概率分别为6/11，3/11，2/11。越长概率越小。
+    ```
+ - ALBERT使用n-gram masking，这其实和后面有人改进word masking一样，对中文进行分词，**对词的masking比对字的masking性能会有一定的提升**，所以ALBERT使用n-gram masking，其中n取值为1-3。
+
+
+#### remove dropout
+ - 移除BERT的dropout之后，BERT在训练的时候并没有出现过拟合的现象.
+ - 所以有人在后续的改进中移除了dropout，ALBERT同样移除dropout。
+
+
+#### 模型规模
+ - 重新说回“轻量级”这个事情。**真正“超越BERT-large”的是ALBERT-xxlarge，把H从1024直接扩大到了4096**。
+ - 由于all-shared策略，**不断加深ALBERT的网络结构，无法获得持续的性能提升。因此BERT-large有24层，而ALBERT-xxlarge只用了12层**。
+ - 前者是“窄而深”，后者是“宽而浅”的。**ALBERT的总参数量是BERT的70%**，但在规模上并没有占到什么便宜，“减参数而不减计算量”。
+ - BERT-large比ALBERT-xxlarge 快了2.5个BERT-xlarge，跑同样的step，ALBERT-xxlarge慢了3.17倍。
+ - ALBERT用70%的参数量，在同样的1M steps（即100万步）上确实超越了BERT。相应地，训练时间也拉长到3.17倍。它最后屠榜用的结果，是1.5M steps，又多出一半。
+ - 使用更少的内存。
+ - 当我们让一个模型的参数变多的时候，一开始模型效果是提高的趋势，但一旦复杂到了一定的程度，接着再去增加参数反而会让效果降低，这个现象叫作“model degratation"（模型退化）。
+
+#### 预测速度
+ - **ALBERT降低了参数量，但并没有提升预测速度**。至于出现这种情况的原因也很简单，BERT是12层Self-Attention堆叠而成，ALBERT同样也是12层Self-Attention堆叠而成，**在预测的时候，tensor都是要经过12层Self-Attention，所以速度并没有提升**。
+    
+    ![lm_albert_fep_tab_4](img/lm_albert_fep_tab_4.png)
+    
+    - 可以看到**同为BASE情况下的对比，ALBERT的速度会快一点**。
+    - 但如果在同等性能对比的情况下，BERT-base比ALBERT-large快了11.2个BERT-xlarge。
+    - **也就是说在同等性能的情况下，BERT比ALBERT要快**。
+ - 线下验证BERT-Base版本较TextCNN提高较为明显，但是推到线上，Inference时间爆炸了；无奈，只好减少Transformer层数，**由12层减少到4层**，由于此项目场景下的Input较短，所以使用4层Transformer并没有太多效果层的损失，性能上Inference时间减少了2.3倍，后面又将服务由CPU集群迁移到GPU集群，Inference时间又减少了7倍。
+ - 整个上线过程较为麻烦，**要不断修改Transformer层数来调节Inference时间和Acc，Recall；层数越少，Inference时间越短，但是Acc和Recall就越差，反之亦然**。
+ - 而ALBERT只减参数不减计算量。
+ - 总结来看，Factorized embedding parameterization和Cross-layer parameter sharing是为了减少参数达到瘦身目的，而SOP(sentence-order prediction loss)、n-gram masking、input sequence limit、remove dropout等都是为了补回来瘦身导致的性能损失。
+ - 参数量计算，具体看下参数是怎么减少的：
+    
+    ```
+    我们可以把transformer分成三部分：attention、normalization layer、FFN，
+    其中normalization layer参数量很少，忽略不计，重点就看attention和FFN。
+    
+    我们就对比ALBERT-base，E=768，layers（transformer层数）=12，A（multi head头数）=12。
+    
+    FFN计算公式为：
+    FFN(x) = max(0, xW1 + b1)W2 + b2
+    
+    这是一个input和output维度一样的MLP变形网络，
+    hidden size的变化为768->3072->768（或者512->2048->512），
+    此处的参数量为W1和W2，单层layer FFN-parameters=2*768*3072=4.7M，
+    那么shared-FFN之后，12层layer的FFN-parameters就只有4.7M，
+    
+    因为每一层的都一样，对比not-shared，
+    12层layer FFN-parameters=12*2*768*3072=56.6M，
+    参数减少56.6M-4.7M=51M，刚好和上表中108M-57M=51M相等。
+    
+    atteention的计算主要分成4个参数，Wq、Wk、Wv、Wo，
+    其中12个头的Wq、Wk、Wv参数总量为12*3*768*64=1.7M，
+    Wo参数量为768*768=0.6M，
+    所以单层layer attention-parameters=1.7+0.6=2.3M，
+    
+    那么shared-attention之后，12层layer的attention-parameters就只有2.3M，
+    因为每一层都一样，对比not-shared，
+    12层layer attention-parameters=12*2.3M=27.6M，
+    参数减少27.6M-2.3M=25M，刚好和上表中108M-83M=25M相等。
+    
+    同理，如果attention和FFN all shared之后，参数减少也可由上面两种情况相加得到。
+    
+    -----------------------------------------------------
+    
+    我们再看看性能变化。可以看到只共享attention参数，会在瘦身的同时，保证性能不变；
+    但是作者不甘于此，采用了暴力“all shared”的方式，毫不顾忌“all shared”之后性
+    能会有近2个点的损失，就真的如此不顾及嘛？并不是，后面作者又找了其他方式，把性能补
+    回来。至此，ALBERT瘦身的操作都结束了，由上可以看到，embedding分解和parameter sharing
+    极大减小了模型的参数，尤其是后者，但是都带来了性能的损失，就最坏的情况来讲，前者会
+    有1个点的损失，后者会有2个点的损失，加起来近3个点了，这还怎么超越BERT？怎么屠榜？
+    接下来就是作者为了提升性能做的一堆操作。
+    ```
+
+#### 总结
+ - 大致可以分为两个方向，其一是减少参数，其二是弥补参数减少带来的效果损失。
+ - 另外还有一些比较关键的是，ALBERT想要超过BERT，其实需要更多的训练数据、及加大hidden size。
+ - ALBERT是“宽而浅”，BERT是“窄而深”。
 
 
 
 
 
+## MASS
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## ERNIE
 
 
 ## WWM BERT
 
 
-
 ## T5
-
-
-
-
-## ALBERT
-
-
-
-
 
 
 ## ELECTRA
@@ -1805,15 +1678,39 @@ query stream attention和content stream attention，前者用来预训练，后�
         - 同时ELMo使用了一层CNN和两层LSTM，模型结构更深，能捕捉到更多的信息。
         - 而且不同于Cove词向量，ELMo提出可以根据**不同的下游任务进行线性组合，最大化的利用不同层抽取出的特征**，使得ELMo词向量有很强的泛用性。
     - ELMo与word2vec最大的不同：即词向量不是一成不变的，而是根据上下文而随时变化，这与word2vec或者glove具有很大的区别
+ - 常用的词向量模型比如SkipGram, CBOW, Glove是**不考虑上下文的，也就是一个单词有个固定（Fixed）的向量（这个向量学习好之后就不会变了，直接拿来用就行了，比如腾讯AILib的200dim词向量，根据id取对应向量），不依赖于上下文的改变而改变**。比如“I back my car"和 "I hurt my back"里，单词"back"在不同的语境下的含义是不一样的 。
+ - ELMo、BERT、XLNet、ALBERT，利用这些模型，我们可以**动态地去学出一个单词在不同上下文之间的词向量。当然，这些向量在不同的语境下的表示肯定是不一样的**。
+ - BERT整个的架构其实是基于DAE，在论文里又叫MLM，**MLM并不是严格意义上的语言模型，因为整个训练过程并不是利用语言模型方式（自回归方式）来训练的**。
+
+
+**ALBERT跨层参数共享在啥时候来更新梯度呢？每一次循环都更新？还是到最后一层来更新？**
+ - 应该是所有循环进行完之后一块进行更新，不然就和直接堆叠12层没啥区别了。
 
 
 
-
-
-
-
-
-
+## 参考博客
+ - 《统计自然语言处理》 by 宗成庆
+ - 《深度学习》(花书) by Bengio
+ - 《神经网络与深度学习》 by 邱锡鹏 第14章
+ - [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
+ - [详解Transformer](https://zhuanlan.zhihu.com/p/48508221)
+ - [10分钟带你深入理解Transformer原理及实现](https://zhuanlan.zhihu.com/p/80986272)
+ - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
+ - [transformer中为什么使用不同的K和Q，为什么不能使用同一个值？](https://www.zhihu.com/question/319339652/answer/1012823289)
+ - [论文解读:BERT模型及fine-tuning](https://zhuanlan.zhihu.com/p/46833276)
+ - [什么是XLNet，它为什么比BERT效果好？](https://zhuanlan.zhihu.com/p/107350079)
+ - [什么是XLNet中的双流自注意力](https://zhuanlan.zhihu.com/p/107560878)
+ - [香侬读|XLnet：比Bert更强大的预训练模型](https://zhuanlan.zhihu.com/p/71759544)
+ - [XLNet详解](https://zhuanlan.zhihu.com/p/110204573)
+ - [飞跃芝麻街：XLNet详解](https://zhuanlan.zhihu.com/p/71916499)
+ - [SpanBert：对Bert预训练的一次深度探索](https://zhuanlan.zhihu.com/p/75893972)
+ - [RoBERTa中文预训练模型，你离中文任务的「SOTA」只差个它](https://mp.weixin.qq.com/s/v5wijUi9WgcQlr6Xwc-Pvw)
+ - [如何看待瘦身成功版bert——albert？](https://www.zhihu.com/question/347898375/answer/863537122)
+ - [从bert,xlnet,roberta到albert](https://zhuanlan.zhihu.com/p/84559048)
+ - [albert原理与实践](https://zhuanlan.zhihu.com/p/108435489)
+ - [albert真的瘦身成功了吗？](https://zhuanlan.zhihu.com/p/102470776)
+ - [nlp预训练模型：从transformer到albert](https://zhuanlan.zhihu.com/p/85221503)
+ - []()
 
 
 
