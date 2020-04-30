@@ -330,6 +330,14 @@
         - 基于采样的方法并不改变模型的结构，只是近似计算更新梯度。因此这类方法虽然在训练时可以显著提高模型的训练速度，但是在测试阶段依然需要计算配分函数。
         - 而基于层次化`softmax`的方法改变的模型的结构，在训练和测试时都可以加快计算速度。
 
+**NNLM解释：**
+ - 架构如下图：
+    
+    ![lm_nnlm](img/lm_nnlm.png)
+ - 学习任务是输入某个句中单词 [公式] 前面句子的t-1个单词，要求网络正确预测单词Bert，即最大化
+
+
+
 ## 基于分布式假设的词嵌入学习
 **一般概念：**
  - 通过神经网络语言模型，我们可以在大规模的无标注语料上进行训练，来得到一组好的词向量。
@@ -710,20 +718,21 @@
 
 序号 | 模型 | 首次发表时间 | 机构 | 会议
 -|-|-|-|-
-1 | [BART](https://arxiv.org/abs/1910.13461) | 2019-10-29 | Facebook | xxx | [code](https://github.com/pytorch/fairseq/tree/master/examples/bart) |
-2 | [T5](https://arxiv.org/abs/1910.10683) | 2019-10-23 | Google | xxx | [code](https://github.com/google-research/text-to-text-transfer-transformer) |
-3 | [ALBERT](https://arxiv.org/abs/1909.11942) | 2019-09-26 | Google | ICLR2020 | [code](https://github.com/google-research/ALBERT) |
-4 | [ERNIE 2.0](https://arxiv.org/abs/1907.12412) | 2019-07-29 | 百度 | AAAI2020 | [code](https://github.com/PaddlePaddle/ERNIE) |
-5 | [RoBERTa](https://arxiv.org/abs/1907.11692) | 2019-07-26 | Facebook | xx | [code](https://github.com/pytorch/fairseq/tree/master/examples/roberta), [中文code](https://github.com/brightmart/roberta_zh) |
-6 | [SpanBERT](https://arxiv.org/abs/1907.10529) | 2019-07-24 | Facebook | TACL2020 | [code](https://github.com/facebookresearch/SpanBERT) |
-7 | [XLNet](https://arxiv.org/abs/1906.08237) | 2019-06-19 | Google | NIPS2019 | [code](https://github.com/zihangdai/xlnet) |
-8 | [BERT-wwm-ext](https://arxiv.org/abs/1906.08101) | 2019-06-19 | 科大讯飞 | xxx | [code](https://github.com/ymcui/Chinese-BERT-wwm) |
-9 | [Transformer-XL](https://arxiv.org/abs/1901.02860) | 2019-01-09 | Google | ACL2019 | [code](https://github.com/kimiyoung/transformer-xl) |
-10 | [BERT](https://arxiv.org/abs/1810.04805) | 2018-10-11 | Google | NAACL2019 | [code](https://github.com/huggingface/transformers) |
-11 | [GPT 2.0](https://www.openai.com/blog/gpt-2-1-5b-release/) | 2019-08-24 | OpenAI | radford2019 | [code](https://github.com/openai/gpt-2) |
-12 | [GPT](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf) | 2018-06-11 | OpenAI | xxx | [code](https://github.com/openai/finetune-transformer-lm) |
-13 | [ELMo](https://arxiv.org/abs/1802.05365) | 2018-02-15 | Allen AI | NAACL2018 | [code](https://allennlp.org/elmo) |
-14 | [Transformer](https://arxiv.org/abs/1706.03762) | 2017-06-12 | Google | NIPS2017 | [code](https://github.com/tensorflow/tensor2tensor) |
+1 | [ELECTRA](https://arxiv.org/abs/2003.10555) | 2020-03-23 | Google | ICLR2020 | [code](https://github.com/google-research/electra) |
+2 | [BART](https://arxiv.org/abs/1910.13461) | 2019-10-29 | Facebook | xxx | [code](https://github.com/pytorch/fairseq/tree/master/examples/bart) |
+3 | [T5](https://arxiv.org/abs/1910.10683) | 2019-10-23 | Google | xxx | [code](https://github.com/google-research/text-to-text-transfer-transformer) |
+4 | [ALBERT](https://arxiv.org/abs/1909.11942) | 2019-09-26 | Google | ICLR2020 | [code](https://github.com/google-research/ALBERT) |
+5 | [ERNIE 2.0](https://arxiv.org/abs/1907.12412) | 2019-07-29 | 百度 | AAAI2020 | [code](https://github.com/PaddlePaddle/ERNIE) |
+6 | [RoBERTa](https://arxiv.org/abs/1907.11692) | 2019-07-26 | Facebook | xx | [code](https://github.com/pytorch/fairseq/tree/master/examples/roberta), [中文code](https://github.com/brightmart/roberta_zh) |
+7 | [SpanBERT](https://arxiv.org/abs/1907.10529) | 2019-07-24 | Facebook | TACL2020 | [code](https://github.com/facebookresearch/SpanBERT) |
+8 | [XLNet](https://arxiv.org/abs/1906.08237) | 2019-06-19 | Google | NIPS2019 | [code](https://github.com/zihangdai/xlnet) |
+9 | [BERT-wwm-ext](https://arxiv.org/abs/1906.08101) | 2019-06-19 | 科大讯飞 | xxx | [code](https://github.com/ymcui/Chinese-BERT-wwm) |
+10 | [Transformer-XL](https://arxiv.org/abs/1901.02860) | 2019-01-09 | Google | ACL2019 | [code](https://github.com/kimiyoung/transformer-xl) |
+11 | [BERT](https://arxiv.org/abs/1810.04805) | 2018-10-11 | Google | NAACL2019 | [code](https://github.com/huggingface/transformers) |
+12 | [GPT 2.0](https://www.openai.com/blog/gpt-2-1-5b-release/) | 2019-08-24 | OpenAI | radford2019 | [code](https://github.com/openai/gpt-2) |
+13 | [GPT](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf) | 2018-06-11 | OpenAI | xxx | [code](https://github.com/openai/finetune-transformer-lm) |
+14 | [ELMo](https://arxiv.org/abs/1802.05365) | 2018-02-15 | Allen AI | NAACL2018 | [code](https://allennlp.org/elmo) |
+15 | [Transformer](https://arxiv.org/abs/1706.03762) | 2017-06-12 | Google | NIPS2017 | [code](https://github.com/tensorflow/tensor2tensor) |
 
 
 #### 现有预训练模型
@@ -735,6 +744,7 @@
 3 | [roberta_zh](https://github.com/brightmart/roberta_zh) | xxx | 中文预训练RoBERTa模型 |
 4 | [Chinese-XLNet](https://github.com/ymcui/Chinese-XLNet) | 科大讯飞 | 中文XLNet预训练模型 |
 5 | [Chinese-BERT-wwm](https://github.com/ymcui/Chinese-BERT-wwm) | 科大讯飞 | 中文BERT-wwm系列模型 |
+6 | [SogouMRCToolkit](https://github.com/sogou/SogouMRCToolkit) | 搜狗 | MRC模型工具包 |
 
 
 #### 训练语料
@@ -1632,10 +1642,143 @@ In our model, we share the same weight matrix between the two embedding layers a
 ## WWM BERT
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## T5
+
+#### 主要贡献
+ - T5 (Text-to-Text Transfer Transformer)
+ - 它最重要作用是给整个NLP预训练模型领域提供了一个通用框架，把所有任务都转化成一种形式。
+ - 之后未来做NLP实验时，主要工作就变成了怎么把任务转换成合适的文本输入输出。
+ - 将所有NLP任务都转化成Text-to-Text（文本到文本）任务，也就可以用同样的模型，同样的损失函数，同样的训练过程，同样的解码过程来完成所有NLP任务。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## ELECTRA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
