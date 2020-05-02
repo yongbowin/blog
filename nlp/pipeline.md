@@ -4096,101 +4096,77 @@ TODO:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## LSTM/GRU
+
+#### LSTM核心思想
+ - 传统RNN结构：
+    
+    ![rnn](img/rnn.png)
+ - LSTM中的重复模块包含四个交互的层：
+
+    ![lstm](img/lstm.png)
+    
+    粉色的圈代表按位pointwise的操作。
+ - LSTM的关键就是细胞状态，水平线在图上方贯穿运行。细胞状态类似于传送带。直接在整个链上运行，只有一些少量的线性交互。信息在上面流传保持不变会很容易。
+    
+    ![lstm_cell](img/lstm_cell.png)
+ - LSTM有通过精心设计的称作为“门”的结构来去除或者增加信息到细胞状态的能力。门是一种让信息选择式通过的方法。他们包含一个sigmoid神经网络层和一个按位的乘法操作。
+    
+    ![lstm_gate](img/lstm_gate.png)
+    
+    - Sigmoid层输出0到1之间的数值，描述每个部分有多少量可以通过。0代表“不许任何量通过”，1就指“允许任意量通过”！
+    - LSTM拥有三个门，来保护和控制细胞状态。
+ - **遗忘门**
+    
+    ![lstm_forgot](img/lstm_forgot.png)
+ - **输入门**
+    
+    ![lstm_input](img/lstm_input.png)
+ - **更新Cell状态**
+ 
+    ![lstm_input_1](img/lstm_input_1.png)
+ - **输出门**
+    
+    ![lstm_output](img/lstm_output.png)
+
+
+#### GRU核心思想
+ - LSTM一个改动较大的变体是Gated Recurrent Unit (GRU)。
+    
+    ![gru](img/gru.png)
+ - 选择GRU是因为它的实验效果与LSTM相似，但是更易于计算。相比LSTM，使用GRU能够达到相当的效果，并且相比之下更容易进行训练，能够很大程度上提高训练效率，因此很多时候会更倾向于使用GRU。
+    
+    ![gru_core](img/gru_core.png)
+    
+    - 重置门输入r和更新门输入z都是从`h^{t-1}`和`x^t`中得来。
+    - **重置门的目的是记忆当前时刻的状态。**
+    - **更新门用来遗忘和记忆两个步骤**。
+ - **重置门r**和**更新门z**：
+ 
+    ![gru_1](img/gru_1.png)
+ - 重置门
+ 
+    ![gru_r](img/gru_r.png)
+    
+    `h'`中保存了上一时刻的状态`h^{t-1}`和当前时刻的状态`x^t`。
+ - 更新门
+    
+    ![gru_z](img/gru_z.png)
+ - GRU很聪明的一点就在于，**使用了同一个门控z就同时可以进行遗忘和选择记忆（LSTM则要使用多个门控）**。
+    
+    ![gru_z_1](img/gru_z_1.png)
+
+
+#### LSTM与GRU的关系
+ - 与LSTM相比，GRU内部少了一个”门控“，参数比LSTM少，但是却也能够达到与LSTM相当的功能：
+    
+    ![lstm_gru](img/lstm_gru.png)
+
+
+#### 参考文献
+ - [理解LSTM网络](https://www.jianshu.com/p/9dc9f41f0b29)
+ - [Understanding LSTM Networks](http://colah.github.io/posts/2015-08-Understanding-LSTMs/)
+ - [人人都能看懂的GRU](https://zhuanlan.zhihu.com/p/32481747)
 
 
 

@@ -268,6 +268,15 @@
 
 **13、写一下LSTM的公式，LSTM为什么能够解决梯度消失**
  - TODO
+ - LSTM如何解决梯度消失问题？三个×分别代表的就是forget gate，input gate，output gate，而我认为**LSTM最关键的就是forget gate**这个部件。这三个gate是如何控制流入流出的呢，其实就是通过下面三个函数来控制，因为![sigmoid_f](img/sigmoid_f.png)（代表sigmoid函数） 的值是介于0到1之间的，刚好用趋近于0时表示流入不能通过gate，趋近于1时表示流入可以通过gate。
+    
+    ![iq_lstm](img/iq_lstm.png)
+    
+    ![iq_lstm_form](img/iq_lstm_form.png)
+ - 函数![iq_lstm_form_1](img/iq_lstm_form_1.png)中，前一部分小于等于1,后一部分取值在`(0,1)`之间，经过多层的累乘之后，这个函数的取值不是0就是1.
+    
+    ![iq_lstm_form_2](img/iq_lstm_form_2.png)
+
 
 **14、常见的激活函数有哪些**
  - TODO
@@ -385,4 +394,5 @@
  - [正则化方法：L1和L2 regularization、数据集扩增、dropout](https://blog.csdn.net/u012162613/article/details/44261657)
  - [L1正则化与L2正则化](https://zhuanlan.zhihu.com/p/35356992)
  - [RNN梯度消失和爆炸的原因](https://zhuanlan.zhihu.com/p/28687529)
+ - [LSTM如何解决梯度消失问题](https://zhuanlan.zhihu.com/p/28749444)
  - []()
