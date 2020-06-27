@@ -534,84 +534,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## word2vec数学原理
 
 #### 主要贡献
@@ -720,90 +642,6 @@
  - [秒懂词向量Word2vec的本质](https://zhuanlan.zhihu.com/p/26306795)
  - [全面理解word2vec](https://zhuanlan.zhihu.com/p/33799633)
  - [word2vec是如何得到词向量的？](https://www.zhihu.com/question/44832436/answer/266068967)
- - []()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1743,39 +1581,6 @@ In our model, we share the same weight matrix between the two embedding layers a
 ## WWM BERT
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## T5
 
 #### 主要贡献
@@ -1787,101 +1592,7 @@ In our model, we share the same weight matrix between the two embedding layers a
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## ELECTRA
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2009,7 +1720,7 @@ In our model, we share the same weight matrix between the two embedding layers a
 
 
 
-## 参考博客
+## 参考文献
  - 《统计自然语言处理》 by 宗成庆
  - 《深度学习》(花书) by Bengio
  - 《神经网络与深度学习》 by 邱锡鹏 第14章
@@ -2032,7 +1743,6 @@ In our model, we share the same weight matrix between the two embedding layers a
  - [albert真的瘦身成功了吗？](https://zhuanlan.zhihu.com/p/102470776)
  - [nlp预训练模型：从transformer到albert](https://zhuanlan.zhihu.com/p/85221503)
  - [从Word Embedding到Bert模型—自然语言处理中的预训练技术发展史](https://zhuanlan.zhihu.com/p/49271699)
- - []()
 
 
 
